@@ -226,4 +226,29 @@ h1 {
     .projects-grid {
         grid-template-columns: 1fr;
     }
+
+    .section-divider {
+        text-align: center;
+        margin: 80px 0 40px;
+        animation: fadeInUp 1s ease;
+        margin: 60px 0 30px;
+    }
+
+    .section-title {
+        font-size: 2em;
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        font-size: 1.5em;
+    }
+
+    .divider-line {
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+        margin: 0 auto;
+        border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {}
 }
