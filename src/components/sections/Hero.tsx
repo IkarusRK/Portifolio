@@ -1,18 +1,18 @@
 import { useEffect, useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaReact, FaPython } from 'react-icons/fa';
+import { FaReact } from 'react-icons/fa';
+import type { ParticleShape } from '../../data/floatingCards';
 import { useTheme } from '../../hooks/useTheme';
 import { useCursorPosition } from '../../hooks/useCursorPosition';
 import { GradientText } from '../ui/GradientText';
 import { ParticleField } from '../three/ParticleField';
 import { FLOATING_CARDS } from '../../data/floatingCards';
-import type { ParticleShapeType } from '../three/ParticleField';
 
 const FLEE_RADIUS = 100;
 const FLEE_STRENGTH = 36;
 
 const Hero = () => {
-  const { theme, mode } = useTheme();
+  const { theme } = useTheme();
   const [accentColor, setAccentColor] = useState('#7c3aed');
   const mousePos = useCursorPosition(0.08);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ const Hero = () => {
   const [sectionRect, setSectionRect] = useState({ left: 0, top: 0, width: 1, height: 1 });
   const [cardCenters, setCardCenters] = useState<{ x: number; y: number }[]>([]);
   const [clickedCard, setClickedCard] = useState<number | null>(null);
-  const [particleShape, setParticleShape] = useState<ParticleShapeType>('react');
+  const [particleShape] = useState<ParticleShape>('react');
   const [isPointerDown, setIsPointerDown] = useState(false);
 
   useLayoutEffect(() => {
@@ -41,7 +41,7 @@ const Hero = () => {
     const root = document.documentElement;
     const style = getComputedStyle(root);
     setAccentColor(style.getPropertyValue('--accent-from').trim() || '#7c3aed');
-  }, [theme, mode]);
+  }, [theme]);
 
   useLayoutEffect(() => {
     const updateCenters = () => {
@@ -90,7 +90,7 @@ const Hero = () => {
       onPointerLeave={() => setIsPointerDown(false)}
     >
       <ParticleField
-        accentColor={particleShape === 'senai' ? '#1d4ed8' : accentColor}
+        accentColor={accentColor}
         isAttracting={isPointerDown}
         mouseNdc={mouseNdc}
         shape={particleShape}
@@ -156,7 +156,7 @@ const Hero = () => {
         </motion.div>
 
         <p className="text-xs text-[var(--text-secondary)] mt-4">
-          Escolha uma forma abaixo e clique e segure na área das partículas para elas formarem a figura.
+          Clique e segure nas partículas para elas formarem o átomo do React.
         </p>
 
         <motion.div
@@ -167,69 +167,75 @@ const Hero = () => {
           className="mt-10 flex flex-wrap gap-4 justify-center"
         >
           {FLOATING_CARDS.map((card, i) => {
-            const isSelected = particleShape === card.shape;
+            const iconColor = 'var(--text-primary)';
+            const off = cardOffsets[i] ?? { x: 0, y: 0 };
             return (
-              <motion.button
+              <div
                 key={card.id}
-                type="button"
-                className="relative w-24 h-24 rounded-2xl border-2 px-3 py-3 cursor-pointer select-none text-center flex flex-col items-center justify-center gap-2"
+                className="relative"
                 style={{
-                  background: 'var(--glass-bg)',
-                  backdropFilter: 'blur(16px)',
-                  boxShadow: isSelected ? '0 0 24px var(--glow)' : '0 0 20px var(--glow)',
-                  borderColor: isSelected ? 'var(--accent-from)' : 'var(--glass-border)',
-                  transform: `translate(${cardOffsets[i]?.x ?? 0}px, ${cardOffsets[i]?.y ?? 0}px)`,
-                  transition: 'transform 0.2s ease-out, border-color 0.2s, box-shadow 0.2s',
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setParticleShape(card.shape);
-                  setClickedCard(clickedCard === card.id ? null : card.id);
+                  transform: `translate(${off.x}px, ${off.y}px)`,
+                  transition: 'transform 0.2s ease-out',
                 }}
               >
-                <div className="w-8 h-8 flex items-center justify-center text-[var(--text-primary)]">
-                  {card.shape === 'react' && <FaReact className="w-7 h-7" />}
-                  {card.shape === 'python' && <FaPython className="w-7 h-7" />}
-                  {card.shape === 'senai' && (
-                    <img
-                      src="/senai-165.png"
-                      alt="SENAI"
-                      className="w-8 h-8 object-contain"
-                    />
-                  )}
-                </div>
-                <span className="text-[10px] font-semibold text-[var(--text-primary)] leading-tight block">
-                  {card.title}
-                </span>
-              <AnimatePresence>
-                {clickedCard === card.id && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-20 w-56 px-3 py-2 rounded-xl text-left text-xs border shadow-lg relative"
-                    style={{
-                      background: 'var(--glass-bg)',
-                      borderColor: 'var(--glass-border)',
-                      color: 'var(--text-primary)',
-                      boxShadow: '0 0 24px var(--glow)',
-                      backdropFilter: 'blur(12px)',
-                    }}
+                {/* card em si — sem overflow-hidden, tamanho fixo */}
+                <motion.button
+                  type="button"
+                  animate={{ y: [0, -12, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
+                  className="w-20 h-20 rounded-2xl border-2 cursor-pointer select-none flex flex-col items-center justify-center gap-1"
+                  style={{
+                    background: 'var(--glass-bg)',
+                    backdropFilter: 'blur(16px)',
+                    boxShadow: '0 0 20px var(--glow)',
+                    borderColor: 'var(--glass-border)',
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setClickedCard(clickedCard === card.id ? null : card.id);
+                  }}
+                >
+                  <FaReact
+                    style={{ color: iconColor, width: '2rem', height: '2rem' }}
+                  />
+                  <span
+                    className="text-[10px] font-semibold leading-tight"
+                    style={{ color: iconColor }}
                   >
-                    <span
-                      className="absolute left-1/2 -translate-x-1/2 -top-2 w-0 h-0"
+                    {card.title}
+                  </span>
+                </motion.button>
+
+                {/* balão fora do botão, não sofre clipping */}
+                <AnimatePresence>
+                  {clickedCard === card.id && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-20 w-56 px-3 py-2 rounded-xl text-left text-xs border"
                       style={{
-                        borderLeft: '6px solid transparent',
-                        borderRight: '6px solid transparent',
-                        borderBottom: '8px solid var(--glass-bg)',
+                        background: 'var(--glass-bg)',
+                        borderColor: 'var(--glass-border)',
+                        color: 'var(--text-primary)',
+                        boxShadow: '0 0 24px var(--glow)',
+                        backdropFilter: 'blur(12px)',
                       }}
-                    />
-                    <p className="font-semibold text-[var(--accent-from)]">{card.title}</p>
-                    <p className="mt-1 text-[var(--text-secondary)]">{card.description}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+                    >
+                      <span
+                        className="absolute left-1/2 -translate-x-1/2 -top-2 w-0 h-0"
+                        style={{
+                          borderLeft: '6px solid transparent',
+                          borderRight: '6px solid transparent',
+                          borderBottom: '8px solid var(--glass-bg)',
+                        }}
+                      />
+                      <p className="font-semibold text-[var(--accent-from)]">{card.title}</p>
+                      <p className="mt-1 text-[var(--text-secondary)]">{card.description}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             );
           })}
         </motion.div>

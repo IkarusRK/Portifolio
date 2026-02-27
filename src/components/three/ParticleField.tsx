@@ -2,7 +2,7 @@ import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export type ParticleShapeType = 'react' | 'python' | 'senai';
+export type ParticleShapeType = 'react';
 
 const COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 800 : 2000;
 const PULL_STRENGTH = 0.18;
@@ -61,78 +61,13 @@ function getReactAtomTarget(
   };
 }
 
-function getPythonTarget(
-  i: number,
-  ax: number,
-  ay: number
-): { x: number; y: number; z: number } {
-  const role = i % 4;
-  const t = (i / COUNT) * Math.PI * 2;
-
-  const baseX = Math.sin(t) * 4.5;
-  const baseY = Math.sin(t * 2) * 2.3;
-
-  const dxdt = Math.cos(t) * 4.5;
-  const dydt = Math.cos(2 * t) * 4.6;
-  const len = Math.sqrt(dxdt * dxdt + dydt * dydt) || 1;
-  const nx = -dydt / len;
-  const ny = dxdt / len;
-
-  let offset = 0;
-  if (role === 1) offset = 0.4;
-  else if (role === 2) offset = -0.4;
-  else if (role === 3) offset = 0.8;
-
-  const x = ax + baseX + nx * offset;
-  const y = ay + baseY + ny * offset;
-
-  return { x, y, z: 0 };
-}
-
-const SENAI_LETTERS = [
-  [' XXX ', 'X   X', 'X    ', ' XXX ', '   X ', ' XXX '],
-  ['XXXXX', 'X    ', 'XXX  ', 'X    ', 'X    ', 'XXXXX'],
-  ['X   X', 'XX  X', 'X X X', 'X  XX', 'X   X', 'X   X'],
-  [' XXX ', 'X   X', 'XXXXX', 'X   X', 'X   X', 'X   X'],
-  ['  X  ', '  X  ', '  X  ', '  X  ', '  X  ', '  X  '],
-];
-
-const SENAI_POINTS: { x: number; y: number }[] = [];
-(function initSenaiPoints() {
-  const startCols = [0, 6, 12, 18, 24];
-  for (let row = 0; row < 6; row++) {
-    for (let L = 0; L < 5; L++) {
-      const line = SENAI_LETTERS[L][row];
-      for (let c = 0; c < line.length; c++) {
-        if (line[c] === 'X') {
-          const col = startCols[L] + c;
-          const nx = (col - 14) / 14;
-          const ny = (2.5 - row) / 2.5;
-          SENAI_POINTS.push({ x: nx * 5.5, y: ny * 2.2 });
-        }
-      }
-    }
-  }
-})();
-
-function getSenaiTarget(
-  i: number,
-  ax: number,
-  ay: number
-): { x: number; y: number; z: number } {
-  const pt = SENAI_POINTS[i % SENAI_POINTS.length];
-  return { x: ax + pt.x, y: ay + pt.y, z: 0 };
-}
-
 function getShapeTarget(
-  shape: ParticleShapeType,
+  _shape: ParticleShapeType,
   i: number,
   ax: number,
   ay: number
 ): { x: number; y: number; z: number } {
-  if (shape === 'react') return getReactAtomTarget(i, ax, ay);
-  if (shape === 'python') return getPythonTarget(i, ax, ay);
-  return getSenaiTarget(i, ax, ay);
+  return getReactAtomTarget(i, ax, ay);
 }
 
 interface ParticlesProps {
@@ -174,7 +109,7 @@ const Particles = ({ color, isAttracting, mouseNdc, shape }: ParticlesProps) => 
     const ay = mouseNdc.y * MOUSE_SCALE;
     const az = 0;
 
-    const pullRadius = shape === 'senai' ? 8 : ELLIPSE_A * 2.5;
+    const pullRadius = ELLIPSE_A * 2.5;
 
     for (let i = 0; i < COUNT; i++) {
       const i3 = i * 3;
@@ -211,7 +146,6 @@ const Particles = ({ color, isAttracting, mouseNdc, shape }: ParticlesProps) => 
       pos[i3 + 2] = pz;
     }
     ref.current.geometry.attributes.position.needsUpdate = true;
-    if (!isAttracting) ref.current.rotation.y = t * 0.05;
   });
 
   useEffect(() => {
