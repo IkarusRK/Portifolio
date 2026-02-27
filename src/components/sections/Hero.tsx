@@ -23,6 +23,7 @@ const Hero = () => {
   const [clickedCard, setClickedCard] = useState<number | null>(null);
   const [particleShape] = useState<ParticleShape>('react');
   const [isPointerDown, setIsPointerDown] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
 
   useLayoutEffect(() => {
     const update = () => {
@@ -41,6 +42,19 @@ const Hero = () => {
   useEffect(() => {
     setAccentColor(THEME_PALETTES[theme].from);
   }, [theme]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const seen = window.localStorage.getItem('portfolio-hero-guide');
+    if (!seen) setShowGuide(true);
+  }, []);
+
+  const closeGuide = () => {
+    setShowGuide(false);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('portfolio-hero-guide', '1');
+    }
+  };
 
   useLayoutEffect(() => {
     const updateCenters = () => {
@@ -82,9 +96,13 @@ const Hero = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-20"
       style={{
         background: 'var(--bg-primary)',
-        backgroundImage: 'radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-secondary) 0%, transparent 50%)',
+        backgroundImage:
+          'radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-secondary) 0%, transparent 50%)',
       }}
-      onPointerDown={() => setIsPointerDown(true)}
+      onPointerDown={() => {
+        setIsPointerDown(true);
+        if (showGuide) closeGuide();
+      }}
       onPointerUp={() => setIsPointerDown(false)}
       onPointerLeave={() => setIsPointerDown(false)}
     >
@@ -94,6 +112,52 @@ const Hero = () => {
         mouseNdc={mouseNdc}
         shape={particleShape}
       />
+      <AnimatePresence>
+        {showGuide && (
+          <motion.div
+            className="absolute inset-0 z-20 flex items-center justify-center px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeGuide}
+          >
+            <div className="absolute inset-0 bg-black/60" />
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className="relative z-10 max-w-md w-full rounded-2xl p-5 border"
+              style={{
+                background: 'var(--glass-bg)',
+                borderColor: 'var(--glass-border)',
+                boxShadow: '0 0 30px var(--glow)',
+                backdropFilter: 'blur(18px)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="text-sm font-semibold text-[var(--text-primary)] mb-2">
+                Dica rápida
+              </p>
+              <p className="text-sm text-[var(--text-secondary)] mb-4">
+                Clique e segure nas partículas do fundo para ver uma surpresa acontecendo na tela.
+              </p>
+              <button
+                type="button"
+                className="mt-1 px-4 py-2 rounded-xl text-sm font-semibold text-white"
+                style={{
+                  background:
+                    'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
+                  boxShadow: '0 0 20px var(--glow)',
+                }}
+                onClick={closeGuide}
+              >
+                Entendi
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
