@@ -63,7 +63,8 @@ body {
   --accent-to: #2563eb;
   --text-primary: #1e1b4b;
   --text-secondary: #4b5563;
-  --glass-bg: rgba(255, 255, 255, 0.8);
+  /* deixamos o glass um pouco mais roxo para não sumir no branco */
+  --glass-bg: rgba(226, 232, 255, 0.9);
   --glass-border: rgba(148, 163, 184, 0.5);
   --glow: rgba(124, 58, 237, 0.25);
 }
@@ -145,27 +146,27 @@ body {
 
 /* Tema 5: Rose Gold */
 [data-theme='rosegold'][data-mode='dark'] {
-  --bg-primary: #120a0a;
-  --bg-secondary: #1e0f10;
-  --accent-from: #f43f5e;
-  --accent-to: #f59e0b;
-  --text-primary: #ffe4e6;
-  --text-secondary: #fed7aa;
-  --glass-bg: rgba(127, 29, 29, 0.6);
-  --glass-border: rgba(248, 113, 113, 0.6);
-  --glow: rgba(244, 63, 94, 0.45);
+  --bg-primary: #130013;
+  --bg-secondary: #1f0216;
+  --accent-from: #ec4899;
+  --accent-to: #f9a8d4;
+  --text-primary: #ffe4f1;
+  --text-secondary: #f9a8d4;
+  --glass-bg: rgba(131, 24, 67, 0.6);
+  --glass-border: rgba(244, 114, 182, 0.6);
+  --glow: rgba(236, 72, 153, 0.5);
 }
 
 [data-theme='rosegold'][data-mode='light'] {
   --bg-primary: #fff1f2;
   --bg-secondary: #ffe4e6;
-  --accent-from: #e11d48;
-  --accent-to: #d97706;
-  --text-primary: #4c0519;
-  --text-secondary: #9f1239;
-  --glass-bg: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(244, 114, 182, 0.45);
-  --glow: rgba(244, 114, 182, 0.45);
+  --accent-from: #ec4899;
+  --accent-to: #fb7185;
+  --text-primary: #881337;
+  --text-secondary: #be123c;
+  --glass-bg: rgba(255, 228, 230, 0.95);
+  --glass-border: rgba(244, 114, 182, 0.6);
+  --glow: rgba(244, 114, 182, 0.55);
 }
 
 /* Utilitários globais */

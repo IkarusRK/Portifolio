@@ -7,13 +7,14 @@ import { useCursorPosition } from '../../hooks/useCursorPosition';
 import { GradientText } from '../ui/GradientText';
 import { ParticleField } from '../three/ParticleField';
 import { FLOATING_CARDS } from '../../data/floatingCards';
+import { THEME_PALETTES } from '../../data/themes';
 
 const FLEE_RADIUS = 100;
 const FLEE_STRENGTH = 36;
 
 const Hero = () => {
   const { theme } = useTheme();
-  const [accentColor, setAccentColor] = useState('#7c3aed');
+  const [accentColor, setAccentColor] = useState(THEME_PALETTES[theme].from);
   const mousePos = useCursorPosition(0.08);
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -38,9 +39,7 @@ const Hero = () => {
   }), [mousePos.x, mousePos.y, sectionRect.left, sectionRect.top, sectionRect.width, sectionRect.height]);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const style = getComputedStyle(root);
-    setAccentColor(style.getPropertyValue('--accent-from').trim() || '#7c3aed');
+    setAccentColor(THEME_PALETTES[theme].from);
   }, [theme]);
 
   useLayoutEffect(() => {
@@ -185,10 +184,10 @@ const Hero = () => {
                   transition={{ duration: 3, repeat: Infinity, delay: i * 0.3 }}
                   className="w-20 h-20 rounded-2xl border-2 cursor-pointer select-none flex flex-col items-center justify-center gap-1"
                   style={{
-                    background: 'var(--glass-bg)',
+                    backgroundImage: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
                     backdropFilter: 'blur(16px)',
                     boxShadow: '0 0 20px var(--glow)',
-                    borderColor: 'var(--glass-border)',
+                    borderColor: 'transparent',
                   }}
                   onClick={(e) => {
                     e.preventDefault();
