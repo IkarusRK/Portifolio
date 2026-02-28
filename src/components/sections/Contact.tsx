@@ -3,7 +3,7 @@ import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 
 const LINKS = [
   { label: 'GitHub', href: 'https://github.com/ikarusrk', icon: 'github' },
-  { label: 'Email', href: 'mailto:contato@danielreis.dev', icon: 'mail' },
+  { label: 'Email', href: 'mailto:Danielreismax@gmail.com', icon: 'mail' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/daniel-reis-6ba189317/', icon: 'linkedin' },
 ];
 
