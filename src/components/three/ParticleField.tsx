@@ -2,7 +2,7 @@ import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export type ParticleShapeType = 'react';
+export type ParticleShapeType = 'react' | 'java' | 'code';
 
 const COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 800 : 2000;
 const PULL_STRENGTH = 0.18;
@@ -61,12 +61,112 @@ function getReactAtomTarget(
   };
 }
 
-function getShapeTarget(
-  _shape: ParticleShapeType,
+function getJavaTarget(
   i: number,
   ax: number,
   ay: number
 ): { x: number; y: number; z: number } {
+  let x = 0;
+  let y = 0;
+
+  if (i < COUNT * 0.25) {
+    // Corpo superior / borda
+    const t = (i / (COUNT * 0.25)) * Math.PI * 2;
+    x = 2.4 * Math.cos(t);
+    y = 1.0 + 0.4 * Math.sin(t);
+  } else if (i < COUNT * 0.4) {
+    // Base da xícara
+    const idx = i - COUNT * 0.25;
+    const t = idx / (COUNT * 0.15);
+    x = -1.6 + 3.2 * t;
+    y = -2.0;
+  } else if (i < COUNT * 0.55) {
+    // Lateral esquerda
+    const idx = i - COUNT * 0.4;
+    const t = idx / (COUNT * 0.15);
+    x = -2.4 + 0.8 * t;
+    y = 1.0 - 3.0 * t;
+  } else if (i < COUNT * 0.7) {
+    // Lateral direita
+    const idx = i - COUNT * 0.55;
+    const t = idx / (COUNT * 0.15);
+    x = 2.4 - 0.8 * t;
+    y = 1.0 - 3.0 * t;
+  } else if (i < COUNT * 0.82) {
+    // Asa/Alça (lado direito)
+    const idx = i - COUNT * 0.7;
+    const t = idx / (COUNT * 0.12);
+    const theta = -Math.PI / 2 + t * Math.PI;
+    x = 2.2 + 1.2 * Math.cos(theta);
+    y = -0.5 + 1.1 * Math.sin(theta);
+  } else {
+    // Fumaça subindo (3 ondas)
+    const idx = i - COUNT * 0.82;
+    const t = idx / (COUNT * 0.18);
+    const path = i % 3;
+    y = 1.6 + 2.5 * t;
+    const wave = 0.3 * Math.sin(t * Math.PI * 4 + (path === 1 ? Math.PI : 0));
+    if (path === 0) x = -1.0 + wave;
+    else if (path === 1) x = 0.0 + wave;
+    else x = 1.0 + wave;
+  }
+
+  return { x: ax + x, y: ay + y, z: 0 };
+}
+
+function getCodeTarget(
+  i: number,
+  ax: number,
+  ay: number
+): { x: number; y: number; z: number } {
+  let x = 0;
+  let y = 0;
+
+  if (i < COUNT * 0.35) {
+    // Tag esquerda <
+    const idx = i;
+    const mid = COUNT * 0.175;
+    if (idx < mid) {
+      const t = idx / mid;
+      x = -1.2 - 1.8 * t;
+      y = 1.8 - 1.8 * t;
+    } else {
+      const t = (idx - mid) / mid;
+      x = -3.0 + 1.8 * t;
+      y = -1.8 * t;
+    }
+  } else if (i < COUNT * 0.7) {
+    // Tag direita >
+    const idx = i - COUNT * 0.35;
+    const mid = COUNT * 0.175;
+    if (idx < mid) {
+      const t = idx / mid;
+      x = 1.2 + 1.8 * t;
+      y = 1.8 - 1.8 * t;
+    } else {
+      const t = (idx - mid) / mid;
+      x = 3.0 - 1.8 * t;
+      y = -1.8 * t;
+    }
+  } else {
+    // Barra inclinada /
+    const idx = i - COUNT * 0.7;
+    const t = idx / (COUNT * 0.3);
+    x = 0.6 - 1.2 * t;
+    y = 2.4 - 4.8 * t;
+  }
+
+  return { x: ax + x, y: ay + y, z: 0 };
+}
+
+function getShapeTarget(
+  shape: ParticleShapeType,
+  i: number,
+  ax: number,
+  ay: number
+): { x: number; y: number; z: number } {
+  if (shape === 'java') return getJavaTarget(i, ax, ay);
+  if (shape === 'code') return getCodeTarget(i, ax, ay);
   return getReactAtomTarget(i, ax, ay);
 }
 
@@ -81,27 +181,41 @@ const Particles = ({ color, isAttracting, mouseNdc, shape }: ParticlesProps) => 
   const ref = useRef<THREE.Points>(null);
   const [mounted, setMounted] = useState(false);
   const target = useRef({ x: 0, y: 0 });
+  const opacityRef = useRef(0);
 
-  const { geometry, speeds } = useMemo(() => {
+  const { geometry, speeds, initialPositions } = useMemo(() => {
     const pos = new Float32Array(COUNT * 3);
+    const initPos = new Float32Array(COUNT * 3);
     const spd = new Float32Array(COUNT * 3);
     for (let i = 0; i < COUNT; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 40;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 40;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 40;
+      const rx = (Math.random() - 0.5) * 40;
+      const ry = (Math.random() - 0.5) * 40;
+      const rz = (Math.random() - 0.5) * 40;
+      pos[i * 3] = rx;
+      pos[i * 3 + 1] = ry;
+      pos[i * 3 + 2] = rz;
+      initPos[i * 3] = rx;
+      initPos[i * 3 + 1] = ry;
+      initPos[i * 3 + 2] = rz;
       spd[i * 3] = (Math.random() - 0.5) * 0.002;
       spd[i * 3 + 1] = (Math.random() - 0.5) * 0.002;
       spd[i * 3 + 2] = (Math.random() - 0.5) * 0.002;
     }
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    return { geometry: geo, speeds: spd };
+    return { geometry: geo, speeds: spd, initialPositions: initPos };
   }, []);
 
   useEffect(() => setMounted(true), []);
 
   useFrame((state) => {
     if (!ref.current) return;
+    
+    // Rotação suave baseada na rolagem da página (paralaxe 3D)
+    const scrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+    ref.current.rotation.y = scrollY * 0.0003;
+    ref.current.rotation.x = scrollY * 0.00015;
+
     const t = state.clock.elapsedTime * 0.2;
     const pos = ref.current.geometry.attributes.position.array as Float32Array;
 
@@ -133,17 +247,36 @@ const Particles = ({ color, isAttracting, mouseNdc, shape }: ParticlesProps) => 
           pz += (az - pz) * PULL_STRENGTH * 0.3;
         }
       } else {
+        const ipx = initialPositions[i3];
+        const ipy = initialPositions[i3 + 1];
+        const ipz = initialPositions[i3 + 2];
         const sx = speeds[i3];
         const sy = speeds[i3 + 1];
-        const sz = speeds[i3 + 2];
-        px += Math.sin(t + i * 0.01) * 0.02 + sx + target.current.x * 0.0002;
-        py += Math.cos(t * 0.7 + i * 0.01) * 0.02 + sy + target.current.y * 0.0002;
-        pz += sz;
+        
+        // Efeito de flutuação contínua e ondulada em 3D para nunca ficarem estáticas
+        const floatX = Math.sin(t * 1.5 + i * 0.05) * 3.0 + sx * 100;
+        const floatY = Math.cos(t * 1.2 + i * 0.05) * 3.0 + sy * 100;
+        const floatZ = Math.sin(t * 0.8 + i * 0.08) * 3.0;
+
+        // Paralaxe sutil com a posição do mouse na tela
+        const parallaxX = target.current.x * 1.5;
+        const parallaxY = target.current.y * 1.5;
+
+        // Retorno suave (lerp) para a posição original combinada ao movimento contínuo
+        px += (ipx + floatX + parallaxX - px) * 0.03;
+        py += (ipy + floatY + parallaxY - py) * 0.03;
+        pz += (ipz + floatZ - pz) * 0.03;
       }
 
       pos[i3] = px;
       pos[i3 + 1] = py;
       pos[i3 + 2] = pz;
+    }
+    if (opacityRef.current < 0.6) {
+      opacityRef.current += 0.015;
+    }
+    if (ref.current && ref.current.material) {
+      (ref.current.material as THREE.PointsMaterial).opacity = opacityRef.current;
     }
     ref.current.geometry.attributes.position.needsUpdate = true;
   });
@@ -167,7 +300,7 @@ const Particles = ({ color, isAttracting, mouseNdc, shape }: ParticlesProps) => 
         sizeAttenuation
         depthWrite={false}
         color={color}
-        opacity={0.6}
+        opacity={0}
       />
     </points>
   );

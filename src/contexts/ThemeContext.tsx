@@ -45,8 +45,25 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem(STORAGE_MODE, mode);
   }, [theme, mode]);
 
-  const setTheme = useCallback((t: ThemeId) => setThemeState(t), []);
-  const toggleMode = useCallback(() => setModeState((m) => (m === 'dark' ? 'light' : 'dark')), []);
+  const setTheme = useCallback((t: ThemeId) => {
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      document.startViewTransition(() => {
+        setThemeState(t);
+      });
+    } else {
+      setThemeState(t);
+    }
+  }, []);
+
+  const toggleMode = useCallback(() => {
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      document.startViewTransition(() => {
+        setModeState((m) => (m === 'dark' ? 'light' : 'dark'));
+      });
+    } else {
+      setModeState((m) => (m === 'dark' ? 'light' : 'dark'));
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, mode, setTheme, toggleMode }}>

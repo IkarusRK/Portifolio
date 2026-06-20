@@ -11,6 +11,8 @@ export interface Project {
   link: string;
   status: 'Live' | 'GitHub';
   previewUrl?: string;
+  githubUrl?: string;
+  creditsUrl?: string;
   icon?: 'clock' | 'terminal' | 'calculator' | 'lock' | 'users' | 'gamepad' | 'shield' | 'chart' | 'book';
 }
 

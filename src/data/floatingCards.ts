@@ -1,4 +1,4 @@
-export type ParticleShape = 'react';
+export type ParticleShape = 'react' | 'java' | 'code';
 
 export interface FloatingCardInfo {
   id: number;

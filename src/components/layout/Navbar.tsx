@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { useScrollDirection } from '../../hooks/useScrollDirection';
 import ThemePicker from './ThemePicker';
 
@@ -15,8 +15,40 @@ const LINKS = [
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const direction = useScrollDirection();
   const visible = direction !== 'down';
+
+  // Scroll Progress Bar calculation
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 25, restDelta: 0.001 });
+
+  // Rastreia a seção visível na tela
+  useEffect(() => {
+    const observers = LINKS.map((link) => {
+      const el = document.getElementById(link.id);
+      if (!el) return null;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveSection(link.id);
+            }
+          });
+        },
+        { threshold: 0.25, rootMargin: '-20% 0px -55% 0px' }
+      );
+      observer.observe(el);
+      return { observer, el };
+    });
+
+    return () => {
+      observers.forEach((obs) => {
+        if (obs) obs.observer.unobserve(obs.el);
+      });
+    };
+  }, []);
 
   return (
     <motion.header
@@ -29,7 +61,7 @@ const Navbar = () => {
         backdropFilter: 'blur(16px)',
       }}
     >
-      <nav className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <nav className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between relative">
         <a
           href="#home"
           className="font-bold text-lg bg-clip-text text-transparent"
@@ -40,20 +72,37 @@ const Navbar = () => {
           IkarusRK
         </a>
 
+        {/* Links Desktop */}
         <div className="hidden md:flex items-center gap-6">
-          {LINKS.map((link) => (
-            <a
-              key={link.id}
-              href={link.href}
-              className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors relative after:absolute after:left-0 after:bottom-[-2px] after:h-0.5 after:w-0 after:bg-gradient-to-r after:from-[var(--accent-from)] after:to-[var(--accent-to)] hover:after:w-full after:transition-all"
-            >
-              {link.label}
-            </a>
-          ))}
+          {LINKS.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a
+                key={link.id}
+                href={link.href}
+                className={`text-sm font-semibold transition-colors relative py-1 px-1 select-none ${
+                  isActive ? 'text-[var(--accent-from)]' : 'text-[var(--text-secondary)] hover:text-[var(--accent-from)]'
+                }`}
+              >
+                {link.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeNavLinkUnderline"
+                    className="absolute left-0 right-0 bottom-[-2px] h-[2px] rounded-full"
+                    style={{
+                      background: 'linear-gradient(90deg, var(--accent-from), var(--accent-to))',
+                    }}
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </a>
+            );
+          })}
+          
           <ThemePicker isOpen={themeOpen} onClose={() => setThemeOpen(false)}>
             <button
               onClick={() => setThemeOpen((o) => !o)}
-              className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg)]"
+              className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--accent-from)] hover:bg-[var(--glass-bg)] cursor-pointer"
               aria-label="Abrir seletor de tema"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -64,6 +113,7 @@ const Navbar = () => {
           </ThemePicker>
         </div>
 
+        {/* Links Mobile Toggle */}
         <div className="flex items-center gap-2 md:hidden">
           <ThemePicker isOpen={themeOpen} onClose={() => setThemeOpen(false)}>
             <button
@@ -79,7 +129,7 @@ const Navbar = () => {
           </ThemePicker>
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="p-2 rounded-lg text-[var(--text-primary)]"
+            className="p-2 rounded-lg text-[var(--text-primary)] cursor-pointer"
             aria-label="Menu"
           >
             <AnimatePresence mode="wait">
@@ -97,6 +147,7 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Menu Mobile */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -107,20 +158,34 @@ const Navbar = () => {
             style={{ background: 'var(--glass-bg)' }}
           >
             <div className="px-4 py-3 flex flex-col gap-2">
-              {LINKS.map((link) => (
-                <a
-                  key={link.id}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="py-2 text-[var(--text-primary)] font-medium"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {LINKS.map((link) => {
+                const isActive = activeSection === link.id;
+                return (
+                  <a
+                    key={link.id}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={`py-2 font-semibold transition-colors ${
+                      isActive ? 'text-[var(--accent-from)]' : 'text-[var(--text-primary)]'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Reading Progress Bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+        style={{
+          scaleX,
+          background: 'linear-gradient(90deg, var(--accent-from), var(--accent-to))',
+        }}
+      />
     </motion.header>
   );
 };

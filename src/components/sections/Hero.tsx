@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaReact } from 'react-icons/fa';
+import { LuAtom, LuCoffee, LuCode, LuMousePointerClick } from 'react-icons/lu';
 import type { ParticleShape } from '../../data/floatingCards';
 import { useTheme } from '../../hooks/useTheme';
 import { useCursorPosition } from '../../hooks/useCursorPosition';
@@ -21,9 +22,10 @@ const Hero = () => {
   const [sectionRect, setSectionRect] = useState({ left: 0, top: 0, width: 1, height: 1 });
   const [cardCenters, setCardCenters] = useState<{ x: number; y: number }[]>([]);
   const [clickedCard, setClickedCard] = useState<number | null>(null);
-  const [particleShape] = useState<ParticleShape>('react');
+  const [particleShape, setParticleShape] = useState<ParticleShape>('react');
   const [isPointerDown, setIsPointerDown] = useState(false);
-  const [showGuide, setShowGuide] = useState(false);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [isIntroActive, setIsIntroActive] = useState(true);
 
   useLayoutEffect(() => {
     const update = () => {
@@ -44,17 +46,25 @@ const Hero = () => {
   }, [theme]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const seen = window.localStorage.getItem('portfolio-hero-guide');
-    if (!seen) setShowGuide(true);
+    const timer = setTimeout(() => {
+      setIsIntroActive(false);
+    }, 450);
+    return () => clearTimeout(timer);
   }, []);
 
-  const closeGuide = () => {
-    setShowGuide(false);
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem('portfolio-hero-guide', '1');
-    }
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setShowScrollIndicator(false);
+      } else {
+        setShowScrollIndicator(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
 
   useLayoutEffect(() => {
     const updateCenters = () => {
@@ -99,10 +109,7 @@ const Hero = () => {
         backgroundImage:
           'radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-secondary) 0%, transparent 50%)',
       }}
-      onPointerDown={() => {
-        setIsPointerDown(true);
-        if (showGuide) closeGuide();
-      }}
+      onPointerDown={() => setIsPointerDown(true)}
       onPointerUp={() => setIsPointerDown(false)}
       onPointerLeave={() => setIsPointerDown(false)}
     >
@@ -112,52 +119,20 @@ const Hero = () => {
         mouseNdc={mouseNdc}
         shape={particleShape}
       />
+
       <AnimatePresence>
-        {showGuide && (
+        {isIntroActive && (
           <motion.div
-            className="absolute inset-0 z-20 flex items-center justify-center px-4"
-            initial={{ opacity: 0 }}
+            key="intro-overlay"
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={closeGuide}
-          >
-            <div className="absolute inset-0 bg-black/60" />
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className="relative z-10 max-w-md w-full rounded-2xl p-5 border"
-              style={{
-                background: 'var(--glass-bg)',
-                borderColor: 'var(--glass-border)',
-                boxShadow: '0 0 30px var(--glow)',
-                backdropFilter: 'blur(18px)',
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <p className="text-sm font-semibold text-[var(--text-primary)] mb-2">
-                Dica rápida
-              </p>
-              <p className="text-sm text-[var(--text-secondary)] mb-4">
-                Clique e segure nas partículas do fundo para ver uma surpresa acontecendo na tela.
-              </p>
-              <button
-                type="button"
-                className="mt-1 px-4 py-2 rounded-xl text-sm font-semibold text-white"
-                style={{
-                  background:
-                    'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
-                  boxShadow: '0 0 20px var(--glow)',
-                }}
-                onClick={closeGuide}
-              >
-                Entendi
-              </button>
-            </motion.div>
-          </motion.div>
+            transition={{ duration: 1.0, ease: 'easeInOut' }}
+            className="fixed inset-0 z-[100] bg-black pointer-events-none"
+          />
         )}
       </AnimatePresence>
+
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -218,9 +193,48 @@ const Hero = () => {
           </a>
         </motion.div>
 
-        <p className="text-xs text-[var(--text-secondary)] mt-4">
-          Clique e segure nas partículas para elas formarem o átomo do React.
-        </p>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-6 inline-flex flex-col items-center gap-3 px-4 py-2.5 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-lg"
+        >
+          <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 select-none">
+            <LuMousePointerClick className="w-3.5 h-3.5 text-[var(--accent-from)]" />
+            Clique e segure no fundo para ver a forma se formar:
+          </span>
+          <div className="flex gap-2">
+            {[
+              { id: 'react', label: 'React', icon: LuAtom },
+              { id: 'java', label: 'Java', icon: LuCoffee },
+              { id: 'code', label: 'Código', icon: LuCode }
+            ].map((s) => {
+              const Icon = s.icon;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setParticleShape(s.id as ParticleShape)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer select-none flex items-center gap-1.5 ${
+                    particleShape === s.id
+                      ? 'text-white shadow-md'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--glass-border)] hover:bg-[var(--glass-bg)]'
+                  }`}
+                  style={{
+                    background: particleShape === s.id
+                      ? 'linear-gradient(135deg, var(--accent-from), var(--accent-to))'
+                      : 'transparent',
+                    borderColor: particleShape === s.id ? 'transparent' : 'var(--glass-border)',
+                    boxShadow: particleShape === s.id ? '0 0 15px var(--glow)' : 'none',
+                  }}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
 
         <motion.div
           ref={containerRef}
@@ -303,6 +317,29 @@ const Hero = () => {
           })}
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {showScrollIndicator && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.3 }}
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none z-10"
+          >
+            <div className="w-5 h-8 rounded-full border-2 border-[var(--text-secondary)] opacity-50 flex justify-center p-1">
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="w-1.5 h-1.5 bg-[var(--accent-from)] rounded-full"
+              />
+            </div>
+            <span className="text-[9px] uppercase tracking-widest text-[var(--text-secondary)] opacity-50 font-bold select-none">
+              Rolar
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
