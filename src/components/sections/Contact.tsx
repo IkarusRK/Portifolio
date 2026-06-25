@@ -4,6 +4,7 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaPaperPlane, FaCheckCircle, FaSpinne
 
 const LINKS = [
   { label: 'GitHub', href: 'https://github.com/ikarusrk', icon: 'github' },
+  { label: 'Email', href: 'mailto:Danielreismax@gmail.com', icon: 'mail' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/daniel-reis-6ba189317/', icon: 'linkedin' },
   { label: 'Email', href: 'mailto:Danielreismax@gmail.com', icon: 'mail' },
 ];
