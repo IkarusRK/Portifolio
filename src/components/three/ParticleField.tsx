@@ -99,6 +99,17 @@ function getJavaTarget(
     const theta = -Math.PI / 2 + t * Math.PI;
     x = 2.2 + 1.2 * Math.cos(theta);
     y = -0.5 + 1.1 * Math.sin(theta);
+    const phi = -0.25; // ângulo em radianos,
+    const cosPhi = Math.cos(phi);
+    const sinPhi = Math.sin(phi);
+
+    const rx = 1.2 * Math.cos(theta);
+    const ry = 1.1 * Math.sin(theta);
+
+    x = 2.02 + rx * cosPhi - ry * sinPhi;
+    y = -0.5 + rx * sinPhi + ry * cosPhi;
+
+
   } else {
     // Fumaça subindo (3 ondas)
     const idx = i - COUNT * 0.82;
@@ -210,7 +221,7 @@ const Particles = ({ color, isAttracting, mouseNdc, shape }: ParticlesProps) => 
 
   useFrame((state) => {
     if (!ref.current) return;
-    
+
     // Rotação suave baseada na rolagem da página (paralaxe 3D)
     const scrollY = typeof window !== 'undefined' ? window.scrollY : 0;
     ref.current.rotation.y = scrollY * 0.0003;
@@ -252,7 +263,7 @@ const Particles = ({ color, isAttracting, mouseNdc, shape }: ParticlesProps) => 
         const ipz = initialPositions[i3 + 2];
         const sx = speeds[i3];
         const sy = speeds[i3 + 1];
-        
+
         // Efeito de flutuação contínua e ondulada em 3D para nunca ficarem estáticas
         const floatX = Math.sin(t * 1.5 + i * 0.05) * 3.0 + sx * 100;
         const floatY = Math.cos(t * 1.2 + i * 0.05) * 3.0 + sy * 100;
