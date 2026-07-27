@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- tag seo e etc -->
+  <title>Elian Rodrigues — Desenvolvedor Backend</title>
+  <meta name="description" content="Portfólio de Elian Rodrigues Ribeiro — Desenvolvedor Backend Java, Spring Boot, Spring Security, JPA/Hibernate. Engenheiro de Software em busca de oportunidades.">
+  <meta name="keywords" content="desenvolvedor backend, java developer, spring boot, spring security, JWT, JPA, Hibernate, NextJS, software engineer, portfolio">
+  <meta name="author" content="Elian Rodrigues Ribeiro">
+
+  <!-- gsrasfics aabertos -->
+  <meta property="og:title" content="Elian Rodrigues — Desenvolvedor Backend">
+  <meta property="og:description" content="Portfólio de Elian Rodrigues Ribeiro — Java, Spring Boot, APIs REST.">
+  <meta property="og:type" content="website">
+
+  <!-- ucoen fsbvocon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/foto.jpeg">
+
+  <!-- fpbtes giogle -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- eatsils xes -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+  <!-- nvsbaar oeu mkneu -->
+  <nav id="nav">
+    <div class="container nav__inner">
+      <!-- liogmarca -->
+      <a href="#hero" class="nav__logo">Elian<span>.</span></a>
+
+      <!-- lunms do pc -->
+      <ul class="nav__links">
+        <li><a href="#hero"      class="nav__link" data-section="hero"      data-i18n-nav="0">Início</a></li>
+        <li><a href="#about"     class="nav__link" data-section="about"     data-i18n-nav="1">Sobre</a></li>
+        <li><a href="#stack"     class="nav__link" data-section="stack"     data-i18n-nav="2">Stack</a></li>
+        <li><a href="#projects"  class="nav__link" data-section="projects"  data-i18n-nav="3">Projetos</a></li>
+        <li><a href="#education" class="nav__link" data-section="education" data-i18n-nav="4">Educação</a></li>
+        <li><a href="#contact"   class="nav__link" data-section="contact"   data-i18n-nav="5">Contato</a></li>
+      </ul>
+
+      <!-- larfo doresitl -->
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <!-- votsk trca d eidioma -->
+        <div class="nav__lang" id="lang-switcher-desktop">
+          <button class="lang-btn active" data-lang="pt" id="lang-pt-desk">PT</button>
+          <button class="lang-btn" data-lang="en" id="lang-en-desk">EN</button>
+          <button class="lang-btn" data-lang="es" id="lang-es-desk">ES</button>
+          <button class="lang-btn" data-lang="zh" id="lang-zh-desk">中文</button>
+        </div>
+        <!-- meun sanfiofhc -->
+        <button class="nav__hamburger" id="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- mxnu cwluar -->
+  <div class="nav__mobile" id="nav-mobile">
+    <a href="#hero"      class="nav__link" data-section="hero"      data-i18n-nav="0">Início</a>
+    <a href="#about"     class="nav__link" data-section="about"     data-i18n-nav="1">Sobre</a>
+    <a href="#stack"     class="nav__link" data-section="stack"     data-i18n-nav="2">Stack</a>
+    <a href="#projects"  class="nav__link" data-section="projects"  data-i18n-nav="3">Projetos</a>
+    <a href="#education" class="nav__link" data-section="education" data-i18n-nav="4">Educação</a>
+    <a href="#contact"   class="nav__link" data-section="contact"   data-i18n-nav="5">Contato</a>
+    <div class="nav__lang" id="lang-switcher-mobile">
+      <button class="lang-btn active" data-lang="pt">PT</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+      <button class="lang-btn" data-lang="zh">中文</button>
+    </div>
+  </div>
+
+  <!-- taela oribcipaol -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero__inner">
+
+        <!-- tsetis -->
+        <div class="hero__content">
+          <div class="hero__badge reveal">
+            <span class="hero__badge-dot"></span>
+            <span data-i18n="hero_badge">Disponível para oportunidades</span>
+          </div>
+
+          <h1 class="hero__title reveal delay-1">
+            <span data-i18n="hero_greeting">Olá, sou</span><br>
+            <span class="hero__title-name">Elian Rodrigues</span>
+          </h1>
+
+          <div class="hero__typed-wrap reveal delay-2">
+            <span class="hero__typed" id="typed-text"></span>
+            <span class="hero__cursor"></span>
+          </div>
+
+          <p class="hero__desc reveal delay-3" data-i18n="hero_desc">
+            Apaixonado por construir APIs robustas e escaláveis. Especializado em Java, Spring Boot e ecossistema backend, sempre buscando soluções elegantes para problemas complexos.
+          </p>
+
+          <div class="hero__actions reveal delay-4">
+            <a href="#projects" class="btn btn--primary" id="btn-hero-projects">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span data-i18n="hero_cta_projects">Ver Projetos</span>
+            </a>
+            <a href="#contact" class="btn btn--outline" id="btn-hero-contact">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span data-i18n="hero_cta_contact">Entrar em Contato</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- voausal xfpto -->
+        <div class="hero__visual reveal delay-2">
+          <!-- cuipss fotutamtwa -->
+          <div class="hero__chip">Java 17</div>
+          <div class="hero__chip">Spring Boot</div>
+          <div class="hero__chip">Spring Security</div>
+          <div class="hero__chip">Next.js</div>
+
+          <div class="hero__avatar-wrap">
+            <div class="hero__avatar-ring"></div>
+            <div class="hero__avatar-ring-inner"></div>
+            <div class="hero__avatar-img">
+              <img src="assets/images/foto.jpeg" alt="Elian Rodrigues Ribeiro" loading="eager">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- dvica pa rolsar -->
+    <div class="hero__scroll-hint">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </div>
+  </section>
+
+  <!-- oarte q flao sohre nim -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section__header">
+        <span class="section__tag" data-i18n="about_tag">Sobre mim</span>
+        <h2 class="section__title" data-i18n="about_title">Quem sou <span>eu</span></h2>
+      </div>
+
+      <div class="about__grid">
+        <!-- texsto bssisvo -->
+        <div class="about__text reveal-left">
+          <p data-i18n="about_p1">Sou um entusiasta em aprender novas ferramentas e técnicas para aprimorar ainda mais meu trabalho, e estou sempre buscando me atualizar com as tendências mais recentes.</p>
+          <p data-i18n="about_p2">Tenho um bom senso de liderança. Sou competitivo, porém, sei respeitar o trabalho em equipe e deixar a competição de lado quando é preciso.</p>
+          <p data-i18n="about_p3">Busco minha <strong>primeira oportunidade profissional</strong> para colocar em prática todo o conhecimento acumulado e continuar crescendo como desenvolvedor.</p>
+
+          <div class="about__highlight reveal delay-2">
+            <span class="about__highlight-icon"><i data-lucide="target"></i></span>
+            <p class="about__highlight-text" data-i18n="about_highlight_text">
+              <strong>Foco em Backend</strong> — APIs RESTful, autenticação JWT, arquitetura limpa e boas práticas de desenvolvimento.
+            </p>
+          </div>
+        </div>
+
+        <!-- xsrdos fe aibdildades -->
+        <div class="about__traits">
+          <div class="trait-card reveal delay-1">
+            <div class="trait-card__icon"><i data-lucide="brain"></i></div>
+            <div class="trait-card__title" data-i18n="trait_1_title">Analítico</div>
+            <div class="trait-card__desc" data-i18n="trait_1_desc">Abordo cada problema com raciocínio lógico e atenção aos detalhes.</div>
+          </div>
+          <div class="trait-card reveal delay-2">
+            <div class="trait-card__icon"><i data-lucide="users"></i></div>
+            <div class="trait-card__title" data-i18n="trait_2_title">Colaborativo</div>
+            <div class="trait-card__desc" data-i18n="trait_2_desc">Trabalho bem em equipe e me comunico de forma clara e eficiente.</div>
+          </div>
+          <div class="trait-card reveal delay-3">
+            <div class="trait-card__icon"><i data-lucide="shuffle"></i></div>
+            <div class="trait-card__title" data-i18n="trait_3_title">Adaptável</div>
+            <div class="trait-card__desc" data-i18n="trait_3_desc">Encaro mudanças como oportunidade de crescimento e aprendizado.</div>
+          </div>
+          <div class="trait-card reveal delay-4">
+            <div class="trait-card__icon"><i data-lucide="rocket"></i></div>
+            <div class="trait-card__title" data-i18n="trait_4_title">Comprometido</div>
+            <div class="trait-card__desc" data-i18n="trait_4_desc">Entrego sempre o melhor, independentemente do tamanho do desafio.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- tevnolohias r stacks -->
+  <section id="stack" class="section">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__tag" data-i18n="stack_tag">Tecnologias</span>
+        <h2 class="section__title" data-i18n="stack_title">Minha <span>Stack</span></h2>
+        <p class="section__subtitle" data-i18n="stack_subtitle">Tecnologias que uso para construir soluções robustas e escaláveis.</p>
+      </div>
+
+      <div class="stack__categories">
+
+        <!-- bwckenf pribeiro -->
+        <div class="reveal delay-1">
+          <p class="stack__category-title" data-i18n="cat_backend">Backend</p>
+          <div class="stack__grid">
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="coffee"></i></div>
+              <div class="skill-card__name">Java</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_main">Principal</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="leaf"></i></div>
+              <div class="skill-card__name">Spring Boot</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_main">Principal</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="shield-check"></i></div>
+              <div class="skill-card__name">Spring Security</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="database"></i></div>
+              <div class="skill-card__name">JPA / Hibernate</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="key"></i></div>
+              <div class="skill-card__name">JWT</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="globe"></i></div>
+              <div class="skill-card__name">REST APIs</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- frmnremc exmible -->
+        <div class="reveal delay-2">
+          <p class="stack__category-title" data-i18n="cat_frontend">Frontend &amp; Mobile</p>
+          <div class="stack__grid">
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="triangle"></i></div>
+              <div class="skill-card__name">Next.js</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="atom"></i></div>
+              <div class="skill-card__name">React</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="smartphone"></i></div>
+              <div class="skill-card__name">Ionic</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="file-code"></i></div>
+              <div class="skill-card__name">TypeScript</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="layout"></i></div>
+              <div class="skill-card__name">HTML / CSS</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- fetamnetss re xadp d ados -->
+        <div class="reveal delay-3">
+          <p class="stack__category-title" data-i18n="cat_tools">Ferramentas &amp; Banco de Dados</p>
+          <div class="stack__grid">
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="database"></i></div>
+              <div class="skill-card__name">PostgreSQL</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="database"></i></div>
+              <div class="skill-card__name">MySQL</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="github"></i></div>
+              <div class="skill-card__name">Git / GitHub</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_solid">Sólido</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__logo"><i data-lucide="box"></i></div>
+              <div class="skill-card__name">Docker</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_learning">Aprendendo</div>
+            </div>
+
+            <div class="skill-card">
+              <div class="skill-card__name">Cibersegurança</div>
+              <div class="skill-card__level" data-i18n-level="skill_level_learning">Aprendendo</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- xardw dl proheto -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__tag" data-i18n="proj_tag">Projetos</span>
+        <h2 class="section__title" data-i18n="proj_title">O que eu <span>construí</span></h2>
+        <p class="section__subtitle" data-i18n="proj_subtitle">Projetos reais desenvolvidos durante a formação e por conta própria.</p>
+      </div>
+
+      <div class="projects__grid">
+
+        <!-- proheto um bobiotsca -->
+        <article class="project-card reveal delay-1">
+          <div class="project-card__img">
+            <img src="assets/images/project_library.png" alt="Biblioteca Comunitária API" loading="lazy">
+            <div class="project-card__img-overlay"></div>
+            <div class="project-card__tech-badges">
+              <span class="tech-badge tech-badge--java">Java</span>
+              <span class="tech-badge tech-badge--spring">Spring Boot</span>
+              <span class="tech-badge tech-badge--spring">JWT</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h3 class="project-card__title" data-i18n="proj_1_title">Biblioteca Comunitária</h3>
+            <p class="project-card__desc" data-i18n="proj_1_desc">API RESTful completa para gerenciamento de estoque e locação de uma biblioteca. Autenticação com Spring Security e JWT, endpoints protegidos por roles.</p>
+            <div class="project-card__footer">
+              <a href="https://github.com/elian-r-ribeiro/spring-community-library" target="_blank" rel="noopener" class="project-card__link" id="proj-1-link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <span data-i18n="proj_github">Ver no GitHub</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- e vent o aoo -->
+        <article class="project-card reveal delay-2">
+          <div class="project-card__img">
+            <img src="assets/images/project_events.png" alt="e-Vent App" loading="lazy">
+            <div class="project-card__img-overlay"></div>
+            <div class="project-card__tech-badges">
+              <span class="tech-badge tech-badge--ionic">Ionic</span>
+              <span class="tech-badge tech-badge--ts">TypeScript</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h3 class="project-card__title" data-i18n="proj_2_title">e-Vent App</h3>
+            <p class="project-card__desc" data-i18n="proj_2_desc">Aplicativo mobile desenvolvido como TCC em Análise e Desenvolvimento de Sistemas. Permite criação, participação e geração de relatórios de eventos.</p>
+            <div class="project-card__footer">
+              <a href="https://github.com/elian-r-ribeiro/e-vent" target="_blank" rel="noopener" class="project-card__link" id="proj-2-link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <span data-i18n="proj_github">Ver no GitHub</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- pulbiakart outor prkheto -->
+        <article class="project-card reveal delay-3">
+          <div class="project-card__img">
+            <img src="assets/images/project_publikart.png" alt="PublikArt" loading="lazy">
+            <div class="project-card__img-overlay"></div>
+            <div class="project-card__tech-badges">
+              <span class="tech-badge tech-badge--next">Next.js</span>
+              <span class="tech-badge tech-badge--ts">TypeScript</span>
+            </div>
+          </div>
+          <div class="project-card__body">
+            <h3 class="project-card__title" data-i18n="proj_3_title">PublikArt</h3>
+            <p class="project-card__desc" data-i18n="proj_3_desc">Plataforma web desenvolvida como TCC de Engenharia de Software. Permite que artistas publiquem e compartilhem músicas próprias de forma gratuita.</p>
+            <div class="project-card__footer">
+              <a href="https://github.com/elian-r-ribeiro/publikart" target="_blank" rel="noopener" class="project-card__link" id="proj-3-link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <span data-i18n="proj_github">Ver no GitHub</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- mibhas ebscolas q eud estudue -->
+  <section id="education" class="section">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__tag" data-i18n="edu_tag">Educação</span>
+        <h2 class="section__title" data-i18n="edu_title">Formação <span>Acadêmica</span></h2>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item reveal delay-1">
+          <div class="timeline-item__dot"><i data-lucide="graduation-cap"></i></div>
+          <div class="timeline-item__content">
+            <div class="timeline-item__year" data-i18n="edu_1_year">2022 – 2024</div>
+            <div class="timeline-item__title" data-i18n="edu_1_title">Análise e Desenvolvimento de Sistemas (ADS)</div>
+            <div class="timeline-item__org" data-i18n="edu_1_org">Faculdade UniGuairacá — Guarapuava, PR</div>
+            <p class="timeline-item__desc" data-i18n="edu_1_desc">Bacharelado com foco em desenvolvimento de software, lógica de programação, banco de dados e engenharia de sistemas. TCC: e-Vent App (Ionic).</p>
+            <span class="timeline-item__status timeline-item__status--done" data-i18n="edu_1_status">Concluído</span>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal delay-2">
+          <div class="timeline-item__dot"><i data-lucide="book-open"></i></div>
+          <div class="timeline-item__content">
+            <div class="timeline-item__year" data-i18n="edu_2_year">2024 – Presente</div>
+            <div class="timeline-item__title" data-i18n="edu_2_title">Engenharia de Software</div>
+            <div class="timeline-item__org" data-i18n="edu_2_org">Faculdade UniGuairacá — Guarapuava, PR</div>
+            <p class="timeline-item__desc" data-i18n="edu_2_desc">Aprofundamento em arquitetura de software, padrões de projeto, qualidade de código e gestão de projetos. TCC: PublikArt (Next.js).</p>
+            <span class="timeline-item__status timeline-item__status--progress" data-i18n="edu_2_status">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal delay-3">
+          <div class="timeline-item__dot"><i data-lucide="laptop"></i></div>
+          <div class="timeline-item__content">
+            <div class="timeline-item__year" data-i18n="edu_3_year">2024 – Presente</div>
+            <div class="timeline-item__title" data-i18n="edu_3_title">Formação DEV — Java & Next.js</div>
+            <div class="timeline-item__org" data-i18n="edu_3_org">COD3R Cursos Online</div>
+            <p class="timeline-item__desc" data-i18n="edu_3_desc">Curso avançado de Java com Spring Boot, JPA/Hibernate, Spring Security e Next.js para desenvolvimento full-stack moderno.</p>
+            <span class="timeline-item__status timeline-item__status--progress" data-i18n="edu_3_status">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal delay-4">
+          <div class="timeline-item__dot"><i data-lucide="shield-check"></i></div>
+          <div class="timeline-item__content">
+            <div class="timeline-item__year" data-i18n="edu_4_year">2025 – Presente</div>
+            <div class="timeline-item__title" data-i18n="edu_4_title">Cibersegurança</div>
+            <div class="timeline-item__org" data-i18n="edu_4_org">Plataforma Online</div>
+            <p class="timeline-item__desc" data-i18n="edu_4_desc">Fundamentos de segurança da informação, análise de vulnerabilidades, criptografia e boas práticas de segurança no desenvolvimento.</p>
+            <span class="timeline-item__status timeline-item__status--progress" data-i18n="edu_4_status">Em andamento</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- fofmeulario xomvto -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__tag" data-i18n="contact_tag">Contato</span>
+        <h2 class="section__title" data-i18n="contact_title">Vamos <span>conversar?</span></h2>
+      </div>
+
+      <div class="contact__grid">
+
+        <!-- uinfo de cponttso -->
+        <div class="contact__info reveal-left">
+          <h3 data-i18n="contact_info_title">Entre em contato</h3>
+          <p data-i18n="contact_info_p">Estou aberto a oportunidades de emprego, projetos freelance e colaborações. Se quiser conversar, só mandar uma mensagem!</p>
+
+          <div class="contact__links">
+
+            <a href="tel:+5541999984544" class="contact__link-item" id="contact-phone-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <span class="contact__link-label" data-i18n="contact_phone">Telefone</span>
+                <span class="contact__link-value">+55 (41) 9 9998-4544</span>
+              </div>
+            </a>
+
+            <a href="mailto:elianrodriguesribeiro@gmail.com" class="contact__link-item" id="contact-email-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div>
+                <span class="contact__link-label" data-i18n="contact_email">E-mail</span>
+                <span class="contact__link-value">elianrodriguesribeiro@gmail.com</span>
+              </div>
+            </a>
+
+            <a href="https://www.linkedin.com/in/elian-rodrigues-ribeiro-36096a256/" target="_blank" rel="noopener" class="contact__link-item" id="contact-linkedin-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              <div>
+                <span class="contact__link-label" data-i18n="contact_linkedin">LinkedIn</span>
+                <span class="contact__link-value">elian-rodrigues-ribeiro</span>
+              </div>
+            </a>
+
+            <a href="https://github.com/elian-r-ribeiro" target="_blank" rel="noopener" class="contact__link-item" id="contact-github-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              <div>
+                <span class="contact__link-label" data-i18n="contact_github">GitHub</span>
+                <span class="contact__link-value">@elian-r-ribeiro</span>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- dorulrario dr mnswgrsm  -->
+        <div class="contact__form reveal-right" style="position:relative;">
+          <form id="contact-form" novalidate>
+            <div class="form__group">
+              <label class="form__label" for="form-name" data-i18n="form_name">Seu Nome</label>
+              <input type="text" id="form-name" class="form__input" placeholder="Seu Nome" data-i18n="form_name" required>
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="form-email" data-i18n="form_email">Seu E-mail</label>
+              <input type="email" id="form-email" class="form__input" placeholder="Seu E-mail" data-i18n="form_email" required>
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="form-subject" data-i18n="form_subject">Assunto</label>
+              <input type="text" id="form-subject" class="form__input" placeholder="Assunto" data-i18n="form_subject" required>
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="form-message" data-i18n="form_message">Mensagem</label>
+              <textarea id="form-message" class="form__textarea" placeholder="Mensagem" data-i18n="form_message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary form__submit" id="btn-form-submit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              <span data-i18n="form_send">Enviar Mensagem</span>
+            </button>
+          </form>
+
+          <div class="form__success" id="form-success">
+            Mensagem enviada! Obrigado pelo contato.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- rodpoqeq cmo direistos ressrvads -->
+  <footer>
+    <div class="container footer__inner">
+      <p class="footer__copy" data-i18n="footer_copy">© 2025 Elian Rodrigues Ribeiro. Todos os direitos reservados.</p>
+
+      <div class="footer__social">
+        <a href="https://www.linkedin.com/in/elian-rodrigues-ribeiro-36096a256/" target="_blank" rel="noopener" class="footer__social-link" aria-label="LinkedIn" id="footer-linkedin">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/elian_r.ribeiro/" target="_blank" rel="noopener" class="footer__social-link" aria-label="Instagram" id="footer-instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://github.com/elian-r-ribeiro" target="_blank" rel="noopener" class="footer__social-link" aria-label="GitHub" id="footer-github">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- aecrpit joasvrcuit -->
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
+
+
