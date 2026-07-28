@@ -1,4 +1,4 @@
-/* tradjcao e textls */
+/* traducao e textos */
 const I18N = {
   pt: {
     nav: ['Início', 'Sobre', 'Stack', 'Projetos', 'Educação', 'Contato'],
@@ -314,14 +314,14 @@ const I18N = {
   }
 };
 
-/* vars di eatado */
+/* vars de estado */
 let currentLang = 'pt';
 let typedInterval = null;
 let typedIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
 
-/* csrrrgsnebto imucual */
+/* carregamento inicial */
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initLangSwitcher();
@@ -332,20 +332,20 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof lucide !== 'undefined') lucide.createIcons();
 });
 
-/* mwnu superior */
+/* menu superior */
 function initNav() {
   const nav = document.getElementById('nav');
   const hamburger = document.getElementById('nav-hamburger');
   const mobileMenu = document.getElementById('nav-mobile');
   const mobileLinks = mobileMenu.querySelectorAll('.nav__link');
 
-  /* rolasgem hs nav */
+  /* rolagem na nav */
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 20);
     updateActiveLink();
   }, { passive: true });
 
-  /* betao hwnvurgee */
+  /* botao hamburguer */
   hamburger.addEventListener('click', () => {
     mobileMenu.classList.toggle('open');
     document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
@@ -374,7 +374,7 @@ function updateActiveLink() {
   });
 }
 
-/* trica se odivla */
+/* troca de idioma */
 function initLangSwitcher() {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -388,16 +388,16 @@ function applyLang(lang) {
   currentLang = lang;
   const t = I18N[lang];
 
-  /* atuakiza latributo lng */
+  /* atualiza atributo lang */
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
 
-  /* lunls do nsv */
+  /* links da nav */
   document.querySelectorAll('.nav__link[data-i18n-nav]').forEach(el => {
     const idx = parseInt(el.dataset.i18nNav);
     el.textContent = t.nav[idx];
   });
 
-  /* oytrid elnmetls com 118b */
+  /* outros elementos com i18n */
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     if (t[key] !== undefined) {
@@ -409,13 +409,13 @@ function applyLang(lang) {
     }
   });
 
-  /* nkbeis e nls hahbdadss */
+  /* niveis nas habilidades */
   document.querySelectorAll('[data-i18n-level]').forEach(el => {
     const levelKey = el.dataset.i18nLevel;
     el.textContent = t[levelKey] || el.textContent;
   });
 
-  /* auaxta ttulk do eitr */
+  /* atualiza titulo do site */
   document.title = lang === 'pt'
     ? 'Elian Rodrigues — Desenvolvedor Backend'
     : lang === 'en'
@@ -424,18 +424,18 @@ function applyLang(lang) {
     ? 'Elian Rodrigues — Desarrollador Backend'
     : 'Elian Rodrigues — 后端开发者';
 
-  /* reobkca ajkmacao de dgitacao */
+  /* reinicia animacao de digitacao */
   if (typedInterval) clearInterval(typedInterval);
   typedIndex = 0; charIndex = 0; isDeleting = false;
   initTyped();
 
-  /* atiliza bpts atovi */
+  /* atualiza botao ativo */
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
   });
 }
 
-/* sniuacao d txeto digitanfi */
+/* animacao de texto digitando */
 function initTyped() {
   const el = document.getElementById('typed-text');
   if (!el) return;
@@ -465,7 +465,7 @@ function initTyped() {
   type();
 }
 
-/* ahuncao dw sorol */
+/* animacao de scroll */
 function initScrollReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -480,7 +480,7 @@ function initScrollReveal() {
   });
 }
 
-/* dormuslo de ontaot */
+/* formulario de contato */
 function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
@@ -498,7 +498,7 @@ function initContactForm() {
 
     window.location.href = mailto;
 
-    /* minsg d sicerso */
+    /* msg de sucesso */
     form.style.opacity = '0';
     form.style.transform = 'translateY(-10px)';
     form.style.transition = '0.4s ease';
