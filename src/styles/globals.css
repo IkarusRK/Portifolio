@@ -198,3 +198,28 @@ textarea {
   transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
 }
 
+/* Fallback utilities para compatibilidade total com Tailwind v4 */
+[class*="text-[var(--text-primary)]"],
+[class*="text-[color:var(--text-primary)]"] {
+  color: var(--text-primary) !important;
+}
+
+[class*="text-[var(--text-secondary)]"],
+[class*="text-[color:var(--text-secondary)]"] {
+  color: var(--text-secondary) !important;
+}
+
+[class*="text-[var(--accent-from)]"],
+[class*="text-[color:var(--accent-from)]"] {
+  color: var(--accent-from) !important;
+}
+
+[class*="bg-[var(--glass-bg)]"] {
+  background-color: var(--glass-bg);
+}
+
+[class*="border-[var(--glass-border)]"] {
+  border-color: var(--glass-border);
+}
+
+

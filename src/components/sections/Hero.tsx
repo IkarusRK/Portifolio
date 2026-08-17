@@ -9,6 +9,7 @@ import { GradientText } from '../ui/GradientText';
 import { ParticleField } from '../three/ParticleField';
 import { FLOATING_CARDS } from '../../data/floatingCards';
 import { THEME_PALETTES } from '../../data/themes';
+import { CVDropdown } from '../ui/CVDropdown';
 
 const FLEE_RADIUS = 100;
 const FLEE_STRENGTH = 36;
@@ -173,11 +174,11 @@ const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap gap-4 justify-center"
+          className="flex flex-wrap gap-4 justify-center items-center"
         >
           <a
             href="#applications"
-            className="px-6 py-3 rounded-xl font-semibold text-white border-0"
+            className="px-6 py-3 rounded-xl font-semibold text-white border-0 hover:scale-105 transition-transform"
             style={{
               background: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
               boxShadow: '0 0 30px var(--glow)',
@@ -187,10 +188,11 @@ const Hero = () => {
           </a>
           <a
             href="#contact"
-            className="px-6 py-3 rounded-xl font-semibold border-2 border-[var(--accent-from)] text-[var(--accent-from)] hover:bg-[var(--glass-bg)] transition-colors"
+            className="px-6 py-3 rounded-xl font-semibold border-2 border-[var(--accent-from)] text-[var(--accent-from)] hover:bg-[var(--glass-bg)] hover:scale-105 transition-all"
           >
             Entre em Contato
           </a>
+          <CVDropdown variant="outline" />
         </motion.div>
 
         <motion.div
@@ -215,11 +217,10 @@ const Hero = () => {
                   key={s.id}
                   type="button"
                   onClick={() => setParticleShape(s.id as ParticleShape)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer select-none flex items-center gap-1.5 ${
-                    particleShape === s.id
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer select-none flex items-center gap-1.5 ${particleShape === s.id
                       ? 'text-white shadow-md'
                       : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--glass-border)] hover:bg-[var(--glass-bg)]'
-                  }`}
+                    }`}
                   style={{
                     background: particleShape === s.id
                       ? 'linear-gradient(135deg, var(--accent-from), var(--accent-to))'
@@ -246,6 +247,7 @@ const Hero = () => {
           {FLOATING_CARDS.map((card, i) => {
             const iconColor = 'var(--text-primary)';
             const off = cardOffsets[i] ?? { x: 0, y: 0 };
+            const CardIcon = card.shape === 'java' ? LuCoffee : card.shape === 'code' ? LuCode : FaReact;
             return (
               <div
                 key={card.id}
@@ -265,14 +267,15 @@ const Hero = () => {
                     backgroundImage: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
                     backdropFilter: 'blur(16px)',
                     boxShadow: '0 0 20px var(--glow)',
-                    borderColor: 'transparent',
+                    borderColor: particleShape === card.shape ? 'var(--text-primary)' : 'transparent',
                   }}
                   onClick={(e) => {
                     e.preventDefault();
+                    setParticleShape(card.shape);
                     setClickedCard(clickedCard === card.id ? null : card.id);
                   }}
                 >
-                  <FaReact
+                  <CardIcon
                     style={{ color: iconColor, width: '2rem', height: '2rem' }}
                   />
                   <span

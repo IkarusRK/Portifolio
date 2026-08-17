@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import { FaFilePdf, FaEye } from 'react-icons/fa';
 import { useScrollDirection } from '../../hooks/useScrollDirection';
 import ThemePicker from './ThemePicker';
+import { CVDropdown } from '../ui/CVDropdown';
+import { CVViewerModal } from '../ui/CVViewerModal';
 
 const LINKS = [
   { id: 'home', label: 'Home', href: '#home' },
@@ -15,6 +18,8 @@ const LINKS = [
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
+  const [cvModalOpen, setCvModalOpen] = useState(false);
+  const [cvModalLang, setCvModalLang] = useState<'pt' | 'en'>('pt');
   const [activeSection, setActiveSection] = useState('home');
   const direction = useScrollDirection();
   const visible = direction !== 'down';
@@ -73,16 +78,15 @@ const Navbar = () => {
         </a>
 
         {/* Links Desktop */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-5">
           {LINKS.map((link) => {
             const isActive = activeSection === link.id;
             return (
               <a
                 key={link.id}
                 href={link.href}
-                className={`text-sm font-semibold transition-colors relative py-1 px-1 select-none ${
-                  isActive ? 'text-[var(--accent-from)]' : 'text-[var(--text-secondary)] hover:text-[var(--accent-from)]'
-                }`}
+                className={`text-sm font-semibold transition-colors relative py-1 px-1 select-none ${isActive ? 'text-[var(--accent-from)]' : 'text-[var(--text-secondary)] hover:text-[var(--accent-from)]'
+                  }`}
               >
                 {link.label}
                 {isActive && (
@@ -98,7 +102,9 @@ const Navbar = () => {
               </a>
             );
           })}
-          
+
+          <CVDropdown variant="compact" />
+
           <ThemePicker isOpen={themeOpen} onClose={() => setThemeOpen(false)}>
             <button
               onClick={() => setThemeOpen((o) => !o)}
@@ -129,7 +135,7 @@ const Navbar = () => {
           </ThemePicker>
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="p-2 rounded-lg text-[var(--text-primary)] cursor-pointer"
+            className="p-2 rounded-lg text-[color:var(--text-primary)] cursor-pointer"
             aria-label="Menu"
           >
             <AnimatePresence mode="wait">
@@ -165,14 +171,45 @@ const Navbar = () => {
                     key={link.id}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`py-2 font-semibold transition-colors ${
-                      isActive ? 'text-[var(--accent-from)]' : 'text-[var(--text-primary)]'
-                    }`}
+                    className={`py-2 font-semibold transition-colors ${isActive ? 'text-[var(--accent-from)]' : 'text-[color:var(--text-primary)]'
+                      }`}
                   >
                     {link.label}
                   </a>
                 );
               })}
+
+              <div className="pt-2 mt-2 border-t border-[var(--glass-border)] flex flex-col gap-2">
+                <span className="text-xs font-bold text-[color:var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
+                  <FaFilePdf className="text-red-500" /> Currículo
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCvModalLang('pt');
+                      setCvModalOpen(true);
+                      setMenuOpen(false);
+                    }}
+                    className="px-3 py-2 rounded-xl text-xs font-bold text-center border-2 border-[var(--accent-from)] text-[color:var(--text-primary)] hover:bg-[var(--accent-from)] hover:text-white flex items-center justify-center gap-1.5 cursor-pointer shadow-sm transition-all"
+                  >
+                    <FaEye className="w-3.5 h-3.5" />
+                    🇧🇷 PT-BR
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCvModalLang('en');
+                      setCvModalOpen(true);
+                      setMenuOpen(false);
+                    }}
+                    className="px-3 py-2 rounded-xl text-xs font-bold text-center border-2 border-[var(--accent-from)] text-[color:var(--text-primary)] hover:bg-[var(--accent-from)] hover:text-white flex items-center justify-center gap-1.5 cursor-pointer shadow-sm transition-all"
+                  >
+                    <FaEye className="w-3.5 h-3.5" />
+                    🇺🇸 EN-US
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
@@ -185,6 +222,13 @@ const Navbar = () => {
           scaleX,
           background: 'linear-gradient(90deg, var(--accent-from), var(--accent-to))',
         }}
+      />
+
+      {/* In-Site CV Viewer Modal */}
+      <CVViewerModal
+        isOpen={cvModalOpen}
+        onClose={() => setCvModalOpen(false)}
+        initialLang={cvModalLang}
       />
     </motion.header>
   );

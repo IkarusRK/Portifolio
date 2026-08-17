@@ -46,23 +46,22 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, [theme, mode]);
 
   const setTheme = useCallback((t: ThemeId) => {
-    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
-      document.startViewTransition(() => {
-        setThemeState(t);
-      });
-    } else {
-      setThemeState(t);
+    setThemeState(t);
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem(STORAGE_THEME, t);
     }
   }, []);
 
   const toggleMode = useCallback(() => {
-    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
-      document.startViewTransition(() => {
-        setModeState((m) => (m === 'dark' ? 'light' : 'dark'));
-      });
-    } else {
-      setModeState((m) => (m === 'dark' ? 'light' : 'dark'));
-    }
+    setModeState((m) => {
+      const next = m === 'dark' ? 'light' : 'dark';
+      if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('data-mode', next);
+        localStorage.setItem(STORAGE_MODE, next);
+      }
+      return next;
+    });
   }, []);
 
   return (
