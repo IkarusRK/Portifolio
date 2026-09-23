@@ -1,122 +1,117 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { StarfieldCanvas } from './components/three/StarfieldCanvas';
+import { ModelViewer3D } from './components/three/ModelViewer3D';
+import { Navbar } from './components/layout/Navbar';
+import { Footer } from './components/layout/Footer';
+import { Hero } from './components/sections/Hero';
+import { MetricsTicker } from './components/sections/MetricsTicker';
+import { WorksGallery } from './components/sections/WorksGallery';
+import { EnvironmentsShowcase } from './components/sections/EnvironmentsShowcase';
+import { CharactersShowcase } from './components/sections/CharactersShowcase';
+import { PipelineSection } from './components/sections/PipelineSection';
+import { CommissionsSection } from './components/sections/CommissionsSection';
+import { AboutSection } from './components/sections/AboutSection';
+import { ProjectModal } from './components/ui/ProjectModal';
+import type { Project } from './data/portfolioData';
+import { cosmicAudio } from './utils/audioSynth';
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const [currentTheme, setCurrentTheme] = useState<string>('eclipse');
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [commissionPrefill, setCommissionPrefill] = useState<string>('');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+  }, [currentTheme]);
+
+  const handleToggleMute = () => {
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    cosmicAudio.setMuted(nextMuted);
+  };
+
+  const handleSelectForCommission = (title: string) => {
+    setCommissionPrefill(title);
+    const commissionsEl = document.getElementById('comissoes');
+    if (commissionsEl) {
+      commissionsEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Interactive Celestial Starfield Canvas in Background */}
+      <StarfieldCanvas />
 
-      <div className="ticks"></div>
+      {/* Atmospheric Ambient Glows */}
+      <div className="ambient-nebula-1" aria-hidden="true" />
+      <div className="ambient-nebula-2" aria-hidden="true" />
+      <div className="ambient-nebula-3" aria-hidden="true" />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* Fixed Cosmic Header */}
+      <Navbar
+        currentTheme={currentTheme}
+        onThemeChange={setCurrentTheme}
+        isMuted={isMuted}
+        onToggleMute={handleToggleMute}
+      />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* Main Content Sections */}
+      <main style={{ flex: 1, position: 'relative', zIndex: 10 }}>
+        {/* 1. Hero Section with Interactive Eclipse */}
+        <Hero />
+
+        {/* 2. Metrics Ticker (60+ mods, 250k+ players) */}
+        <MetricsTicker />
+
+        {/* 3. 3D Model Inspector (Interactive Three.js Viewport) */}
+        <section className="container-custom" style={{ paddingBottom: '4rem' }}>
+          <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+            <span className="badge-pill badge-primary" style={{ marginBottom: '0.5rem' }}>
+              WebGL 3D Engine • Three.js
+            </span>
+            <h2 className="font-display" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 700, color: 'var(--color-on-surface)' }}>
+              Inspetor de Malha &amp; Shaders em Tempo Real
+            </h2>
+            <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '0.95rem', maxWidth: '580px', margin: '0.4rem auto 0 auto' }}>
+              Rotacione em 360°, dê zoom e alterne entre modos PBR, Wireframe, Argila ZBrush e canais de emissão pura.
+            </p>
+          </div>
+
+          <ModelViewer3D />
+        </section>
+
+        {/* 4. Filterable 3D Works Gallery */}
+        <WorksGallery onSelectProject={(project) => setSelectedProject(project)} />
+
+        {/* 5. Environments & Biomes Showcase (Twin Moon Citadel) */}
+        <EnvironmentsShowcase />
+
+        {/* 6. Characters & Armor Forge (Barbarian Queen) */}
+        <CharactersShowcase />
+
+        {/* 7. Production Pipeline Timeline */}
+        <PipelineSection />
+
+        {/* 8. Commissions & Custom Orders Terminal */}
+        <CommissionsSection prefilledProject={commissionPrefill} />
+
+        {/* 9. About the Artist */}
+        <AboutSection />
+      </main>
+
+      {/* Cosmic Footer */}
+      <Footer />
+
+      {/* Full Detailed Project Inspection Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+        onSelectForCommission={handleSelectForCommission}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
