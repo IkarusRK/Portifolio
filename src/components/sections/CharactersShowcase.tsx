@@ -119,8 +119,8 @@ export const CharactersShowcase: React.FC = () => {
             }}
           >
             <img
-              src="/assets/personagens-armaduras.png"
-              alt="Rainha Bárbara"
+              src="/assets/succubus-asas.png"
+              alt="Succubus Real & Asas Dracônicas - Eclipsa"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               onError={(e) => (e.currentTarget.style.display = 'none')}
             />
@@ -158,22 +158,22 @@ export const CharactersShowcase: React.FC = () => {
           {/* Details & Technical Breakdown */}
           <div>
             <div className="badge-pill badge-primary" style={{ marginBottom: '1rem' }}>
-              Rigging Avançado • Conan Skeleton
+              Rigging Avançado • UE4 / UE5 / Conan Skeleton
             </div>
             <h3
               className="font-display"
               style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--color-on-surface)', marginBottom: '0.75rem' }}
             >
-              Conjunto Bárbara Forjada em Estrelas
+              Succubus Real &amp; Asas Dracônicas
             </h3>
             <p style={{ color: 'var(--color-on-surface-variant)', lineHeight: 1.6, fontSize: '0.95rem', marginBottom: '1.5rem' }}>
-              Composto por 5 peças modulares independentes (elmo, peitoral, manoplas, grevas e botas) totalmente ajustadas à deformação muscular e com mapas de normais precisos extraídos de escultura de alta frequência no ZBrush.
+              Modelagem anatômica refinada com bodysuit em couro e látex escuro, combinada a asas demoníacas de couro violeta de grande envergadura com física e ossatura articulada para Unreal Engine e Conan DevKit.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--color-on-surface)' }}>
                 <CheckCircle size={16} style={{ color: 'var(--color-secondary)' }} />
-                <span style={{ fontSize: '0.9rem' }}>Física de tecidos (Chaos Cloth Solver) em capas de pele e faixas cerimoniais</span>
+                <span style={{ fontSize: '0.9rem' }}>Física dinâmica de asas e membranas (Chaos Physics Solver)</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--color-on-surface)' }}>
                 <CheckCircle size={16} style={{ color: 'var(--color-secondary)' }} />

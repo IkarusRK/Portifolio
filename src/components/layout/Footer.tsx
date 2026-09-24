@@ -1,6 +1,6 @@
 import React from 'react';
 import { ARTIST_INFO } from '../../data/portfolioData';
-import { ArrowUp, MessageSquare, ExternalLink, Gamepad2 } from 'lucide-react';
+import { ArrowUp, MessageSquare, Sparkles } from 'lucide-react';
 import { cosmicAudio } from '../../utils/audioSynth';
 
 export const Footer: React.FC = () => {
@@ -81,7 +81,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Col 3: Socials & Workshop */}
+          {/* Col 3: Community & Engines */}
           <div>
             <h4
               className="font-mono"
@@ -93,40 +93,56 @@ export const Footer: React.FC = () => {
                 marginBottom: '1rem',
               }}
             >
-              Comunidade & Links
+              Comunidade &amp; Engines
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
               <a
-                href={ARTIST_INFO.socials.steam}
+                href={ARTIST_INFO.socials.discord}
                 target="_blank"
                 rel="noreferrer"
                 className="btn-ghost"
-                style={{ justifyContent: 'flex-start', padding: '0.5rem 0.85rem' }}
-                onClick={() => cosmicAudio.playClick()}
-              >
-                <Gamepad2 size={16} style={{ color: 'var(--color-tertiary)' }} />
-                <span>Steam Workshop Mods</span>
-              </a>
-              <a
-                href={`#comissoes`}
-                className="btn-ghost"
-                style={{ justifyContent: 'flex-start', padding: '0.5rem 0.85rem' }}
+                style={{ justifyContent: 'flex-start', padding: '0.55rem 0.85rem' }}
                 onClick={() => cosmicAudio.playClick()}
               >
                 <MessageSquare size={16} style={{ color: 'var(--color-primary)' }} />
-                <span>Discord: {ARTIST_INFO.socials.discord}</span>
+                <span>Servidor Discord Oficial</span>
               </a>
-              <a
-                href={ARTIST_INFO.socials.artstation}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-ghost"
-                style={{ justifyContent: 'flex-start', padding: '0.5rem 0.85rem' }}
-                onClick={() => cosmicAudio.playClick()}
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.55rem',
+                  padding: '0.55rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  backgroundColor: 'var(--color-surface-container-high)',
+                  border: '1px solid var(--glass-border)',
+                  fontSize: '0.8rem',
+                  fontFamily: 'JetBrains Mono',
+                  color: 'var(--color-on-surface)',
+                }}
               >
-                <ExternalLink size={16} style={{ color: 'var(--color-secondary)' }} />
-                <span>ArtStation Pro Portfolio</span>
-              </a>
+                <Sparkles size={15} style={{ color: 'var(--color-secondary)' }} />
+                <span>Unreal Engine 5 • Nanite &amp; Lumen</span>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.55rem',
+                  padding: '0.55rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  backgroundColor: 'var(--color-surface-container-high)',
+                  border: '1px solid var(--glass-border)',
+                  fontSize: '0.8rem',
+                  fontFamily: 'JetBrains Mono',
+                  color: 'var(--color-on-surface)',
+                }}
+              >
+                <Sparkles size={15} style={{ color: 'var(--color-tertiary)' }} />
+                <span>Unreal Engine 4 • Conan DevKit</span>
+              </div>
             </div>
           </div>
         </div>

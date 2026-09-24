@@ -83,10 +83,10 @@ export const EnvironmentsShowcase: React.FC = () => {
               letterSpacing: '-0.02em',
             }}
           >
-            Templo da Lua Gêmea <span style={{ color: 'var(--color-primary)', fontWeight: 300 }}>&amp; Cidadela Astral</span>
+            Catedral Astral das Águas <span style={{ color: 'var(--color-primary)', fontWeight: 300 }}>&amp; Cidadela Madrovitale</span>
           </h2>
           <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '1rem', maxWidth: '640px', marginTop: '0.5rem' }}>
-            Complexo monumental esculpido em blocos megalíticos ciclópeos e basalto negro, alinhado à conjunção astronômica das luas gêmeas de Hyboria.
+            Complexo palaciano monumental sobre águas reflexivas, torres pontiagudas douradas, vitrais em arabesco estelar e cristais esmeralda modelados para Unreal Engine 5.
           </p>
         </div>
 
@@ -95,7 +95,7 @@ export const EnvironmentsShowcase: React.FC = () => {
           style={{
             position: 'relative',
             width: '100%',
-            height: '420px',
+            height: '460px',
             borderRadius: '1rem',
             overflow: 'hidden',
             marginBottom: '2rem',
@@ -104,8 +104,8 @@ export const EnvironmentsShowcase: React.FC = () => {
           }}
         >
           <img
-            src="/assets/mapas-cenarios.png"
-            alt="Templo da Lua Gêmea"
+            src="/assets/catedral-astral.jpg"
+            alt="Catedral Astral das Águas - Eclipsa"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             onError={(e) => (e.currentTarget.style.display = 'none')}
           />

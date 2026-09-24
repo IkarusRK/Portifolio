@@ -38,8 +38,8 @@ export const AboutSection: React.FC = () => {
                 }}
               >
                 <img
-                  src="/assets/obras-modelos.png"
-                  alt="Eclipsa Studio"
+                  src="/assets/orbe-carmesim.png"
+                  alt="Eclipsa 3D Studio"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => (e.currentTarget.style.display = 'none')}
                 />
@@ -168,12 +168,14 @@ export const AboutSection: React.FC = () => {
               {/* Quick Connect Buttons */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
                 <a
-                  href="#comissoes"
+                  href={ARTIST_INFO.socials.discord}
+                  target="_blank"
+                  rel="noreferrer"
                   onClick={() => cosmicAudio.playClick()}
                   className="btn-primary"
                 >
                   <MessageSquare size={16} />
-                  <span>Conectar via Discord ({ARTIST_INFO.socials.discord})</span>
+                  <span>Servidor Discord Oficial da Eclipsa</span>
                 </a>
 
                 <a

@@ -131,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 marginTop: '3px',
               }}
             >
-              3D Game Artist • UE5
+              3D Game Artist • UE4 &amp; UE5
             </span>
           </div>
         </a>
@@ -144,11 +144,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="desktop-nav"
         >
           <style>{`
-            @media (min-width: 1100px) {
+            @media (min-width: 1024px) {
               .desktop-nav {
                 display: flex !important;
                 align-items: center;
-                gap: 1.5rem;
+                gap: 1.15rem;
+                flex-wrap: nowrap;
               }
             }
           `}</style>
@@ -158,11 +159,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               href={link.href}
               onClick={handleNavClick}
               style={{
-                fontSize: '0.9rem',
+                fontSize: '0.88rem',
                 color: 'var(--color-on-surface-variant)',
                 textDecoration: 'none',
                 transition: 'color 0.2s ease',
                 fontWeight: 500,
+                whiteSpace: 'nowrap',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-primary)')}
               onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-on-surface-variant)')}
@@ -172,30 +174,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </nav>
 
-        {/* Header Controls (Theme, Audio, Status, CTA) */}
+        {/* Header Controls (Theme, Audio, CTA) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          {/* Availability Pill */}
-          <div
-            className="badge-pill badge-secondary"
-            style={{ display: 'none' }}
-            id="status-badge"
-          >
-            <style>{`
-              @media (min-width: 768px) {
-                #status-badge { display: inline-flex !important; }
-              }
-            `}</style>
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-secondary)',
-                boxShadow: '0 0 8px var(--color-secondary)',
-              }}
-            />
-            <span>2 Vagas Abertas</span>
-          </div>
 
           {/* Theme Selector Dropdown */}
           <div style={{ position: 'relative' }}>

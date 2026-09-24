@@ -51,7 +51,7 @@
   --glass-shadow: 0 20px 40px -15px rgba(12, 7, 23, 0.85);
 
   /* Gradients */
-  --hero-glow: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(183, 109, 255, 0.22), rgba(22, 15, 38, 0));
+  --hero-glow: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(183, 109, 255, 0.16) 0%, rgba(183, 109, 255, 0.04) 45%, transparent 75%);
   --badge-glow: 0 0 12px rgba(255, 198, 64, 0.25);
 }
 
@@ -97,7 +97,7 @@
   --glass-card-bg: rgba(14, 39, 48, 0.8);
   --glass-shadow: 0 20px 40px -15px rgba(2, 9, 13, 0.85);
 
-  --hero-glow: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(56, 239, 125, 0.2), rgba(7, 23, 29, 0));
+  --hero-glow: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(56, 239, 125, 0.16) 0%, rgba(56, 239, 125, 0.04) 45%, transparent 75%);
   --badge-glow: 0 0 12px rgba(0, 229, 255, 0.25);
 }
 
@@ -143,7 +143,7 @@
   --glass-card-bg: rgba(54, 25, 47, 0.8);
   --glass-shadow: 0 20px 40px -15px rgba(16, 4, 13, 0.85);
 
-  --hero-glow: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(244, 114, 182, 0.2), rgba(36, 14, 30, 0));
+  --hero-glow: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(244, 114, 182, 0.16) 0%, rgba(244, 114, 182, 0.04) 45%, transparent 75%);
   --badge-glow: 0 0 12px rgba(251, 113, 133, 0.25);
 }
 
@@ -189,7 +189,7 @@
   --glass-card-bg: rgba(56, 33, 15, 0.8);
   --glass-shadow: 0 20px 40px -15px rgba(15, 7, 1, 0.85);
 
-  --hero-glow: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(245, 158, 11, 0.2), rgba(36, 20, 7, 0));
+  --hero-glow: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0.04) 45%, transparent 75%);
   --badge-glow: 0 0 12px rgba(239, 68, 68, 0.25);
 }
 

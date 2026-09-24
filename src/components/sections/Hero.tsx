@@ -16,16 +16,13 @@ export const Hero: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Background Radial Glow */}
+      {/* Background Radial Glow - Seamless Full Width */}
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
+          inset: 0,
           width: '100%',
-          maxWidth: '1200px',
-          height: '600px',
+          height: '100%',
           background: 'var(--hero-glow)',
           pointerEvents: 'none',
           zIndex: 1,
@@ -55,7 +52,7 @@ export const Hero: React.FC = () => {
                     boxShadow: '0 0 6px var(--color-primary)',
                   }}
                 />
-                Unreal Engine 5.4 • Conan DevKit
+                Unreal Engine 4 &amp; 5 • Conan DevKit
               </span>
               <span className="badge-pill badge-secondary">
                 <Sparkles size={12} />
@@ -205,9 +202,9 @@ export const Hero: React.FC = () => {
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: 'var(--color-on-surface-variant)' }}>Nanite &amp; Lumen</span>
+                  <span style={{ color: 'var(--color-on-surface-variant)' }}>Game Engines</span>
                   <span className="font-mono" style={{ color: 'var(--color-primary)', fontWeight: 600 }}>
-                    UE 5.4 Ready
+                    UE4 &amp; UE5 Ready
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>

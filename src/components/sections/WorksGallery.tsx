@@ -246,7 +246,7 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
                       marginBottom: '1rem',
                     }}
                   >
-                    {project.software.map((sw) => (
+                    {(project.tags || (project as any).software || [])?.map((sw: string) => (
                       <span
                         key={sw}
                         style={{

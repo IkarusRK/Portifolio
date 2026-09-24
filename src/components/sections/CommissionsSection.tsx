@@ -3,7 +3,9 @@ import { COMMISSION_TIERS } from '../../data/portfolioData';
 import type { CommissionTier } from '../../data/portfolioData';
 import { cosmicAudio } from '../../utils/audioSynth';
 import confetti from 'canvas-confetti';
-import { CheckCircle, Sparkles, Send, Calculator } from 'lucide-react';
+import { CheckCircle, Sparkles, Send, Calculator, MessageSquare } from 'lucide-react';
+import { CustomSelect } from '../ui/CustomSelect';
+import type { SelectOption } from '../ui/CustomSelect';
 
 interface CommissionsSectionProps {
   prefilledProject?: string;
@@ -13,11 +15,44 @@ export const CommissionsSection: React.FC<CommissionsSectionProps> = ({ prefille
   const [selectedTier, setSelectedTier] = useState<string>('tier-armaduras');
   const [discordNick, setDiscordNick] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [platform, setPlatform] = useState<string>('Conan Exiles ModKit');
+  const [platform, setPlatform] = useState<string>('Unreal Engine 5.4 (.uasset)');
   const [projectDescription, setProjectDescription] = useState<string>(
     prefilledProject ? `Gostaria de solicitar um modelo baseado no projeto: ${prefilledProject}.` : ''
   );
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const platformOptions: SelectOption[] = [
+    {
+      value: 'Unreal Engine 5.4 (.uasset)',
+      label: 'Unreal Engine 5.4 (.uasset)',
+      badge: 'UE5',
+      description: 'Nanite, Lumen & Shaders PBR nativos',
+    },
+    {
+      value: 'Unreal Engine 4.27 (.uasset)',
+      label: 'Unreal Engine 4.27 (.uasset)',
+      badge: 'UE4',
+      description: 'Blueprints, Shaders PBR & Conan DevKit',
+    },
+    {
+      value: 'Conan Exiles ModKit (.pak)',
+      label: 'Conan Exiles ModKit (.pak)',
+      badge: 'CONAN',
+      description: 'Mod pronto para deploy no servidor',
+    },
+    {
+      value: 'Arquivos Puros FBX / Blend 4K',
+      label: 'Arquivos Puros FBX / Blend 4K',
+      badge: 'FBX',
+      description: 'Malha limpa com texturas 4K UDIM',
+    },
+    {
+      value: 'Cinemática / Animação / Render',
+      label: 'Cinemática / Animação / Render',
+      badge: 'CGI',
+      description: 'Alta contagem poligonal para renders',
+    },
+  ];
 
   // Quick Calculator State
   const [calcTier, setCalcTier] = useState<string>('armaduras');
@@ -341,7 +376,7 @@ export const CommissionsSection: React.FC<CommissionsSectionProps> = ({ prefille
                   </span>
                 </div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--color-on-surface-variant)' }}>
-                  Inclui suporte a Conan Exiles DevKit (.pak), exportação em FBX/Blend, texturas 4K UDIM e revisão de bake.
+                  Totalmente compatível com Unreal Engine 4 e Unreal Engine 5, Conan Exiles DevKit (.pak), exportação em FBX/Blend, texturas 4K UDIM e revisão de bake.
                 </div>
               </div>
             </div>
@@ -406,7 +441,7 @@ export const CommissionsSection: React.FC<CommissionsSectionProps> = ({ prefille
 
                   <div>
                     <label style={{ display: 'block', fontSize: '0.75rem', fontFamily: 'JetBrains Mono', color: 'var(--color-outline)', marginBottom: '0.35rem' }}>
-                      SEU E-MAIL PARA CONTATO *
+                      SEU EMAIL DE CONTATO *
                     </label>
                     <input
                       type="email"
@@ -428,28 +463,12 @@ export const CommissionsSection: React.FC<CommissionsSectionProps> = ({ prefille
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontFamily: 'JetBrains Mono', color: 'var(--color-outline)', marginBottom: '0.35rem' }}>
-                      PLATAFORMA / DESTINO DO MODELO
-                    </label>
-                    <select
+                    <CustomSelect
+                      label="PLATAFORMA / DESTINO DO MODELO"
+                      options={platformOptions}
                       value={platform}
-                      onChange={(e) => setPlatform(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '0.75rem 1rem',
-                        backgroundColor: 'rgba(12, 7, 23, 0.85)',
-                        border: '1px solid var(--glass-border)',
-                        borderRadius: '0.5rem',
-                        color: 'var(--color-on-surface)',
-                        fontSize: '0.9rem',
-                        outline: 'none',
-                      }}
-                    >
-                      <option value="Conan Exiles ModKit (.pak)">Conan Exiles ModKit (.pak)</option>
-                      <option value="Unreal Engine 5.4 (.uasset)">Unreal Engine 5.4 (.uasset)</option>
-                      <option value="Arquivos Puros FBX / Blend 4K">Arquivos Puros FBX / Blend 4K</option>
-                      <option value="Cinemática / Animação / Blender">Cinemática / Animação / Blender</option>
-                    </select>
+                      onChange={(val) => setPlatform(val)}
+                    />
                   </div>
 
                   <div>
@@ -484,6 +503,27 @@ export const CommissionsSection: React.FC<CommissionsSectionProps> = ({ prefille
                     <Sparkles size={16} />
                     <span>Transmitir Pedido de Comissão</span>
                   </button>
+
+                  <a
+                    href="https://discord.com/invite/umH3GxEDT6"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-ghost"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.6rem',
+                      padding: '0.75rem',
+                      width: '100%',
+                      textDecoration: 'none',
+                      fontSize: '0.85rem',
+                    }}
+                    onClick={() => cosmicAudio.playClick()}
+                  >
+                    <MessageSquare size={16} style={{ color: 'var(--color-primary)' }} />
+                    <span>Ou entre no Servidor Discord Oficial da Eclipsa</span>
+                  </a>
                 </form>
               )}
             </div>
