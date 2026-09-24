@@ -339,7 +339,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     },
     developerModal: {
       badge: 'Desenvolvedor Full Stack',
-      title: 'Daniel Reis • IkarusRK',
+      title: 'IkarusRK',
       role: 'Engenheiro de Software & Criador Web',
       description: 'Responsável pelo desenvolvimento front-end, arquitetura interativa, renderizador Three.js 3D, sintetizador de áudio Web Audio API e experiência imersiva deste portfólio.',
       portfolioTitle: 'Portfólio Oficial',
@@ -523,7 +523,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     },
     developerModal: {
       badge: 'Full Stack Developer',
-      title: 'Daniel Reis • IkarusRK',
+      title: 'IkarusRK',
       role: 'Software Engineer & Web Creator',
       description: 'Architected and built this immersive web application: Three.js 3D viewport, Web Audio API sound synthesis, cosmic animations, and responsive design system.',
       portfolioTitle: 'Official Portfolio',
@@ -707,7 +707,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     },
     developerModal: {
       badge: 'Desarrollador Full Stack',
-      title: 'Daniel Reis • IkarusRK',
+      title: 'IkarusRK',
       role: 'Ingeniero de Software y Creador Web',
       description: 'Responsable del desarrollo front-end, arquitectura interactiva, visor 3D Three.js, sintetizador de audio Web Audio API y diseño inmersivo de este portafolio.',
       portfolioTitle: 'Portafolio Oficial',
@@ -890,8 +890,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       developedBy: '由 IkarusRK 精心开发',
     },
     developerModal: {
-      badge: '全栈工程师',
-      title: 'Daniel Reis • IkarusRK',
+      badge: ' 全栈工程师',
+      title: 'IkarusRK',
       role: '软件工程师与 Web 创作者',
       description: '负责本网站的前端架构开发、Three.js 实时 3D 视口、Web Audio API 宇宙音频合成系统以及响应式设计规范。',
       portfolioTitle: '官方作品集主站',
