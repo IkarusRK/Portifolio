@@ -12,10 +12,12 @@ import { PipelineSection } from './components/sections/PipelineSection';
 import { CommissionsSection } from './components/sections/CommissionsSection';
 import { AboutSection } from './components/sections/AboutSection';
 import { ProjectModal } from './components/ui/ProjectModal';
+import { SplashScreen } from './components/ui/SplashScreen';
 import type { Project } from './data/portfolioData';
 import { cosmicAudio } from './utils/audioSynth';
 
 export function App() {
+  const [showSplash, setShowSplash] = useState<boolean>(true);
   const [currentTheme, setCurrentTheme] = useState<string>('eclipse');
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -41,6 +43,9 @@ export function App() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Intro Splash Screen – Eclipse forming animation */}
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+
       {/* Interactive Celestial Starfield Canvas in Background */}
       <StarfieldCanvas />
 
