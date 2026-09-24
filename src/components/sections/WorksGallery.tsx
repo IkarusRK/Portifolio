@@ -1,22 +1,24 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { PORTFOLIO_PROJECTS } from '../../data/portfolioData';
 import type { Project } from '../../data/portfolioData';
 import { cosmicAudio } from '../../utils/audioSynth';
 import { Eye } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface WorksGalleryProps {
   onSelectProject: (project: Project) => void;
 }
 
 export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) => {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
 
-  const categories = [
-    'Todos',
-    'Ambientes & Cidadelas',
-    'Guerreiros & Criaturas',
-    'Armas & Relíquias',
-    'Props & DevKit',
+  const categoryMap: { id: string; label: string }[] = [
+    { id: 'Todos', label: t.gallery.tabs.all },
+    { id: 'Ambientes & Cidadelas', label: t.gallery.tabs.environments },
+    { id: 'Guerreiros & Criaturas', label: t.gallery.tabs.characters },
+    { id: 'Armas & Relíquias', label: t.gallery.tabs.weapons },
+    { id: 'Props & DevKit', label: t.gallery.tabs.props },
   ];
 
   const filteredProjects =
@@ -24,9 +26,9 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
       ? PORTFOLIO_PROJECTS
       : PORTFOLIO_PROJECTS.filter((p) => p.category === selectedCategory);
 
-  const handleCategoryChange = (cat: string) => {
+  const handleCategoryChange = (catId: string) => {
     cosmicAudio.playClick();
-    setSelectedCategory(cat);
+    setSelectedCategory(catId);
   };
 
   return (
@@ -60,7 +62,7 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
                 letterSpacing: '0.12em',
               }}
             >
-              Portfólio Interativo • 3D Assets
+              {t.gallery.badge} • 3D Assets
             </span>
           </div>
 
@@ -83,10 +85,10 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
                   letterSpacing: '-0.02em',
                 }}
               >
-                Obras &amp; Modelos 3D
+                {t.gallery.title}
               </h2>
               <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '1rem', maxWidth: '580px', marginTop: '0.5rem' }}>
-                Explore ativos de alta resolução com topologia validada vértice a vértice, UVs UDIM limpas e compatibilidade nativa para Conan Exiles e Unreal Engine 5.
+                {t.gallery.subtitle}
               </p>
             </div>
 
@@ -101,24 +103,24 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
                 borderRadius: '0.75rem',
               }}
             >
-              {categories.map((cat) => (
+              {categoryMap.map((cat) => (
                 <button
-                  key={cat}
-                  onClick={() => handleCategoryChange(cat)}
+                  key={cat.id}
+                  onClick={() => handleCategoryChange(cat.id)}
                   style={{
                     padding: '0.5rem 0.9rem',
                     borderRadius: '0.5rem',
                     border: 'none',
-                    background: selectedCategory === cat ? 'var(--color-primary-container)' : 'transparent',
-                    color: selectedCategory === cat ? '#ffffff' : 'var(--color-on-surface-variant)',
+                    background: selectedCategory === cat.id ? 'var(--color-primary-container)' : 'transparent',
+                    color: selectedCategory === cat.id ? '#ffffff' : 'var(--color-on-surface-variant)',
                     fontSize: '0.8rem',
-                    fontFamily: 'JetBrains Mono',
+                    fontFamily: 'Space Grotesk, sans-serif',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
-                    boxShadow: selectedCategory === cat ? '0 0 12px var(--primary-glow)' : 'none',
+                    boxShadow: selectedCategory === cat.id ? '0 0 12px var(--primary-glow)' : 'none',
                   }}
                 >
-                  {cat}
+                  {cat.label}
                 </button>
               ))}
             </div>
@@ -148,74 +150,73 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
                 onSelectProject(project);
               }}
             >
-              {/* Image Preview Box */}
+              {/* Thumbnail Container */}
               <div
                 style={{
                   position: 'relative',
                   width: '100%',
-                  aspectRatio: '16/10',
+                  aspectRatio: '16/9',
                   overflow: 'hidden',
-                  backgroundColor: '#0c0717',
+                  backgroundColor: 'rgba(0,0,0,0.5)',
                 }}
               >
                 <img
-                  src={project.image}
+                  src={project.thumbnail.startsWith('/') ? `.${project.thumbnail}` : project.thumbnail}
                   alt={project.title}
                   style={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    transition: 'transform 0.5s ease',
+                    transition: 'transform 0.4s ease',
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1.0)')}
                 />
 
-                {/* Overlaid Badges */}
                 <div
                   style={{
                     position: 'absolute',
                     top: '0.75rem',
-                    left: '0.75rem',
+                    right: '0.75rem',
                     display: 'flex',
                     gap: '0.4rem',
                   }}
                 >
-                  <span className="badge-pill badge-primary" style={{ fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>
-                    {project.category}
+                  <span
+                    className="font-mono"
+                    style={{
+                      fontSize: '0.65rem',
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '0.25rem',
+                      background: 'rgba(12, 7, 23, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      color: 'var(--color-primary)',
+                      border: '1px solid var(--glass-border)',
+                    }}
+                  >
+                    {project.engine}
                   </span>
-                </div>
-
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '0.75rem',
-                    right: '0.75rem',
-                    background: 'rgba(12, 7, 23, 0.85)',
-                    backdropFilter: 'blur(8px)',
-                    padding: '0.25rem 0.65rem',
-                    borderRadius: '0.4rem',
-                    fontFamily: 'JetBrains Mono',
-                    fontSize: '0.7rem',
-                    color: 'var(--color-secondary)',
-                    border: '1px solid rgba(255, 198, 64, 0.3)',
-                  }}
-                >
-                  {project.polycount}
                 </div>
               </div>
 
-              {/* Card Content */}
-              <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+              {/* Card Body */}
+              <div
+                style={{
+                  padding: '1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  flex: 1,
+                }}
+              >
                 <div>
                   <h3
                     className="font-display"
                     style={{
-                      fontSize: '1.2rem',
-                      fontWeight: 600,
+                      fontSize: '1.25rem',
+                      fontWeight: 700,
                       color: 'var(--color-on-surface)',
-                      marginBottom: '0.5rem',
+                      marginBottom: '0.4rem',
                     }}
                   >
                     {project.title}
@@ -246,7 +247,7 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
                       marginBottom: '1rem',
                     }}
                   >
-                    {(project.tags || (project as any).software || [])?.map((sw: string) => (
+                    {(project.tags || project.software || [])?.map((sw: string) => (
                       <span
                         key={sw}
                         style={{
@@ -273,7 +274,7 @@ export const WorksGallery: React.FC<WorksGalleryProps> = ({ onSelectProject }) =
                     }}
                   >
                     <Eye size={15} style={{ color: 'var(--color-primary)' }} />
-                    <span>Inspecionar Folha de Assets</span>
+                    <span>{t.gallery.viewProject}</span>
                   </button>
                 </div>
               </div>

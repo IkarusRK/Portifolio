@@ -1,12 +1,26 @@
 import React from 'react';
 import { ARTIST_INFO } from '../../data/portfolioData';
-import { ArrowUp, MessageSquare, Sparkles } from 'lucide-react';
+import { ArrowUp, MessageSquare, Sparkles, Code2, ExternalLink } from 'lucide-react';
 import { cosmicAudio } from '../../utils/audioSynth';
+import { useLanguage } from '../../i18n/LanguageContext';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenDevModal?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenDevModal }) => {
+  const { t } = useLanguage();
+
   const scrollToTop = () => {
     cosmicAudio.playClick();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDevClick = () => {
+    cosmicAudio.playClick();
+    if (onOpenDevModal) {
+      onOpenDevModal();
+    }
   };
 
   return (
@@ -17,7 +31,7 @@ export const Footer: React.FC = () => {
         backgroundColor: 'var(--color-surface-container-lowest)',
         borderTop: '1px solid var(--glass-border)',
         paddingTop: '4rem',
-        paddingBottom: '3rem',
+        paddingBottom: '3.5rem',
       }}
     >
       <div className="container-custom">
@@ -33,7 +47,7 @@ export const Footer: React.FC = () => {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
               <img
-                src="/assets/eclipsa-logo.png"
+                src="./assets/eclipsa-logo.png"
                 alt="Eclipsa"
                 style={{ height: '32px', width: 'auto', filter: 'drop-shadow(0 0 8px #ddb7ff)' }}
                 onError={(e) => (e.currentTarget.style.display = 'none')}
@@ -43,7 +57,7 @@ export const Footer: React.FC = () => {
               </span>
             </div>
             <p style={{ color: 'var(--color-on-surface-variant)', fontSize: '0.9rem', lineHeight: 1.6, maxWidth: '360px' }}>
-              3D Game Artist & Worldbuilder especializada em dark fantasy cósmico, asset pipeline AAA, armaduras rúnicas e mods imersivos para Conan Exiles e Unreal Engine 5.
+              {t.footer.description}
             </p>
           </div>
 
@@ -59,7 +73,7 @@ export const Footer: React.FC = () => {
                 marginBottom: '1rem',
               }}
             >
-              Telemetria do DevKit
+              {t.footer.telemetryTitle}
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.85rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-on-surface-variant)' }}>
@@ -93,7 +107,7 @@ export const Footer: React.FC = () => {
                 marginBottom: '1rem',
               }}
             >
-              Comunidade &amp; Engines
+              {t.footer.communityTitle}
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
               <a
@@ -105,7 +119,7 @@ export const Footer: React.FC = () => {
                 onClick={() => cosmicAudio.playClick()}
               >
                 <MessageSquare size={16} style={{ color: 'var(--color-primary)' }} />
-                <span>Servidor Discord Oficial</span>
+                <span>{t.footer.discordServer}</span>
               </a>
 
               <div
@@ -147,7 +161,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar with Developer Credit & Back to Top */}
         <div
           style={{
             paddingTop: '2rem',
@@ -156,24 +170,72 @@ export const Footer: React.FC = () => {
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '1rem',
+            gap: '1.25rem',
           }}
         >
-          <div style={{ fontSize: '0.85rem', color: 'var(--color-outline)' }}>
-            © {new Date().getFullYear()} Eclipsa 3D Art Studio. Todos os direitos reservados. Feito sob o alinhamento das luas de Hyboria.
+          <div style={{ fontSize: '0.85rem', color: 'var(--color-outline)', maxWidth: '420px', lineHeight: 1.5 }}>
+            {t.footer.rights}
           </div>
+
+          {/* Centered / Highlighted Developer Badge in Footer */}
+          <button
+            onClick={handleDevClick}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.45rem 0.85rem',
+              borderRadius: '999px',
+              backgroundColor: 'rgba(183, 109, 255, 0.08)',
+              border: '1px solid rgba(183, 109, 255, 0.25)',
+              color: 'var(--color-on-surface)',
+              fontSize: '0.8rem',
+              cursor: 'pointer',
+              fontFamily: 'Space Grotesk, sans-serif',
+              transition: 'all 0.2s ease',
+            }}
+            className="footer-dev-btn"
+            title="Conheça o Desenvolvedor deste site"
+          >
+            <Code2 size={14} style={{ color: 'var(--color-primary)' }} />
+            <span>
+              {t.footer.developedBy.replace('IkarusRK', '')}
+              <strong style={{ color: 'var(--color-primary)' }}>IkarusRK</strong>
+            </span>
+            <span
+              style={{
+                fontSize: '0.68rem',
+                backgroundColor: 'rgba(183, 109, 255, 0.15)',
+                color: 'var(--color-secondary)',
+                padding: '0.15rem 0.45rem',
+                borderRadius: '4px',
+                fontFamily: 'JetBrains Mono',
+              }}
+            >
+              [Portfólio | GitHub]
+            </span>
+            <ExternalLink size={12} style={{ opacity: 0.7 }} />
+          </button>
 
           <button
             onClick={scrollToTop}
             className="btn-ghost"
             style={{ padding: '0.5rem 0.9rem', gap: '0.4rem' }}
-            title="Voltar ao Topo"
+            title={t.footer.backToTop}
           >
             <ArrowUp size={15} />
-            <span>Retornar ao Ápice</span>
+            <span>{t.footer.backToTop}</span>
           </button>
         </div>
       </div>
+
+      <style>{`
+        .footer-dev-btn:hover {
+          background-color: rgba(183, 109, 255, 0.18) !important;
+          border-color: rgba(183, 109, 255, 0.5) !important;
+          transform: translateY(-1px);
+        }
+      `}</style>
     </footer>
   );
 };

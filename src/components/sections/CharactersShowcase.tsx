@@ -119,7 +119,7 @@ export const CharactersShowcase: React.FC = () => {
             }}
           >
             <img
-              src="/assets/succubus-asas.png"
+              src="./assets/succubus-asas.png"
               alt="Succubus Real & Asas Dracônicas - Eclipsa"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               onError={(e) => (e.currentTarget.style.display = 'none')}

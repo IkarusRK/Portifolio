@@ -2,8 +2,11 @@ import React from 'react';
 import { ARTIST_INFO } from '../../data/portfolioData';
 import { cosmicAudio } from '../../utils/audioSynth';
 import { Sparkles, MessageSquare } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const AboutSection: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <section id="sobre-a-artista" className="section-spacing" style={{ backgroundColor: 'var(--color-surface-dim)' }}>
       <div className="container-custom">
@@ -38,7 +41,7 @@ export const AboutSection: React.FC = () => {
                 }}
               >
                 <img
-                  src="/assets/orbe-carmesim.png"
+                  src="./assets/orbe-carmesim.png"
                   alt="Eclipsa 3D Studio"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e) => (e.currentTarget.style.display = 'none')}
@@ -95,7 +98,7 @@ export const AboutSection: React.FC = () => {
                     letterSpacing: '0.12em',
                   }}
                 >
-                  Perfil da Artista • Craftsmanship
+                  {t.about.badge}
                 </span>
               </div>
 
@@ -109,15 +112,15 @@ export const AboutSection: React.FC = () => {
                   lineHeight: 1.2,
                 }}
               >
-                Moldando Nebulosas e Sangue Bárbaro
+                {t.about.title}
               </h2>
 
               <p style={{ color: 'var(--color-on-surface-variant)', lineHeight: 1.7, fontSize: '0.95rem', marginBottom: '1rem' }}>
-                {ARTIST_INFO.bio}
+                {t.about.bio}
               </p>
 
               <p style={{ color: 'var(--color-on-surface-variant)', lineHeight: 1.7, fontSize: '0.95rem', marginBottom: '1.75rem' }}>
-                {ARTIST_INFO.bioExtended}
+                {t.about.bioExtended}
               </p>
 
               {/* Arsenal de Ferramentas */}
@@ -133,7 +136,7 @@ export const AboutSection: React.FC = () => {
                     marginBottom: '0.75rem',
                   }}
                 >
-                  Domínio de Software &amp; Ferramentas:
+                  {t.about.toolsTitle}:
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                   {ARTIST_INFO.tools.map((tool) => (
@@ -173,18 +176,20 @@ export const AboutSection: React.FC = () => {
                   rel="noreferrer"
                   onClick={() => cosmicAudio.playClick()}
                   className="btn-primary"
+                  style={{ textDecoration: 'none' }}
                 >
                   <MessageSquare size={16} />
-                  <span>Servidor Discord Oficial da Eclipsa</span>
+                  <span>{t.about.discordBtn}</span>
                 </a>
 
                 <a
                   href="#galeria-3d"
                   onClick={() => cosmicAudio.playClick()}
                   className="btn-secondary"
+                  style={{ textDecoration: 'none' }}
                 >
                   <Sparkles size={16} />
-                  <span>Ver Todos os Projetos</span>
+                  <span>{t.nav.works}</span>
                 </a>
               </div>
             </div>

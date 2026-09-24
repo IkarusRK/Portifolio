@@ -1,13 +1,23 @@
 import React from 'react';
 import { ARTIST_INFO } from '../../data/portfolioData';
 import { Box, Users, Star, Award } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const MetricsTicker: React.FC = () => {
+  const { t } = useLanguage();
+
+  const labels = [
+    t.metrics.mods,
+    t.metrics.players,
+    t.metrics.approval,
+    t.metrics.udim,
+  ];
+
   const icons = [
-    <Box size={28} style={{ color: 'var(--color-primary)' }} />,
-    <Users size={28} style={{ color: 'var(--color-secondary)' }} />,
-    <Star size={28} style={{ color: 'var(--color-tertiary)' }} />,
-    <Award size={28} style={{ color: 'var(--color-secondary)' }} />,
+    <Box key="1" size={28} style={{ color: 'var(--color-primary)' }} />,
+    <Users key="2" size={28} style={{ color: 'var(--color-secondary)' }} />,
+    <Star key="3" size={28} style={{ color: 'var(--color-tertiary)' }} />,
+    <Award key="4" size={28} style={{ color: 'var(--color-secondary)' }} />,
   ];
 
   return (
@@ -47,7 +57,7 @@ export const MetricsTicker: React.FC = () => {
                   {stat.value}
                 </div>
                 <div style={{ fontSize: '0.9rem', color: 'var(--color-on-surface-variant)' }}>
-                  {stat.label}
+                  {labels[idx] || stat.label}
                 </div>
               </div>
 

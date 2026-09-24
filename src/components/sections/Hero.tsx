@@ -2,12 +2,15 @@ import React from 'react';
 import { InteractiveEclipse } from '../ui/InteractiveEclipse';
 import { cosmicAudio } from '../../utils/audioSynth';
 import { View, Sparkles, Layers } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface HeroProps {
   eclipseVisible?: boolean;
 }
 
 export const Hero: React.FC<HeroProps> = ({ eclipseVisible = true }) => {
+  const { t } = useLanguage();
+
   return (
     <section
       style={{
@@ -100,7 +103,7 @@ export const Hero: React.FC<HeroProps> = ({ eclipseVisible = true }) => {
                 marginBottom: '2rem',
               }}
             >
-              Moldando lendas bárbaras sob céus astrais no universo de Conan Exiles. Ambientes monumentais, avatares épicos, armaduras forjadas em estrelas e props otimizados para produções AAA e comunidades apaixonadas.
+              {t.hero.subtitle}
             </p>
 
             {/* CTA Buttons */}
@@ -109,27 +112,30 @@ export const Hero: React.FC<HeroProps> = ({ eclipseVisible = true }) => {
                 href="#viewport-3d-section"
                 onClick={() => cosmicAudio.playClick()}
                 className="btn-primary"
+                style={{ textDecoration: 'none' }}
               >
                 <View size={18} />
-                <span>Explorar Inspetor 3D</span>
+                <span>{t.hero.exploreBtn}</span>
               </a>
 
               <a
                 href="#comissoes"
                 onClick={() => cosmicAudio.playClick()}
                 className="btn-secondary"
+                style={{ textDecoration: 'none' }}
               >
                 <Sparkles size={18} />
-                <span>Solicitar Orçamento / Mod</span>
+                <span>{t.hero.commissionBtn}</span>
               </a>
 
               <a
                 href="#galeria-3d"
                 onClick={() => cosmicAudio.playClick()}
                 className="btn-ghost"
+                style={{ textDecoration: 'none' }}
               >
                 <Layers size={16} style={{ color: 'var(--color-tertiary)' }} />
-                <span>Ver Catálogo</span>
+                <span>{t.nav.works}</span>
               </a>
             </div>
           </div>
@@ -158,7 +164,7 @@ export const Hero: React.FC<HeroProps> = ({ eclipseVisible = true }) => {
                   textTransform: 'uppercase',
                 }}
               >
-                ✦ Toque no Eclipse para pulsar energia ✦
+                ✦ {t.hero.orbitHint} ✦
               </div>
             </div>
 
@@ -212,7 +218,7 @@ export const Hero: React.FC<HeroProps> = ({ eclipseVisible = true }) => {
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: 'var(--color-on-surface-variant)' }}>Bioma Ativo</span>
+                  <span style={{ color: 'var(--color-on-surface-variant)' }}>Status</span>
                   <span className="font-mono" style={{ color: 'var(--color-on-surface)' }}>
                     Hyborian Astral Plains
                   </span>

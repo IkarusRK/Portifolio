@@ -104,7 +104,7 @@ export const EnvironmentsShowcase: React.FC = () => {
           }}
         >
           <img
-            src="/assets/catedral-astral.jpg"
+            src="./assets/catedral-astral.jpg"
             alt="Catedral Astral das Águas - Eclipsa"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             onError={(e) => (e.currentTarget.style.display = 'none')}

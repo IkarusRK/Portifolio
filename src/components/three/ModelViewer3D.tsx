@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { cosmicAudio } from '../../utils/audioSynth';
 import { Layers, RotateCcw, Play, Pause, Compass } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export type ShaderMode = 'pbr' | 'wireframe' | 'clay' | 'emissive';
 export type ModelType = 'crimson_astrolabe';
@@ -14,6 +15,7 @@ interface ModelViewer3DProps {
 export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({
   initialModel = 'crimson_astrolabe',
 }) => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [shaderMode, setShaderMode] = useState<ShaderMode>('pbr');
   const activeModel: ModelType = initialModel;
@@ -529,14 +531,14 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({
             <button
               onClick={handleToggleAutoRotate}
               className="hud-btn"
-              title={isAutoRotating ? 'Pausar Rotação' : 'Girar 360°'}
+              title={isAutoRotating ? 'Pause' : t.inspector.controls.autoRotate}
             >
               {isAutoRotating ? <Pause size={13} /> : <Play size={13} />}
             </button>
             <button
               onClick={handleResetCamera}
               className="hud-btn"
-              title="Resetar Câmera"
+              title={t.inspector.controls.reset}
             >
               <RotateCcw size={13} />
             </button>
@@ -558,25 +560,25 @@ export const ModelViewer3D: React.FC<ModelViewer3DProps> = ({
             onClick={() => handleShaderChange('pbr')}
             className={`hud-btn ${shaderMode === 'pbr' ? 'active' : ''}`}
           >
-            PBR / Textura
+            {t.inspector.viewModes.pbr}
           </button>
           <button
             onClick={() => handleShaderChange('wireframe')}
             className={`hud-btn ${shaderMode === 'wireframe' ? 'active' : ''}`}
           >
-            Wireframe
+            {t.inspector.viewModes.wireframe}
           </button>
           <button
             onClick={() => handleShaderChange('clay')}
             className={`hud-btn ${shaderMode === 'clay' ? 'active' : ''}`}
           >
-            Clay / ZBrush
+            {t.inspector.viewModes.clay}
           </button>
           <button
             onClick={() => handleShaderChange('emissive')}
             className={`hud-btn ${shaderMode === 'emissive' ? 'active' : ''}`}
           >
-            Emissivo
+            {t.inspector.viewModes.emission}
           </button>
         </div>
       </div>
