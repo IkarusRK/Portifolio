@@ -18,6 +18,7 @@ import { cosmicAudio } from './utils/audioSynth';
 
 export function App() {
   const [showSplash, setShowSplash] = useState<boolean>(true);
+  const [heroEclipseVisible, setHeroEclipseVisible] = useState<boolean>(false);
   const [currentTheme, setCurrentTheme] = useState<string>('eclipse');
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -44,7 +45,12 @@ export function App() {
   return (
     <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Intro Splash Screen – Eclipse forming animation */}
-      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      {showSplash && (
+        <SplashScreen
+          onComplete={() => setShowSplash(false)}
+          onEclipseArrive={() => setHeroEclipseVisible(true)}
+        />
+      )}
 
       {/* Interactive Celestial Starfield Canvas in Background */}
       <StarfieldCanvas />
@@ -65,7 +71,7 @@ export function App() {
       {/* Main Content Sections */}
       <main style={{ flex: 1, position: 'relative', zIndex: 10 }}>
         {/* 1. Hero Section with Interactive Eclipse */}
-        <Hero />
+        <Hero eclipseVisible={heroEclipseVisible} />
 
         {/* 2. Metrics Ticker (60+ mods, 250k+ players) */}
         <MetricsTicker />

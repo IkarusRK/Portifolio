@@ -3,7 +3,11 @@ import { InteractiveEclipse } from '../ui/InteractiveEclipse';
 import { cosmicAudio } from '../../utils/audioSynth';
 import { View, Sparkles, Layers } from 'lucide-react';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  eclipseVisible?: boolean;
+}
+
+export const Hero: React.FC<HeroProps> = ({ eclipseVisible = true }) => {
   return (
     <section
       style={{
@@ -142,7 +146,7 @@ export const Hero: React.FC = () => {
           >
             {/* The Celestial Interactive Eclipse */}
             <div style={{ marginBottom: '2rem' }}>
-              <InteractiveEclipse />
+              <InteractiveEclipse initialVisible={eclipseVisible} />
               <div
                 style={{
                   textAlign: 'center',

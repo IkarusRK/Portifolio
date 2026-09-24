@@ -5,9 +5,10 @@ import { Moon } from 'lucide-react';
 
 interface InteractiveEclipseProps {
   onTap?: () => void;
+  initialVisible?: boolean;
 }
 
-export const InteractiveEclipse: React.FC<InteractiveEclipseProps> = ({ onTap }) => {
+export const InteractiveEclipse: React.FC<InteractiveEclipseProps> = ({ onTap, initialVisible = true }) => {
   const [isSupernova, setIsSupernova] = useState<boolean>(false);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -36,6 +37,7 @@ export const InteractiveEclipse: React.FC<InteractiveEclipseProps> = ({ onTap })
 
   return (
     <div
+      id="hero-eclipse"
       className="eclipse-wrapper"
       onClick={handleClick}
       role="button"
@@ -43,7 +45,8 @@ export const InteractiveEclipse: React.FC<InteractiveEclipseProps> = ({ onTap })
       title="Toque no Eclipse Cósmico para canalizar energia astral"
       style={{
         transform: isSupernova ? 'scale(1.1)' : 'scale(1)',
-        transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease',
+        opacity: initialVisible ? 1 : 0,
       }}
     >
       {/* Outer Dashed Orbit Ring */}
