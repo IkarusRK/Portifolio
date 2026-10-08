@@ -156,7 +156,7 @@ export const Hero = () => {
           className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight"
         >
           <GradientText as="span" className="text-4xl sm:text-6xl md:text-7xl font-extrabold">
-            Ikarus Sylver
+            {t.hero.name}
           </GradientText>
         </motion.h1>
 

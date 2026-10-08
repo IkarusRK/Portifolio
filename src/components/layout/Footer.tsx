@@ -10,7 +10,7 @@ export const Footer = () => {
     >
       <div className="max-w-4xl mx-auto flex flex-col items-center gap-3">
         <p className="font-bold text-sm text-[var(--text-primary)]">
-          © {new Date().getFullYear()} Ikarus Sylver (Daniel Reis). {t.footer.rights}
+          © {new Date().getFullYear()} Daniel Reis (IkarusRK). {t.footer.rights}
         </p>
         <p className="text-xs text-[var(--text-secondary)] max-w-md leading-relaxed">
           {t.footer.tagline}

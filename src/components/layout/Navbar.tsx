@@ -78,7 +78,7 @@ export const Navbar = () => {
             backgroundImage: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
           }}
         >
-          Ikarus Sylver
+          Daniel Reis
         </a>
 
         {/* Links Desktop */}

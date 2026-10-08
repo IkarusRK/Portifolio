@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const BOOT_LINES = [
-  'Portfolio OS v2.0.0 [Ikarus Sylver]',
+  'Portfolio OS v2.0.0 [Daniel Reis]',
   '[OK] Initializing kernel & WebGL drivers...',
   '[OK] Loading multi-language modules (PT/EN/ES/JA/ZH/KO/RU)...',
   '[OK] Mounting perspective engine (Client/Dev)...',
@@ -11,7 +11,7 @@ const BOOT_LINES = [
   'Session ready.',
 ];
 
-const NAME = 'Ikarus Sylver';
+const NAME = 'Daniel Reis';
 const LOG_COLOR = '#e6e6e6';
 const CURSOR_COLOR = '#f5f5f5';
 

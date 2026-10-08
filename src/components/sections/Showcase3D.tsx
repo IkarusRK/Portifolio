@@ -15,7 +15,7 @@ const RESMON_RESOURCES = [
     status: 'Otimizado',
   },
   {
-    name: 'sylver_core',
+    name: 'ikarus_core_engine',
     type: 'Framework / Core Engine',
     clientType: 'Núcleo Central & Sincronização',
     ms: '0.01 ms',
@@ -23,9 +23,9 @@ const RESMON_RESOURCES = [
     status: 'Otimizado',
   },
   {
-    name: 'sylver_inventory_nui',
-    type: 'React NUI + Drag & Drop',
-    clientType: 'Telas & Inventário dos Jogadores',
+    name: 'reactive_ui_flow',
+    type: 'React State + Drag & Drop',
+    clientType: 'Telas Interativas & Sincronização',
     ms: '0.01 ms',
     mem: '3.4 MB',
     status: 'Otimizado',

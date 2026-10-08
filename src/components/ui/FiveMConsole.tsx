@@ -21,13 +21,13 @@ export const FiveMConsole = () => {
     {
       id: '1',
       type: 'info',
-      text: 'FiveM & Web Developer Console [v2.0.0 - Ikarus Sylver]',
+      text: 'Terminal Interativo do Desenvolvedor [v2.0.0 - Daniel Reis]',
       timestamp: '00:00:01',
     },
     {
       id: '2',
       type: 'success',
-      text: 'Conectado ao ambiente de desenvolvimento interativo.',
+      text: 'Conectado ao ambiente de desenvolvimento de Daniel Reis.',
       timestamp: '00:00:02',
     },
     {
@@ -147,7 +147,7 @@ export const FiveMConsole = () => {
       case 'resmon':
         addLog('info', '[RESMON DIAGNOSTIC]');
         addLog('success', '  eclipsa_engine_3d: 0.01ms | 3.1MB');
-        addLog('success', '  sylver_core:       0.01ms | 2.1MB');
+        addLog('success', '  ikarus_core:       0.01ms | 2.1MB');
         addLog('success', '  archeus_guard:     0.00ms | 1.2MB');
         addLog('info', 'Status: 100% Otimizado (0.01ms total)');
         break;

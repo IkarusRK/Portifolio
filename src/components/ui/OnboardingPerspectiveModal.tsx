@@ -58,7 +58,7 @@ export const OnboardingPerspectiveModal = () => {
                 className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider mb-3 border border-[var(--glass-border)] bg-[var(--glass-bg)]"
                 style={{ color: 'var(--accent-from)' }}
               >
-                Ikarus Sylver Portfolio
+                Daniel Reis • Portfolio
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight mb-2">
                 {t.perspective.modalTitle}
