@@ -12,12 +12,11 @@ export const Skills = () => {
 
   const tabCategories = [
     { id: 'all', label: t.skills.allCategories },
-    { id: 'gta', label: t.skills.categories.gta },
-    { id: '3d', label: t.skills.categories['3d'] },
-    { id: 'nui', label: t.skills.categories.nui },
     { id: 'backend', label: t.skills.categories.backend },
     { id: 'frontend', label: t.skills.categories.frontend },
+    { id: 'gta', label: t.skills.categories.gta },
     { id: 'tools', label: t.skills.categories.tools },
+    { id: '3d', label: t.skills.categories['3d'] },
   ];
 
   const filteredSkills = SKILLS.filter(
@@ -101,6 +100,8 @@ export const Skills = () => {
                   name={displayName}
                   icon={skill.icon}
                   index={index}
+                  level={skill.level}
+                  levelBadge={skill.levelBadge}
                 />
               );
             })}

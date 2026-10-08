@@ -27,6 +27,8 @@ export interface Skill {
   clientName?: string;
   category: 'backend' | 'frontend' | 'tools' | 'gta' | 'nui' | '3d';
   icon: string;
+  level?: 'core' | 'basic';
+  levelBadge?: string;
 }
 
 export interface ExperienceItem {

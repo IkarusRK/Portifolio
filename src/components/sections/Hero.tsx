@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaReact, FaCube } from 'react-icons/fa';
 import { SiLua } from 'react-icons/si';
 import { LuAtom, LuCoffee, LuCode, LuMousePointerClick } from 'react-icons/lu';
+import { HelpCircle } from 'lucide-react';
 import type { ParticleShape } from '../../data/floatingCards';
 import { useTheme } from '../../hooks/useTheme';
 import { usePerspective } from '../../contexts/PerspectiveContext';
@@ -14,6 +15,7 @@ import { FLOATING_CARDS } from '../../data/floatingCards';
 import { THEME_PALETTES } from '../../data/themes';
 import { CVDropdown } from '../ui/CVDropdown';
 import { LiveClock } from '../ui/LiveClock';
+import { PortfolioGuideModal } from '../ui/PortfolioGuideModal';
 
 const FLEE_RADIUS = 100;
 const FLEE_STRENGTH = 36;
@@ -33,6 +35,7 @@ export const Hero = () => {
   const [particleShape, setParticleShape] = useState<ParticleShape>('react');
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [isIntroActive, setIsIntroActive] = useState(true);
+  const [guideOpen, setGuideOpen] = useState(false);
 
   useLayoutEffect(() => {
     const update = () => {
@@ -186,6 +189,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
+          onPointerDown={(e) => e.stopPropagation()}
           className="flex flex-wrap gap-4 justify-center items-center"
         >
           <a
@@ -212,12 +216,28 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-8 inline-flex flex-col items-center gap-3 px-5 py-3 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-lg"
+          onPointerDown={(e) => e.stopPropagation()}
+          className="mt-8 inline-flex flex-col items-center gap-3 px-5 py-3 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-lg max-w-full"
         >
-          <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 select-none">
-            <LuMousePointerClick className="w-3.5 h-3.5 text-[var(--accent-from)] animate-bounce" />
-            {perspective === 'client' ? t.hero.particleHintClient : t.hero.particleHintDev}
-          </span>
+          <div className="flex flex-wrap items-center justify-between gap-3 w-full border-b border-[var(--glass-border)]/50 pb-2">
+            <span className="text-xs font-semibold text-[var(--text-secondary)] flex items-center gap-1.5 select-none">
+              <LuMousePointerClick className="w-3.5 h-3.5 text-[var(--accent-from)] animate-bounce" />
+              {perspective === 'client' ? 'Geometria 3D das competências:' : 'Moldar formato das partículas 3D:'}
+            </span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setGuideOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold text-[var(--accent-from)] hover:text-white hover:bg-[var(--accent-from)] border border-[var(--glass-border)] bg-[var(--glass-bg)] cursor-pointer transition-all select-none shadow-sm"
+              title="Abrir guia interativo do portfólio"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              Como interagir?
+            </button>
+          </div>
+
           <div className="flex flex-wrap justify-center gap-2">
             {shapeList.map((s) => {
               const Icon = s.icon;
@@ -226,7 +246,10 @@ export const Hero = () => {
                 <button
                   key={s.id}
                   type="button"
-                  onClick={() => setParticleShape(s.id as ParticleShape)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setParticleShape(s.id as ParticleShape);
+                  }}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer select-none flex items-center gap-1.5 ${
                     isSelected
                       ? 'text-white shadow-md'
@@ -248,12 +271,35 @@ export const Hero = () => {
           </div>
         </motion.div>
 
+        {/* Ambient Interaction Cue */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono border border-[var(--glass-border)] bg-[var(--glass-bg)]/80 text-[var(--text-secondary)] select-none backdrop-blur-sm shadow-sm"
+        >
+          {isPointerDown ? (
+            <>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-emerald-400 font-bold">
+                Atraindo partículas para o cursor! Mova livremente.
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="text-[var(--accent-from)]">🖐️</span>
+              <span>Dica: Clique e segure no fundo da tela para atrair as partículas.</span>
+            </>
+          )}
+        </motion.div>
+
         {/* Floating Cards with Cursor Flee Physics */}
         <motion.div
           ref={containerRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
+          onPointerDown={(e) => e.stopPropagation()}
           className="mt-10 flex flex-wrap gap-4 justify-center"
         >
           {FLOATING_CARDS.map((card, i) => {
@@ -312,6 +358,8 @@ export const Hero = () => {
           })}
         </motion.div>
       </div>
+
+      <PortfolioGuideModal isOpen={guideOpen} onClose={() => setGuideOpen(false)} />
     </section>
   );
 };
