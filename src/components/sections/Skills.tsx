@@ -2,61 +2,66 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SKILLS } from '../../data/skills';
 import { TechBadge } from '../ui/TechBadge';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { usePerspective } from '../../contexts/PerspectiveContext';
 
-const TAB_CATEGORIES = [
-  { id: 'all', label: 'Todos' },
-  { id: 'backend', label: 'Backend' },
-  { id: 'frontend', label: 'Frontend' },
-  { id: 'tools', label: 'Ferramentas' },
-] as const;
-
-const SKILL_CATEGORIES = [
-  { id: 'backend', label: 'Backend' },
-  { id: 'frontend', label: 'Frontend' },
-  { id: 'tools', label: 'Ferramentas' },
-] as const;
-
-const Skills = () => {
+export const Skills = () => {
+  const { t } = useLanguage();
+  const { perspective } = usePerspective();
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  const filteredCategories = SKILL_CATEGORIES.filter(
-    (cat) => activeCategory === 'all' || cat.id === activeCategory
+  const tabCategories = [
+    { id: 'all', label: t.skills.allCategories },
+    { id: 'gta', label: t.skills.categories.gta },
+    { id: '3d', label: t.skills.categories['3d'] },
+    { id: 'nui', label: t.skills.categories.nui },
+    { id: 'backend', label: t.skills.categories.backend },
+    { id: 'frontend', label: t.skills.categories.frontend },
+    { id: 'tools', label: t.skills.categories.tools },
+  ];
+
+  const filteredSkills = SKILLS.filter(
+    (skill) => activeCategory === 'all' || skill.category === activeCategory
   );
 
   return (
     <section id="skills" className="py-20 px-4" style={{ background: 'var(--bg-primary)' }}>
       <div className="max-w-5xl mx-auto">
-        <motion.h2
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl font-bold text-[var(--text-primary)] mb-2 text-center"
+          className="text-center mb-8"
         >
-          Skills
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-[var(--text-secondary)] text-center mb-8"
-        >
-          Tecnologias com as quais trabalho
-        </motion.p>
+          <span
+            className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 border border-[var(--glass-border)] bg-[var(--glass-bg)]"
+            style={{ color: 'var(--accent-from)' }}
+          >
+            Stack & Ferramentas
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[var(--text-primary)] mb-3">
+            {t.skills.title}
+          </h2>
+          <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
+            {perspective === 'client' ? t.skills.descClient : t.skills.descDev}
+          </p>
+        </motion.div>
 
         {/* Category Tabs */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex justify-center flex-wrap gap-2 mb-12 max-w-md mx-auto p-1 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md"
+          className="flex justify-center flex-wrap gap-2 mb-12 max-w-2xl mx-auto p-1.5 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md"
         >
-          {TAB_CATEGORIES.map((tab) => {
+          {tabCategories.map((tab) => {
             const isActive = activeCategory === tab.id;
             return (
               <button
                 key={tab.id}
+                type="button"
                 onClick={() => setActiveCategory(tab.id)}
-                className={`relative px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer select-none transition-colors duration-200 ${
+                className={`relative px-3.5 py-1.5 rounded-xl text-xs font-semibold cursor-pointer select-none transition-colors duration-200 ${
                   isActive ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
@@ -78,38 +83,29 @@ const Skills = () => {
         </motion.div>
 
         {/* Skills Grid */}
-        <motion.div
-          layout
-          className="space-y-12 min-h-[300px]"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredCategories.map((cat) => {
-              const items = SKILLS.filter((s) => s.category === cat.id);
-              if (items.length === 0) return null;
-              
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory + perspective}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25 }}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5"
+          >
+            {filteredSkills.map((skill, index) => {
+              const displayName =
+                perspective === 'client' && skill.clientName ? skill.clientName : skill.name;
               return (
-                <motion.div
-                  key={cat.id}
-                  layout
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <h3 className="text-lg font-semibold text-[var(--accent-from)] mb-4">{cat.label}</h3>
-                  <motion.div 
-                    layout
-                    className="flex flex-wrap gap-3"
-                  >
-                    {items.map((skill, i) => (
-                      <TechBadge key={skill.id} name={skill.name} icon={skill.icon} index={i} />
-                    ))}
-                  </motion.div>
-                </motion.div>
+                <TechBadge
+                  key={skill.id}
+                  name={displayName}
+                  icon={skill.icon}
+                  index={index}
+                />
               );
             })}
-          </AnimatePresence>
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
