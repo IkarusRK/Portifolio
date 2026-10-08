@@ -12,7 +12,6 @@ import { LanguageSelector } from '../ui/LanguageSelector';
 export const Navbar = () => {
   const { t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [themeOpen, setThemeOpen] = useState(false);
   const [cvModalOpen, setCvModalOpen] = useState(false);
   const [cvModalLang, setCvModalLang] = useState<'pt' | 'en'>('pt');
   const [activeSection, setActiveSection] = useState('home');
@@ -117,38 +116,14 @@ export const Navbar = () => {
           <LanguageSelector compact />
           <CVDropdown variant="compact" />
 
-          <ThemePicker isOpen={themeOpen} onClose={() => setThemeOpen(false)}>
-            <button
-              type="button"
-              onClick={() => setThemeOpen((o) => !o)}
-              className="p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--accent-from)] hover:bg-[var(--glass-bg)] border border-[var(--glass-border)] cursor-pointer transition-all"
-              aria-label="Abrir seletor de tema"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-              </svg>
-            </button>
-          </ThemePicker>
+          <ThemePicker />
         </div>
 
         {/* Mobile controls (Compact) */}
         <div className="flex items-center gap-2 md:hidden">
           <LanguageSelector compact />
           <PerspectiveToggle compact />
-          <ThemePicker isOpen={themeOpen} onClose={() => setThemeOpen(false)}>
-            <button
-              type="button"
-              onClick={() => setThemeOpen((o) => !o)}
-              className="p-2 rounded-xl text-[var(--text-secondary)] border border-[var(--glass-border)] bg-[var(--glass-bg)]"
-              aria-label="Tema"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-              </svg>
-            </button>
-          </ThemePicker>
+          <ThemePicker compact />
           <button
             type="button"
             onClick={() => setMenuOpen((o) => !o)}

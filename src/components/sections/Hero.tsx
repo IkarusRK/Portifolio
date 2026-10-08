@@ -19,7 +19,7 @@ const FLEE_RADIUS = 100;
 const FLEE_STRENGTH = 36;
 
 export const Hero = () => {
-  const { theme } = useTheme();
+  const { theme, mode } = useTheme();
   const { perspective } = usePerspective();
   const { t } = useLanguage();
 
@@ -118,6 +118,7 @@ export const Hero = () => {
         isAttracting={isPointerDown}
         mouseNdc={mouseNdc}
         shape={particleShape}
+        mode={mode}
       />
 
       <AnimatePresence>

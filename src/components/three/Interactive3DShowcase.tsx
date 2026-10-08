@@ -254,7 +254,7 @@ export const Interactive3DShowcase = () => {
   const secondaryColor = palette.to;
 
   return (
-    <div className="relative w-full h-[380px] sm:h-[440px] rounded-3xl overflow-hidden border border-[var(--glass-border)] bg-black/40 backdrop-blur-xl shadow-2xl flex flex-col">
+    <div className="relative w-full h-[380px] sm:h-[440px] rounded-3xl overflow-hidden border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-xl shadow-2xl flex flex-col">
       {/* 3D Canvas */}
       <div className="flex-1 w-full h-full relative cursor-grab active:cursor-grabbing">
         <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>

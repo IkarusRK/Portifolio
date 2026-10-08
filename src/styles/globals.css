@@ -43,7 +43,8 @@ body {
   background: rgba(148, 163, 184, 0.7);
 }
 
-/* Tema 1: Purple / Blue */
+/* Tema 1: Purple / Blue (Padrão) */
+:root,
 [data-theme='purple'][data-mode='dark'] {
   --bg-primary: #0a0a0f;
   --bg-secondary: #1a0a2e;
@@ -56,6 +57,7 @@ body {
   --glow: rgba(124, 58, 237, 0.2);
 }
 
+[data-mode='light'],
 [data-theme='purple'][data-mode='light'] {
   --bg-primary: #f8f7ff;
   --bg-secondary: #e5e7eb;
@@ -63,10 +65,9 @@ body {
   --accent-to: #2563eb;
   --text-primary: #1e1b4b;
   --text-secondary: #4b5563;
-  /* deixamos o glass um pouco mais roxo para não sumir no branco */
-  --glass-bg: rgba(226, 232, 255, 0.9);
-  --glass-border: rgba(148, 163, 184, 0.5);
-  --glow: rgba(124, 58, 237, 0.25);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(148, 163, 184, 0.4);
+  --glow: rgba(124, 58, 237, 0.2);
 }
 
 /* Tema 2: Cyberpunk */

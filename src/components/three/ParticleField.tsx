@@ -231,6 +231,7 @@ interface ParticleSceneProps {
   isAttracting: boolean;
   mouseNdc: { x: number; y: number };
   shape: ParticleShape;
+  mode?: 'dark' | 'light';
 }
 
 const ParticleScene = ({
@@ -238,6 +239,7 @@ const ParticleScene = ({
   isAttracting,
   mouseNdc,
   shape,
+  mode = 'dark',
 }: ParticleSceneProps) => {
   const pointsRef = useRef<THREE.Points>(null);
   const glowPointsRef = useRef<THREE.Points>(null);
@@ -279,6 +281,20 @@ const ParticleScene = ({
   useEffect(() => {
     colorRef.current.set(accentColor);
     glowColorRef.current.set(accentColor);
+    if (pointsRef.current) {
+      const mat = pointsRef.current.material as THREE.PointsMaterial;
+      if (mat) {
+        mat.color.set(accentColor);
+        mat.needsUpdate = true;
+      }
+    }
+    if (glowPointsRef.current) {
+      const mat = glowPointsRef.current.material as THREE.PointsMaterial;
+      if (mat) {
+        mat.color.set(accentColor);
+        mat.needsUpdate = true;
+      }
+    }
   }, [accentColor]);
 
   useFrame((state) => {
@@ -353,11 +369,11 @@ const ParticleScene = ({
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.06}
-          color={colorRef.current}
+          size={mode === 'light' ? 0.045 : 0.06}
+          color={accentColor}
           transparent
-          opacity={0.8}
-          blending={THREE.AdditiveBlending}
+          opacity={mode === 'light' ? 0.35 : 0.8}
+          blending={mode === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending}
           depthWrite={false}
         />
       </points>
@@ -370,11 +386,11 @@ const ParticleScene = ({
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.16}
-          color={glowColorRef.current}
+          size={mode === 'light' ? 0.09 : 0.16}
+          color={accentColor}
           transparent
-          opacity={0.25}
-          blending={THREE.AdditiveBlending}
+          opacity={mode === 'light' ? 0.1 : 0.25}
+          blending={mode === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending}
           depthWrite={false}
         />
       </points>
@@ -387,6 +403,7 @@ export const ParticleField = ({
   isAttracting,
   mouseNdc,
   shape,
+  mode = 'dark',
 }: ParticleSceneProps) => {
   return (
     <div className="absolute inset-0 pointer-events-none z-0">
@@ -401,6 +418,7 @@ export const ParticleField = ({
           isAttracting={isAttracting}
           mouseNdc={mouseNdc}
           shape={shape}
+          mode={mode}
         />
       </Canvas>
     </div>
