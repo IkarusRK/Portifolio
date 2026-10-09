@@ -3,16 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaReact, FaCube } from 'react-icons/fa';
 import { SiLua } from 'react-icons/si';
 import { LuAtom, LuCoffee, LuCode, LuMousePointerClick } from 'react-icons/lu';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Pin } from 'lucide-react';
 import type { ParticleShape } from '../../data/floatingCards';
-import { useTheme } from '../../hooks/useTheme';
 import { usePerspective } from '../../contexts/PerspectiveContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useParticleSystem } from '../../contexts/ParticleContext';
 import { useCursorPosition } from '../../hooks/useCursorPosition';
 import { GradientText } from '../ui/GradientText';
-import { ParticleField } from '../three/ParticleField';
 import { FLOATING_CARDS } from '../../data/floatingCards';
-import { THEME_PALETTES } from '../../data/themes';
 import { CVDropdown } from '../ui/CVDropdown';
 import { LiveClock } from '../ui/LiveClock';
 import { PortfolioGuideModal } from '../ui/PortfolioGuideModal';
@@ -21,38 +19,26 @@ const FLEE_RADIUS = 100;
 const FLEE_STRENGTH = 36;
 
 export const Hero = () => {
-  const { theme, mode } = useTheme();
   const { perspective } = usePerspective();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isPt = language === 'pt';
+  const {
+    heroShape,
+    setHeroShape,
+    isAttracting,
+    setIsAttracting,
+    triggerBriefAttraction,
+    pinHeroShape,
+    setPinHeroShape,
+  } = useParticleSystem();
 
-  const accentColor = THEME_PALETTES[theme]?.from ?? '#7c3aed';
   const mousePos = useCursorPosition(0.08);
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const [sectionRect, setSectionRect] = useState({ left: 0, top: 0, width: 1, height: 1 });
   const [cardCenters, setCardCenters] = useState<{ x: number; y: number }[]>([]);
   const [clickedCard, setClickedCard] = useState<number | null>(null);
-  const [particleShape, setParticleShape] = useState<ParticleShape>('react');
-  const [isPointerDown, setIsPointerDown] = useState(false);
   const [isIntroActive, setIsIntroActive] = useState(true);
   const [guideOpen, setGuideOpen] = useState(false);
-
-  useLayoutEffect(() => {
-    const update = () => {
-      if (sectionRef.current) setSectionRect(sectionRef.current.getBoundingClientRect());
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-
-  const mouseNdc = useMemo(
-    () => ({
-      x: ((mousePos.x - sectionRect.left) / sectionRect.width) * 2 - 1,
-      y: -((mousePos.y - sectionRect.top) / sectionRect.height) * 2 + 1,
-    }),
-    [mousePos.x, mousePos.y, sectionRect.left, sectionRect.top, sectionRect.width, sectionRect.height]
-  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -108,22 +94,14 @@ export const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 pt-24 pb-16"
       style={{
-        background: 'var(--bg-primary)',
+        background: 'transparent',
         backgroundImage:
           'radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-secondary) 0%, transparent 50%)',
       }}
-      onPointerDown={() => setIsPointerDown(true)}
-      onPointerUp={() => setIsPointerDown(false)}
-      onPointerLeave={() => setIsPointerDown(false)}
+      onPointerDown={() => setIsAttracting(true)}
+      onPointerUp={() => setIsAttracting(false)}
+      onPointerLeave={() => setIsAttracting(false)}
     >
-      <ParticleField
-        accentColor={accentColor}
-        isAttracting={isPointerDown}
-        mouseNdc={mouseNdc}
-        shape={particleShape}
-        mode={mode}
-      />
-
       <AnimatePresence>
         {isIntroActive && (
           <motion.div
@@ -238,17 +216,18 @@ export const Hero = () => {
             </button>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center items-center gap-2">
             {shapeList.map((s) => {
               const Icon = s.icon;
-              const isSelected = particleShape === s.id;
+              const isSelected = heroShape === s.id;
               return (
                 <button
                   key={s.id}
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setParticleShape(s.id as ParticleShape);
+                    setHeroShape(s.id as ParticleShape);
+                    triggerBriefAttraction(1600);
                   }}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer select-none flex items-center gap-1.5 ${
                     isSelected
@@ -268,6 +247,46 @@ export const Hero = () => {
                 </button>
               );
             })}
+
+            {/* Pin / Lock Shape Toggle */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setPinHeroShape((prev) => !prev);
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer select-none flex items-center gap-1.5 ${
+                pinHeroShape
+                  ? 'text-white border-transparent shadow-md'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--glass-border)] bg-[var(--glass-bg)] hover:bg-[var(--glass-bg)]/80'
+              }`}
+              style={{
+                background: pinHeroShape
+                  ? 'linear-gradient(135deg, var(--accent-from), var(--accent-to))'
+                  : 'transparent',
+                boxShadow: pinHeroShape ? '0 0 15px var(--glow)' : 'none',
+              }}
+              title={
+                pinHeroShape
+                  ? isPt
+                    ? 'Formato fixado! Clique para liberar em poeira estelar livre.'
+                    : 'Shape pinned! Click to release into free cosmic particles.'
+                  : isPt
+                  ? 'Fixar formato na tela sem precisar segurar o clique.'
+                  : 'Pin shape on screen without having to hold click.'
+              }
+            >
+              <Pin className={`w-3.5 h-3.5 ${pinHeroShape ? 'rotate-45' : ''} transition-transform`} />
+              <span>
+                {pinHeroShape
+                  ? isPt
+                    ? 'Fixado'
+                    : 'Pinned'
+                  : isPt
+                  ? 'Fixar'
+                  : 'Pin'}
+              </span>
+            </button>
           </div>
         </motion.div>
 
@@ -278,17 +297,32 @@ export const Hero = () => {
           transition={{ delay: 0.6 }}
           className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono border border-[var(--glass-border)] bg-[var(--glass-bg)]/80 text-[var(--text-secondary)] select-none backdrop-blur-sm shadow-sm"
         >
-          {isPointerDown ? (
+          {isAttracting ? (
             <>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span className="text-emerald-400 font-bold">
-                Atraindo partículas para o cursor! Mova livremente.
+                {isPt
+                  ? `Atraindo partículas para o cursor no formato ${heroShape.toUpperCase()}!`
+                  : `Attracting particles to cursor in ${heroShape.toUpperCase()} format!`}
+              </span>
+            </>
+          ) : pinHeroShape ? (
+            <>
+              <span className="w-2 h-2 rounded-full bg-[var(--accent-from)]" />
+              <span className="text-[var(--text-primary)] font-semibold">
+                {isPt
+                  ? `Formato ${heroShape.toUpperCase()} fixado. Clique em "Fixado" para soltar as estrelas.`
+                  : `Format ${heroShape.toUpperCase()} pinned. Click "Pinned" to release particles.`}
               </span>
             </>
           ) : (
             <>
               <span className="text-[var(--accent-from)]">🖐️</span>
-              <span>Dica: Clique e segure no fundo da tela para atrair as partículas.</span>
+              <span>
+                {isPt
+                  ? `Dica: Clique e segure no fundo para atrair no formato ${heroShape.toUpperCase()}.`
+                  : `Tip: Click and hold on the background to collapse into ${heroShape.toUpperCase()} shape.`}
+              </span>
             </>
           )}
         </motion.div>
@@ -329,7 +363,8 @@ export const Hero = () => {
                 transition={{ type: 'spring', stiffness: 280, damping: 20 }}
                 onClick={() => {
                   setClickedCard(card.id);
-                  setParticleShape(card.shape);
+                  setHeroShape(card.shape);
+                  triggerBriefAttraction(1600);
                   setTimeout(() => setClickedCard(null), 600);
                 }}
                 className={`w-64 p-4 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-xl text-left cursor-pointer transition-transform hover:scale-105 active:scale-95 ${

@@ -76,7 +76,7 @@ export const Showcase3D = () => {
   }, [benchmarking]);
 
   return (
-    <section id="showcase3d" className="py-20 px-4" style={{ background: 'var(--bg-primary)' }}>
+    <section id="showcase3d" className="py-20 px-4" style={{ background: 'transparent' }}>
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

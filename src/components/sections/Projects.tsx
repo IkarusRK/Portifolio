@@ -9,7 +9,7 @@ const Projects = () => {
   const { perspective } = usePerspective();
 
   return (
-    <section id="applications" className="py-20 px-4" style={{ background: 'var(--bg-primary)' }}>
+    <section id="applications" className="py-20 px-4" style={{ background: 'transparent' }}>
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

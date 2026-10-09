@@ -164,7 +164,7 @@ export const Stats = () => {
   ];
 
   return (
-    <section className="py-14 px-4 relative z-10" style={{ background: 'var(--bg-primary)' }}>
+    <section id="stats" className="py-14 px-4 relative z-10" style={{ background: 'transparent' }}>
       <div ref={ref} className="max-w-5xl mx-auto flex flex-col gap-6">
         {/* GitHub Header Banner */}
         <motion.div
