@@ -1,0 +1,502 @@
+{
+  "communities": {
+    "0": [
+      "ref_framer_motion",
+      "ref_lucide_react",
+      "ref_react",
+      "ref_react_icons",
+      "src_components_layout_navbar",
+      "src_components_layout_navbar_navbar",
+      "src_components_sections_hero",
+      "src_components_sections_hero_hero",
+      "src_components_sections_stats",
+      "src_components_sections_stats_animatedcounter",
+      "src_components_sections_stats_statcardprops",
+      "src_components_sections_stats_stats",
+      "src_components_ui_cvdropdown",
+      "src_components_ui_cvdropdown_cvdropdown",
+      "src_components_ui_cvdropdown_cvdropdownprops",
+      "src_components_ui_cvviewermodal",
+      "src_components_ui_cvviewermodal_cvviewermodal",
+      "src_components_ui_cvviewermodal_cvviewermodalprops",
+      "src_components_ui_glasscard",
+      "src_components_ui_glasscard_glasscard",
+      "src_components_ui_glasscard_glasscardprops",
+      "src_components_ui_gradienttext",
+      "src_components_ui_gradienttext_gradienttext",
+      "src_components_ui_gradienttext_gradienttextprops",
+      "src_components_ui_languageselector",
+      "src_components_ui_languageselector_languageselector",
+      "src_components_ui_languageselector_languageselectorprops",
+      "src_components_ui_liveclock",
+      "src_components_ui_liveclock_liveclock",
+      "src_components_ui_liveclock_liveclockprops",
+      "src_components_ui_onboardingperspectivemodal",
+      "src_components_ui_perspectivetoggle",
+      "src_components_ui_perspectivetoggle_perspectivetoggle",
+      "src_components_ui_perspectivetoggle_perspectivetoggleprops",
+      "src_components_ui_portfolioguidemodal",
+      "src_components_ui_portfolioguidemodal_portfolioguidemodal",
+      "src_components_ui_portfolioguidemodal_portfolioguidemodalprops",
+      "src_contexts_languagecontext",
+      "src_contexts_languagecontext_languagecontext",
+      "src_contexts_languagecontext_languagecontexttype",
+      "src_contexts_languagecontext_uselanguage",
+      "src_data_translations",
+      "src_data_translations_language_options",
+      "src_data_translations_translationdictionary",
+      "src_data_translations_translations",
+      "src_hooks_useclickoutside",
+      "src_hooks_useclickoutside_useclickoutside",
+      "src_hooks_usescrolldirection",
+      "src_hooks_usescrolldirection_direction",
+      "src_hooks_usescrolldirection_usescrolldirection",
+      "src_types_index_language"
+    ],
+    "1": [
+      "eslint_config",
+      "package",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_lint",
+      "package_scripts_preview",
+      "package_type",
+      "package_version",
+      "ref_autoprefixer",
+      "ref_canvas_confetti",
+      "ref_eslint",
+      "ref_eslint_js",
+      "ref_eslint_plugin_react_hooks",
+      "ref_eslint_plugin_react_refresh",
+      "ref_globals",
+      "ref_postcss",
+      "ref_tailwindcss",
+      "ref_tailwindcss_postcss",
+      "ref_types_canvas_confetti",
+      "ref_types_node",
+      "ref_types_react",
+      "ref_types_react_dom",
+      "ref_types_three",
+      "ref_typescript",
+      "ref_typescript_eslint",
+      "ref_vite",
+      "ref_vitejs_plugin_react",
+      "tailwind_config",
+      "tailwind_config_config",
+      "vite_config"
+    ],
+    "2": [
+      "ref_react_dom",
+      "src_app",
+      "src_app_app",
+      "src_components_bootscreen",
+      "src_components_bootscreen_boot_lines",
+      "src_components_bootscreen_bootscreen",
+      "src_components_bootscreen_bootscreenprops",
+      "src_components_layout_cursorfollower",
+      "src_components_layout_cursorfollower_cursorfollower",
+      "src_components_layout_footer",
+      "src_components_layout_footer_footer",
+      "src_components_sections_contact",
+      "src_components_sections_contact_contact",
+      "src_components_sections_skills_skills",
+      "src_components_ui_onboardingperspectivemodal_onboardingperspectivemodal",
+      "src_components_ui_scrolltotop",
+      "src_components_ui_scrolltotop_scrolltotop",
+      "src_contexts_languagecontext_languageprovider",
+      "src_contexts_particlecontext_particleprovider",
+      "src_contexts_perspectivecontext_perspectiveprovider",
+      "src_hooks_usecursorposition",
+      "src_hooks_usecursorposition_lerp",
+      "src_hooks_usecursorposition_position",
+      "src_hooks_usecursorposition_usecursorposition",
+      "src_index",
+      "src_main",
+      "src_styles_globals"
+    ],
+    "3": [
+      "tsconfig_app",
+      "tsconfig_app_compileroptions",
+      "tsconfig_app_compileroptions_allowimportingtsextensions",
+      "tsconfig_app_compileroptions_erasablesyntaxonly",
+      "tsconfig_app_compileroptions_jsx",
+      "tsconfig_app_compileroptions_lib",
+      "tsconfig_app_compileroptions_module",
+      "tsconfig_app_compileroptions_moduledetection",
+      "tsconfig_app_compileroptions_moduleresolution",
+      "tsconfig_app_compileroptions_noemit",
+      "tsconfig_app_compileroptions_nofallthroughcasesinswitch",
+      "tsconfig_app_compileroptions_nouncheckedsideeffectimports",
+      "tsconfig_app_compileroptions_nounusedlocals",
+      "tsconfig_app_compileroptions_nounusedparameters",
+      "tsconfig_app_compileroptions_skiplibcheck",
+      "tsconfig_app_compileroptions_strict",
+      "tsconfig_app_compileroptions_target",
+      "tsconfig_app_compileroptions_tsbuildinfofile",
+      "tsconfig_app_compileroptions_types",
+      "tsconfig_app_compileroptions_usedefineforclassfields",
+      "tsconfig_app_compileroptions_verbatimmodulesyntax",
+      "tsconfig_app_include"
+    ],
+    "4": [
+      "src_components_layout_themepicker",
+      "src_components_layout_themepicker_themepicker",
+      "src_components_layout_themepicker_themepickerprops",
+      "src_components_ui_fivemconsole",
+      "src_components_ui_fivemconsole_consolelog",
+      "src_components_ui_fivemconsole_fivemconsole",
+      "src_contexts_themecontext",
+      "src_contexts_themecontext_getstoredmode",
+      "src_contexts_themecontext_getstoredtheme",
+      "src_contexts_themecontext_themecontext",
+      "src_contexts_themecontext_themecontextvalue",
+      "src_contexts_themecontext_themeprovider",
+      "src_data_themes",
+      "src_data_themes_theme_ids",
+      "src_data_themes_theme_palettes",
+      "src_hooks_usetheme",
+      "src_hooks_usetheme_usetheme",
+      "src_types_index",
+      "src_types_index_mode",
+      "src_types_index_themeid",
+      "src_types_index_themepalette"
+    ],
+    "5": [
+      "src_components_sections_projects",
+      "src_components_sections_projects_projects",
+      "src_components_sections_sites",
+      "src_components_sections_sites_sites",
+      "src_components_ui_previewmodal",
+      "src_components_ui_previewmodal_previewmodal",
+      "src_components_ui_previewmodal_previewmodalprops",
+      "src_components_ui_projectcard",
+      "src_components_ui_projectcard_getprojecticon",
+      "src_components_ui_projectcard_projectcard",
+      "src_components_ui_projectcard_projectcardprops",
+      "src_contexts_perspectivecontext",
+      "src_contexts_perspectivecontext_perspectivecontext",
+      "src_contexts_perspectivecontext_perspectivecontexttype",
+      "src_contexts_perspectivecontext_useperspective",
+      "src_data_projects",
+      "src_data_projects_app_projects",
+      "src_data_projects_site_projects",
+      "src_types_index_perspective",
+      "src_types_index_project"
+    ],
+    "6": [
+      "src_components_three_particlefield",
+      "src_components_three_particlefield_getcodetarget",
+      "src_components_three_particlefield_getcube3dtarget",
+      "src_components_three_particlefield_getjavatarget",
+      "src_components_three_particlefield_getluafivemtarget",
+      "src_components_three_particlefield_getreactatomtarget",
+      "src_components_three_particlefield_orbit_angles",
+      "src_components_three_particlefield_particlefield",
+      "src_components_three_particlefield_particlescene",
+      "src_components_three_particlefield_particlesceneprops",
+      "src_contexts_particlecontext",
+      "src_contexts_particlecontext_activesectionid",
+      "src_contexts_particlecontext_particlecontext",
+      "src_contexts_particlecontext_particlecontextvalue",
+      "src_contexts_particlecontext_section_ids",
+      "src_contexts_particlecontext_section_names",
+      "src_data_floatingcards",
+      "src_data_floatingcards_floating_cards",
+      "src_data_floatingcards_floatingcardinfo",
+      "src_data_floatingcards_particleshape"
+    ],
+    "7": [
+      "tsconfig_node",
+      "tsconfig_node_compileroptions",
+      "tsconfig_node_compileroptions_allowimportingtsextensions",
+      "tsconfig_node_compileroptions_erasablesyntaxonly",
+      "tsconfig_node_compileroptions_lib",
+      "tsconfig_node_compileroptions_module",
+      "tsconfig_node_compileroptions_moduledetection",
+      "tsconfig_node_compileroptions_moduleresolution",
+      "tsconfig_node_compileroptions_noemit",
+      "tsconfig_node_compileroptions_nofallthroughcasesinswitch",
+      "tsconfig_node_compileroptions_nouncheckedsideeffectimports",
+      "tsconfig_node_compileroptions_nounusedlocals",
+      "tsconfig_node_compileroptions_nounusedparameters",
+      "tsconfig_node_compileroptions_skiplibcheck",
+      "tsconfig_node_compileroptions_strict",
+      "tsconfig_node_compileroptions_target",
+      "tsconfig_node_compileroptions_tsbuildinfofile",
+      "tsconfig_node_compileroptions_types",
+      "tsconfig_node_compileroptions_verbatimmodulesyntax",
+      "tsconfig_node_include"
+    ],
+    "8": [
+      "src_components_three_globalparticlefield",
+      "src_components_three_globalparticlefield_getcodetarget",
+      "src_components_three_globalparticlefield_getcontacttarget",
+      "src_components_three_globalparticlefield_getcube3dtarget",
+      "src_components_three_globalparticlefield_getexperiencetarget",
+      "src_components_three_globalparticlefield_getjavatarget",
+      "src_components_three_globalparticlefield_getluafivemtarget",
+      "src_components_three_globalparticlefield_getprojectstarget",
+      "src_components_three_globalparticlefield_getreactatomtarget",
+      "src_components_three_globalparticlefield_getshowcase3dtarget",
+      "src_components_three_globalparticlefield_getsitestarget",
+      "src_components_three_globalparticlefield_getskillstarget",
+      "src_components_three_globalparticlefield_getstatstarget",
+      "src_components_three_globalparticlefield_globalparticlefield",
+      "src_components_three_globalparticlefield_globalparticlescene",
+      "src_components_three_globalparticlefield_icosa_edges",
+      "src_components_three_globalparticlefield_icosa_verts",
+      "src_components_three_globalparticlefield_orbit_angles",
+      "src_contexts_particlecontext_useparticlesystem"
+    ],
+    "9": [
+      "package_dependencies",
+      "package_dependencies_autoprefixer",
+      "package_dependencies_canvas_confetti",
+      "package_dependencies_framer_motion",
+      "package_dependencies_lucide_react",
+      "package_dependencies_postcss",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_react_icons",
+      "package_dependencies_react_three_drei",
+      "package_dependencies_react_three_fiber",
+      "package_dependencies_tailwindcss",
+      "package_dependencies_tailwindcss_postcss",
+      "package_dependencies_three",
+      "package_dependencies_types_canvas_confetti",
+      "package_dependencies_types_three"
+    ],
+    "10": [
+      "package_devdependencies",
+      "package_devdependencies_eslint",
+      "package_devdependencies_eslint_js",
+      "package_devdependencies_eslint_plugin_react_hooks",
+      "package_devdependencies_eslint_plugin_react_refresh",
+      "package_devdependencies_globals",
+      "package_devdependencies_types_node",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript",
+      "package_devdependencies_typescript_eslint",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitejs_plugin_react"
+    ],
+    "11": [
+      "ref_react_three_drei",
+      "ref_react_three_fiber",
+      "ref_three",
+      "src_components_sections_showcase3d",
+      "src_components_sections_showcase3d_resmon_resources",
+      "src_components_sections_showcase3d_showcase3d",
+      "src_components_three_interactive3dshowcase",
+      "src_components_three_interactive3dshowcase_hologrammodel",
+      "src_components_three_interactive3dshowcase_interactive3dshowcase",
+      "src_components_three_interactive3dshowcase_rubikscube3d",
+      "src_components_three_interactive3dshowcase_sceneprops"
+    ],
+    "12": [
+      "src_components_sections_experience",
+      "src_components_sections_experience_experience",
+      "src_components_ui_timelineitem",
+      "src_components_ui_timelineitem_timelineitem",
+      "src_components_ui_timelineitem_timelineitemprops",
+      "src_data_experience",
+      "src_data_experience_education",
+      "src_data_experience_experience",
+      "src_types_index_educationitem",
+      "src_types_index_experienceitem"
+    ],
+    "13": [
+      "src_components_sections_skills",
+      "src_components_ui_techbadge",
+      "src_components_ui_techbadge_icon_map",
+      "src_components_ui_techbadge_techbadge",
+      "src_components_ui_techbadge_techbadgeprops",
+      "src_data_skills",
+      "src_data_skills_skills",
+      "src_types_index_skill"
+    ],
+    "14": [
+      "vercel",
+      "vercel_buildcommand",
+      "vercel_framework",
+      "vercel_outputdirectory"
+    ],
+    "15": [
+      "tsconfig",
+      "tsconfig_files",
+      "tsconfig_references"
+    ],
+    "16": [
+      "postcss_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.1003921568627451,
+    "1": 0.07196969696969698,
+    "2": 0.1282051282051282,
+    "3": 0.09090909090909091,
+    "4": 0.19047619047619047,
+    "5": 0.21052631578947367,
+    "6": 0.15263157894736842,
+    "7": 0.1,
+    "8": 0.1871345029239766,
+    "9": 0.125,
+    "10": 0.15384615384615385,
+    "11": 0.2545454545454545,
+    "12": 0.3333333333333333,
+    "13": 0.32142857142857145,
+    "14": 0.5,
+    "15": 0.6666666666666666,
+    "16": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_contexts_languagecontext_uselanguage",
+      "label": "useLanguage()",
+      "degree": 37
+    },
+    {
+      "id": "ref_react",
+      "label": "react",
+      "degree": 34
+    },
+    {
+      "id": "ref_framer_motion",
+      "label": "framer-motion",
+      "degree": 28
+    },
+    {
+      "id": "src_contexts_perspectivecontext_useperspective",
+      "label": "usePerspective()",
+      "degree": 25
+    },
+    {
+      "id": "src_app_app",
+      "label": "App()",
+      "degree": 22
+    },
+    {
+      "id": "tsconfig_app_compileroptions",
+      "label": "compilerOptions",
+      "degree": 20
+    },
+    {
+      "id": "tsconfig_node_compileroptions",
+      "label": "compilerOptions",
+      "degree": 18
+    },
+    {
+      "id": "src_components_three_globalparticlefield_globalparticlescene",
+      "label": "GlobalParticleScene()",
+      "degree": 16
+    },
+    {
+      "id": "ref_react_icons",
+      "label": "react-icons",
+      "degree": 12
+    },
+    {
+      "id": "src_components_sections_hero_hero",
+      "label": "Hero()",
+      "degree": 11
+    }
+  ],
+  "surprises": [
+    {
+      "source": "ParticleSceneProps",
+      "target": "ParticleShape",
+      "source_files": [
+        "src/components/three/ParticleField.tsx",
+        "src/data/floatingCards.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "peripheral node `ParticleSceneProps` unexpectedly reaches hub `ParticleShape`"
+    },
+    {
+      "source": "ParticleContextValue",
+      "target": "ParticleShape",
+      "source_files": [
+        "src/contexts/ParticleContext.tsx",
+        "src/data/floatingCards.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "peripheral node `ParticleContextValue` unexpectedly reaches hub `ParticleShape`"
+    },
+    {
+      "source": "App()",
+      "target": "Navbar()",
+      "source_files": [
+        "src/App.tsx",
+        "src/components/layout/Navbar.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "Navbar()",
+      "target": "ThemePicker()",
+      "source_files": [
+        "src/components/layout/Navbar.tsx",
+        "src/components/layout/ThemePicker.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "App()",
+      "target": "Hero()",
+      "source_files": [
+        "src/App.tsx",
+        "src/components/sections/Hero.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `react` connect `Community 0` to `Community 1`, `Community 2`, `Community 4`, `Community 5`, `Community 6`, `Community 8`, `Community 11`, `Community 12`, `Community 13`?",
+      "why": "High betweenness centrality (0.230) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `autoprefixer`, `canvas-confetti`, `postcss` to the rest of the system?",
+      "why": "10 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1003921568627451 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `framer-motion` connect `Community 0` to `Community 1`, `Community 2`, `Community 4`, `Community 5`, `Community 11`, `Community 12`, `Community 13`?",
+      "why": "High betweenness centrality (0.088) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.07196969696969698 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `dependencies` connect `Community 9` to `Community 1`?",
+      "why": "High betweenness centrality (0.081) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1282051282051282 - nodes in this community are weakly interconnected."
+    }
+  ]
+}
