@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
   FaClock,
   FaTerminal,
@@ -17,6 +17,9 @@ import {
   FaServer,
   FaCode,
   FaStar,
+  FaCheckCircle,
+  FaGlobe,
+  FaBalanceScale,
 } from 'react-icons/fa';
 import type { Project } from '../../types';
 import { usePerspective } from '../../contexts/PerspectiveContext';
@@ -29,7 +32,7 @@ interface ProjectCardProps {
 }
 
 const getProjectIcon = (type?: string) => {
-  const css = 'w-7 h-7 text-white opacity-95 drop-shadow-md';
+  const css = 'w-6 h-6 text-white opacity-95 drop-shadow-md';
   switch (type) {
     case 'cube':
       return <FaCube className={css} />;
@@ -55,18 +58,54 @@ const getProjectIcon = (type?: string) => {
       return <FaServer className={css} />;
     case 'code':
       return <FaCode className={css} />;
+    case 'scale':
+      return <FaBalanceScale className={css} />;
     default:
       return <FaExternalLinkAlt className={css} />;
   }
 };
 
+const formatCleanHost = (url: string): string => {
+  try {
+    const parsed = new URL(url);
+    const path = parsed.pathname && parsed.pathname !== '/' ? parsed.pathname.replace(/\/$/, '') : '';
+    return `${parsed.hostname}${path}`;
+  } catch {
+    return url.replace(/^https?:\/\//, '');
+  }
+};
+
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const { perspective } = usePerspective();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isPt = language === 'pt';
   const [showTooltip, setShowTooltip] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [previewScale, setPreviewScale] = useState(0.28);
+
   const cardRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const isNearViewport = useInView(cardRef, { margin: '450px' });
+
   const hasPreview = Boolean(project.previewUrl);
+  const cleanHost = formatCleanHost(project.link);
+
+  // Dynamically scale the 1280px virtual desktop iframe to fit the card width
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const updateScale = () => {
+      const width = el.clientWidth;
+      if (width > 0) {
+        setPreviewScale(width / 1280);
+      }
+    };
+    updateScale();
+    const ro = new ResizeObserver(updateScale);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const displayDescription =
     perspective === 'client' && project.clientDescription
@@ -77,6 +116,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
     perspective === 'client' && project.clientTags && project.clientTags.length > 0
       ? project.clientTags
       : project.tags;
+
+  const displayHighlights =
+    perspective === 'client' && project.clientHighlights && project.clientHighlights.length > 0
+      ? project.clientHighlights
+      : project.highlights;
 
   const tooltipText = project.madeWith ?? `${displayTags.join(', ')}.`;
 
@@ -94,65 +138,157 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-30px' }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
+      transition={{ duration: 0.5, delay: index * 0.07 }}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
-      className={`h-full relative flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 hover:scale-[1.02] ${
+      className={`h-full relative flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 hover:-translate-y-1.5 ${
         project.featured
-          ? 'border-[var(--accent-from)]/60 shadow-xl'
-          : 'border-[var(--glass-border)]'
+          ? 'border-[var(--accent-from)]/70 shadow-2xl'
+          : 'border-[var(--glass-border)] hover:border-[var(--accent-from)]/50'
       }`}
       style={{
         background: 'var(--glass-bg)',
-        backdropFilter: 'blur(16px)',
-        boxShadow: project.featured ? '0 0 35px var(--glow)' : '0 0 25px var(--glow)',
+        backdropFilter: 'blur(10px)',
+        boxShadow: project.featured ? '0 0 40px var(--glow)' : '0 0 25px var(--glow)',
       }}
     >
-      {/* Featured Ribbon / Badge */}
-      {project.featured && (
-        <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-lg">
-          <FaStar className="w-2.5 h-2.5 animate-spin" style={{ animationDuration: '6s' }} />
-          <span>{t.projects.featuredBadge}</span>
-        </div>
-      )}
-
-      {/* Top Cover Visual */}
+      {/* Top Browser Chrome Bar */}
       <div
         onClick={handleCardClick}
-        className="relative h-40 flex flex-col items-center justify-center cursor-pointer overflow-hidden group select-none shrink-0"
-        style={{
-          background: project.featured
-            ? 'linear-gradient(135deg, var(--accent-from), var(--accent-to), #d97706)'
-            : 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
-        }}
+        className="flex items-center justify-between gap-2 px-3.5 py-2.5 bg-[#0b0b12]/95 border-b border-white/10 cursor-pointer select-none shrink-0"
       >
-        {/* Subtle grid background */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.07)_1px,transparent_1px)] bg-[size:16px_16px] opacity-40" />
+        {/* Window Traffic Lights */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className="w-2.5 h-2.5 rounded-full bg-red-500/85" />
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-400/85" />
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/85" />
+        </div>
 
-        {/* Glow effect on hover */}
-        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        {/* URL Bar */}
+        <div className="flex-1 min-w-0 max-w-[240px] mx-auto px-2.5 py-1 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center gap-1.5 text-[11px] font-mono text-white/75 truncate">
+          <FaGlobe className="w-2.5 h-2.5 text-[var(--accent-from)] shrink-0" />
+          <span className="truncate">{cleanHost}</span>
+        </div>
 
-        <div className="relative z-10 flex flex-col items-center gap-2">
-          <div className="p-3.5 rounded-2xl bg-white/10 border border-white/20 shadow-inner group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
-            {getProjectIcon(project.icon)}
+        {/* Status / Featured Pill */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {project.featured && (
+            <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-extrabold uppercase tracking-wider shadow">
+              <FaStar className="w-2 h-2" />
+              {t.projects.featuredBadge}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            {project.status}
+          </span>
+        </div>
+      </div>
+
+      {/* Live Website Viewport Preview */}
+      <div
+        ref={viewportRef}
+        onClick={handleCardClick}
+        className="relative h-52 sm:h-56 w-full bg-[#09090f] cursor-pointer overflow-hidden group select-none shrink-0 border-b border-[var(--glass-border)]"
+      >
+        {/* Styled Fallback / Loading Backdrop */}
+        <div
+          className={`absolute inset-0 flex flex-col items-center justify-center p-4 transition-opacity duration-500 ${
+            iframeLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+          style={{
+            background: project.featured
+              ? 'radial-gradient(circle at 50% 30%, var(--accent-from), #09090f 75%)'
+              : 'radial-gradient(circle at 50% 30%, var(--accent-to), #09090f 75%)',
+          }}
+        >
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px] opacity-40" />
+          <div className="relative z-10 flex flex-col items-center gap-2.5 text-center">
+            <div className="p-3.5 rounded-2xl bg-white/10 border border-white/20 shadow-lg backdrop-blur-md">
+              {getProjectIcon(project.icon)}
+            </div>
+            <span className="text-xs font-bold text-white/90 tracking-wide">{project.title}</span>
+            <span className="text-[10px] font-mono text-white/60 flex items-center gap-1.5">
+              {hasPreview ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-[var(--accent-from)] animate-ping" />
+                  {isPt ? 'Renderizando preview ao vivo...' : 'Rendering live preview...'}
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  {isPt ? 'Sistema em produção • Abrir portal' : 'Live production app • Open portal'}
+                </>
+              )}
+            </span>
           </div>
-          {hasPreview && (
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/15 text-[10px] font-semibold text-white/95 shadow group-hover:opacity-0 transition-opacity duration-300">
-              <FaPlay className="w-2 h-2 text-emerald-400" />
-              {t.projects.interactiveDemoBadge}
+        </div>
+
+        {/* Scaled Live Desktop Iframe */}
+        {hasPreview && isNearViewport && !isModalOpen && (
+          <div
+            className="absolute top-0 left-0 origin-top-left pointer-events-none transition-transform duration-500 group-hover:scale-[1.03]"
+            style={{
+              width: '1280px',
+              height: '800px',
+              transform: `scale(${previewScale})`,
+            }}
+          >
+            <iframe
+              src={project.previewUrl}
+              title={`Preview ${project.title}`}
+              loading="lazy"
+              tabIndex={-1}
+              onLoad={() => setIframeLoaded(true)}
+              sandbox="allow-scripts allow-same-origin"
+              className={`w-full h-full border-0 bg-[#09090f] transition-opacity duration-500 ${
+                iframeLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </div>
+        )}
+
+        {/* Bottom Gradient Vignette + Live Badge */}
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none flex items-end justify-between px-3.5 pb-2.5">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/65 border border-white/15 text-[10px] font-semibold text-white/95 backdrop-blur-md shadow">
+            {hasPreview ? (
+              <>
+                <FaPlay className="w-2 h-2 text-emerald-400" />
+                {isPt ? 'Preview Real em Execução' : 'Live Running Preview'}
+              </>
+            ) : (
+              <>
+                <FaExternalLinkAlt className="w-2 h-2 text-emerald-400" />
+                {isPt ? 'Acesso Direto ao Portal' : 'Direct Live Portal'}
+              </>
+            )}
+          </span>
+          {project.metrics && project.metrics.length > 0 && (
+            <div className="flex items-center gap-1.5">
+              {project.metrics.slice(0, 2).map((m) => (
+                <span
+                  key={m.label}
+                  className="px-2 py-0.5 rounded-md bg-black/70 border border-white/15 text-[10px] font-mono text-white/90 backdrop-blur-md"
+                >
+                  <strong className="text-[var(--accent-from)]">{m.value}</strong>
+                </span>
+              ))}
             </div>
           )}
         </div>
 
         {/* Hover Action Overlay */}
-        <div className="absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-          <span className="text-white text-xs font-bold px-4 py-2 border border-white/20 rounded-xl bg-white/15 backdrop-blur-md shadow-lg flex items-center gap-1.5 animate-pulse">
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-250 flex items-center justify-center backdrop-blur-[2px] p-4">
+          <span
+            className="text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-250"
+            style={{
+              background: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
+              boxShadow: '0 0 25px var(--glow)',
+            }}
+          >
+            <FaPlay className="w-3 h-3" />
             {hasPreview ? t.projects.openDemo : t.projects.visitSite}
           </span>
-        </div>
-
-        <div className="absolute top-2 right-2 px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-black/50 text-white select-none border border-white/10 backdrop-blur-sm">
-          {project.status}
         </div>
       </div>
 
@@ -161,17 +297,38 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         <h3 className="font-bold text-lg text-[var(--text-primary)] mb-1.5 leading-snug">
           {project.title}
         </h3>
-        <p className="text-sm text-[var(--text-secondary)] mb-4 line-clamp-3 flex-1 leading-relaxed">
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mb-3.5 leading-relaxed">
           {displayDescription}
         </p>
 
+        {/* Concrete Engineering Deliverables / Proof Points */}
+        {displayHighlights && displayHighlights.length > 0 && (
+          <div className="mb-4 p-3 rounded-xl border border-[var(--glass-border)] bg-black/20 space-y-1.5">
+            <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent-from)] mb-1">
+              {perspective === 'client'
+                ? isPt
+                  ? '✓ O que este projeto entrega na prática:'
+                  : '✓ Practical value delivered:'
+                : isPt
+                ? '✓ O que foi implementado no código:'
+                : '✓ Engineered & implemented:'}
+            </p>
+            {displayHighlights.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-2 text-xs text-[var(--text-secondary)] leading-snug">
+                <FaCheckCircle className="w-3 h-3 text-emerald-400 shrink-0 mt-0.5" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Tags */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
+        <div className="flex flex-wrap gap-1.5 mb-4 mt-auto">
           {displayTags.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-medium px-2.5 py-0.5 rounded-full border border-[var(--glass-border)] bg-[var(--glass-bg)]"
-              style={{ color: 'var(--text-secondary)' }}
+              className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-[var(--glass-border)] bg-[var(--glass-bg)]"
+              style={{ color: 'var(--text-primary)' }}
             >
               {tag}
             </span>
@@ -184,12 +341,13 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="flex-1 px-3 py-2 rounded-xl text-xs font-bold text-white text-center cursor-pointer transition-transform hover:scale-[1.02] shadow-sm"
+              className="flex-1 px-3 py-2.5 rounded-xl text-xs font-bold text-white text-center cursor-pointer transition-transform hover:scale-[1.02] shadow-sm flex items-center justify-center gap-1.5"
               style={{
                 background: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
                 boxShadow: '0 0 15px var(--glow)',
               }}
             >
+              <FaPlay className="w-2.5 h-2.5" />
               {t.projects.demoBtn}
             </button>
           )}
@@ -198,7 +356,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 px-3 py-2 rounded-xl text-xs font-bold text-center border border-[var(--glass-border)] text-[var(--text-primary)] hover:bg-[var(--glass-bg)] hover:border-[var(--accent-from)] transition-all flex items-center justify-center gap-1.5"
+            className="flex-1 px-3 py-2.5 rounded-xl text-xs font-bold text-center border border-[var(--glass-border)] text-[var(--text-primary)] hover:bg-[var(--glass-bg)] hover:border-[var(--accent-from)] transition-all flex items-center justify-center gap-1.5"
           >
             {t.projects.visitBtn}
             <FaExternalLinkAlt className="w-2.5 h-2.5" />
@@ -209,10 +367,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-2 rounded-xl border border-[var(--glass-border)] text-[var(--text-primary)] hover:bg-[var(--glass-bg)] hover:border-[var(--accent-from)] transition-all flex items-center justify-center"
+              className="px-3 py-2.5 rounded-xl border border-[var(--glass-border)] text-[var(--text-primary)] hover:bg-[var(--glass-bg)] hover:border-[var(--accent-from)] transition-all flex items-center justify-center gap-1.5 text-xs font-bold"
               title={t.projects.codeBtn}
             >
               <FaGithub className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.projects.codeBtn}</span>
             </a>
           )}
 
@@ -221,7 +380,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
               href={project.creditsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-2 rounded-xl border border-[var(--glass-border)] text-xs font-bold text-center text-[var(--text-primary)] hover:bg-[var(--glass-bg)] hover:border-[var(--accent-from)] transition-all flex items-center justify-center gap-1 shrink-0"
+              className="px-3 py-2.5 rounded-xl border border-[var(--glass-border)] text-xs font-bold text-center text-[var(--text-primary)] hover:bg-[var(--glass-bg)] hover:border-[var(--accent-from)] transition-all flex items-center justify-center gap-1 shrink-0"
               title={t.projects.creditsBtn}
             >
               {t.projects.creditsBtn}

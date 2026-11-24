@@ -1,14 +1,13 @@
-import { useEffect, useState, useRef, useLayoutEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { FaReact, FaCube } from 'react-icons/fa';
 import { SiLua } from 'react-icons/si';
 import { LuAtom, LuCoffee, LuCode, LuMousePointerClick } from 'react-icons/lu';
 import { HelpCircle, Pin } from 'lucide-react';
-import type { ParticleShape } from '../../data/floatingCards';
+import type { ParticleShape, FloatingCardInfo } from '../../data/floatingCards';
 import { usePerspective } from '../../contexts/PerspectiveContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useParticleSystem } from '../../contexts/ParticleContext';
-import { useCursorPosition } from '../../hooks/useCursorPosition';
 import { GradientText } from '../ui/GradientText';
 import { FLOATING_CARDS } from '../../data/floatingCards';
 import { CVDropdown } from '../ui/CVDropdown';
@@ -17,6 +16,93 @@ import { PortfolioGuideModal } from '../ui/PortfolioGuideModal';
 
 const FLEE_RADIUS = 100;
 const FLEE_STRENGTH = 36;
+
+interface FloatingHeroCardProps {
+  card: FloatingCardInfo;
+  perspective: 'client' | 'dev';
+  isClicked: boolean;
+  onSelect: (card: FloatingCardInfo) => void;
+}
+
+const FloatingHeroCard = ({ card, perspective, isClicked, onSelect }: FloatingHeroCardProps) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const springX = useSpring(rawX, { stiffness: 280, damping: 20 });
+  const springY = useSpring(rawY, { stiffness: 280, damping: 20 });
+
+  useEffect(() => {
+    const onPointerMove = (e: PointerEvent) => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const d = Math.hypot(dx, dy) || 1;
+
+      if (d < FLEE_RADIUS) {
+        const f = (1 - d / FLEE_RADIUS) * FLEE_STRENGTH;
+        rawX.set((dx / d) * f);
+        rawY.set((dy / d) * f);
+      } else if (rawX.get() !== 0 || rawY.get() !== 0) {
+        rawX.set(0);
+        rawY.set(0);
+      }
+    };
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onPointerMove);
+  }, [rawX, rawY]);
+
+  const CardIcon =
+    card.shape === 'lua'
+      ? SiLua
+      : card.shape === 'cube'
+      ? FaCube
+      : card.shape === 'java'
+      ? LuCoffee
+      : card.shape === 'code'
+      ? LuCode
+      : FaReact;
+
+  const cardTitle = perspective === 'client' && card.clientTitle ? card.clientTitle : card.title;
+  const cardDescription =
+    perspective === 'client' && card.clientDescription ? card.clientDescription : card.description;
+
+  return (
+    <div ref={wrapperRef}>
+      <motion.div
+        style={{
+          x: springX,
+          y: springY,
+          boxShadow: '0 0 25px var(--glow)',
+          willChange: 'transform',
+        }}
+        onClick={() => onSelect(card)}
+        className={`w-64 p-4 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-xl text-left cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
+          isClicked ? 'ring-2 ring-[var(--accent-from)]' : ''
+        }`}
+      >
+        <div className="flex items-center gap-2 mb-2">
+          <div
+            className="p-2 rounded-xl text-white shadow-sm"
+            style={{
+              background: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
+            }}
+          >
+            <CardIcon className="w-4 h-4" />
+          </div>
+          <h3 className="text-sm font-bold text-[var(--text-primary)]">{cardTitle}</h3>
+        </div>
+        <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{cardDescription}</p>
+      </motion.div>
+    </div>
+  );
+};
 
 export const Hero = () => {
   const { perspective } = usePerspective();
@@ -32,10 +118,8 @@ export const Hero = () => {
     setPinHeroShape,
   } = useParticleSystem();
 
-  const mousePos = useCursorPosition(0.08);
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const [cardCenters, setCardCenters] = useState<{ x: number; y: number }[]>([]);
   const [clickedCard, setClickedCard] = useState<number | null>(null);
   const [isIntroActive, setIsIntroActive] = useState(true);
   const [guideOpen, setGuideOpen] = useState(false);
@@ -46,39 +130,6 @@ export const Hero = () => {
     }, 450);
     return () => clearTimeout(timer);
   }, []);
-
-  useLayoutEffect(() => {
-    const updateCenters = () => {
-      if (!containerRef.current) return;
-      const children = containerRef.current.children;
-      const centers: { x: number; y: number }[] = [];
-      for (let i = 0; i < 3; i++) {
-        const el = children[i] as HTMLElement | undefined;
-        if (el) {
-          const r = el.getBoundingClientRect();
-          centers.push({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
-        }
-      }
-      setCardCenters(centers);
-    };
-    updateCenters();
-    window.addEventListener('resize', updateCenters);
-    return () => window.removeEventListener('resize', updateCenters);
-  }, []);
-
-  const cardOffsets = useMemo(() => {
-    if (cardCenters.length !== 3) return [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
-    return cardCenters.map((c) => {
-      const dx = mousePos.x - c.x;
-      const dy = mousePos.y - c.y;
-      const d = Math.hypot(dx, dy) || 1;
-      if (d < FLEE_RADIUS) {
-        const f = (1 - d / FLEE_RADIUS) * FLEE_STRENGTH;
-        return { x: (dx / d) * f, y: (dy / d) * f };
-      }
-      return { x: 0, y: 0 };
-    });
-  }, [cardCenters, mousePos.x, mousePos.y]);
 
   const shapeList = [
     { id: 'react', label: t.hero.shapes.react, icon: LuAtom },
@@ -336,61 +387,20 @@ export const Hero = () => {
           onPointerDown={(e) => e.stopPropagation()}
           className="mt-10 flex flex-wrap gap-4 justify-center"
         >
-          {FLOATING_CARDS.map((card, i) => {
-            const off = cardOffsets[i] ?? { x: 0, y: 0 };
-            const CardIcon =
-              card.shape === 'lua'
-                ? SiLua
-                : card.shape === 'cube'
-                ? FaCube
-                : card.shape === 'java'
-                ? LuCoffee
-                : card.shape === 'code'
-                ? LuCode
-                : FaReact;
-
-            const cardTitle =
-              perspective === 'client' && card.clientTitle ? card.clientTitle : card.title;
-            const cardDescription =
-              perspective === 'client' && card.clientDescription
-                ? card.clientDescription
-                : card.description;
-
-            return (
-              <motion.div
-                key={card.id}
-                animate={{ x: off.x, y: off.y }}
-                transition={{ type: 'spring', stiffness: 280, damping: 20 }}
-                onClick={() => {
-                  setClickedCard(card.id);
-                  setHeroShape(card.shape);
-                  triggerBriefAttraction(1600);
-                  setTimeout(() => setClickedCard(null), 600);
-                }}
-                className={`w-64 p-4 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-xl text-left cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
-                  clickedCard === card.id ? 'ring-2 ring-[var(--accent-from)]' : ''
-                }`}
-                style={{
-                  boxShadow: '0 0 25px var(--glow)',
-                }}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className="p-2 rounded-xl text-white shadow-sm"
-                    style={{
-                      background: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))',
-                    }}
-                  >
-                    <CardIcon className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-sm font-bold text-[var(--text-primary)]">{cardTitle}</h3>
-                </div>
-                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                  {cardDescription}
-                </p>
-              </motion.div>
-            );
-          })}
+          {FLOATING_CARDS.map((card) => (
+            <FloatingHeroCard
+              key={card.id}
+              card={card}
+              perspective={perspective}
+              isClicked={clickedCard === card.id}
+              onSelect={(selected) => {
+                setClickedCard(selected.id);
+                setHeroShape(selected.shape);
+                triggerBriefAttraction(1600);
+                setTimeout(() => setClickedCard(null), 600);
+              }}
+            />
+          ))}
         </motion.div>
       </div>
 

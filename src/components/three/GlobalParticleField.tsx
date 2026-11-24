@@ -1,11 +1,11 @@
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useParticleSystem } from '../../contexts/ParticleContext';
 import { useTheme } from '../../hooks/useTheme';
 import { THEME_PALETTES } from '../../data/themes';
 
-const COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 1200 : 2000;
+const COUNT = typeof window !== 'undefined' && window.innerWidth < 768 ? 900 : 1500;
 const LERP_TO_SHAPE = 0.075;
 const MOUSE_SCALE = 14;
 
@@ -597,15 +597,13 @@ function getContactTarget(i: number, time: number) {
 // ----------------------------------------------------
 const GlobalParticleScene = () => {
   const { theme, mode } = useTheme();
-  const { activeSection, heroShape, isAttracting, pinHeroShape, mouseNdc, scrollVelocity } =
+  const { activeSection, heroShape, isAttracting, pinHeroShape, mouseNdcRef, scrollVelocityRef } =
     useParticleSystem();
 
   const accentColor = THEME_PALETTES[theme]?.from ?? '#7c3aed';
 
   const pointsRef = useRef<THREE.Points>(null);
   const glowPointsRef = useRef<THREE.Points>(null);
-  const colorRef = useRef(new THREE.Color(accentColor));
-  const glowColorRef = useRef(new THREE.Color(accentColor));
 
   // Current smooth scroll velocity
   const smoothedVelocityRef = useRef(0);
@@ -615,11 +613,17 @@ const GlobalParticleScene = () => {
     const home = new Float32Array(COUNT * 3);
     const op = new Float32Array(COUNT);
 
+    // Deterministic pseudo-random helper so useMemo stays pure
+    const hash = (seed: number) => {
+      const s = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+      return s - Math.floor(s);
+    };
+
     for (let i = 0; i < COUNT; i++) {
       const i3 = i * 3;
-      const x = (Math.random() - 0.5) * 22;
-      const y = (Math.random() - 0.5) * 15;
-      const z = (Math.random() - 0.5) * 4;
+      const x = (hash(i * 3 + 1) - 0.5) * 22;
+      const y = (hash(i * 3 + 2) - 0.5) * 15;
+      const z = (hash(i * 3 + 3) - 0.5) * 4;
 
       pos[i3] = x;
       pos[i3 + 1] = y;
@@ -629,29 +633,10 @@ const GlobalParticleScene = () => {
       home[i3 + 1] = y;
       home[i3 + 2] = z;
 
-      op[i] = Math.random() * 0.7 + 0.3;
+      op[i] = hash(i * 7 + 5) * 0.7 + 0.3;
     }
     return [pos, home, op];
   }, []);
-
-  useEffect(() => {
-    colorRef.current.set(accentColor);
-    glowColorRef.current.set(accentColor);
-    if (pointsRef.current) {
-      const mat = pointsRef.current.material as THREE.PointsMaterial;
-      if (mat) {
-        mat.color.set(accentColor);
-        mat.needsUpdate = true;
-      }
-    }
-    if (glowPointsRef.current) {
-      const mat = glowPointsRef.current.material as THREE.PointsMaterial;
-      if (mat) {
-        mat.color.set(accentColor);
-        mat.needsUpdate = true;
-      }
-    }
-  }, [accentColor]);
 
   useFrame((state) => {
     const geom = pointsRef.current?.geometry;
@@ -662,12 +647,15 @@ const GlobalParticleScene = () => {
     const pos = posAttr.array as Float32Array;
     const time = state.clock.getElapsedTime();
 
-    // Attractor position in 3D
-    const ax = mouseNdc.x * MOUSE_SCALE;
-    const ay = mouseNdc.y * (MOUSE_SCALE * 0.65);
+    // Attractor position in 3D (read directly from ref — no React re-renders)
+    const { x: nx, y: ny } = mouseNdcRef.current;
+    const ax = nx * MOUSE_SCALE;
+    const ay = ny * (MOUSE_SCALE * 0.65);
 
-    // Smooth scroll velocity and vertical drift
-    smoothedVelocityRef.current += (scrollVelocity - smoothedVelocityRef.current) * 0.15;
+    // Smooth scroll velocity with natural decay so drift settles when scroll stops
+    const rawVel = scrollVelocityRef.current;
+    scrollVelocityRef.current *= 0.85;
+    smoothedVelocityRef.current += (rawVel - smoothedVelocityRef.current) * 0.15;
     const scrollFlowOffset = -Math.min(Math.max(smoothedVelocityRef.current * 0.015, -2.5), 2.5);
 
     for (let i = 0; i < COUNT; i++) {
@@ -807,6 +795,7 @@ export const GlobalParticleField = () => {
       style={{ willChange: 'transform' }}
     >
       <Canvas
+        dpr={[1, 1.5]}
         camera={{ position: [0, 0, 10], fov: 60 }}
         gl={{ alpha: true, antialias: false, powerPreference: 'high-performance' }}
         style={{ pointerEvents: 'none' }}

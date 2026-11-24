@@ -1,6 +1,7 @@
 import { useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, Sphere, Torus, Octahedron, Box } from '@react-three/drei';
+import { useInView } from 'framer-motion';
 import * as THREE from 'three';
 import { useTheme } from '../../hooks/useTheme';
 import { THEME_PALETTES } from '../../data/themes';
@@ -248,16 +249,26 @@ export const Interactive3DShowcase = () => {
   const [wireframe, setWireframe] = useState(false);
   const { theme } = useTheme();
   const { t } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: '200px' });
 
   const palette = THEME_PALETTES[theme] ?? THEME_PALETTES.purple;
   const accentColor = palette.from;
   const secondaryColor = palette.to;
 
   return (
-    <div className="relative w-full h-[380px] sm:h-[440px] rounded-3xl overflow-hidden border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-xl shadow-2xl flex flex-col">
+    <div
+      ref={containerRef}
+      className="relative w-full h-[380px] sm:h-[440px] rounded-3xl overflow-hidden border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-2xl flex flex-col"
+    >
       {/* 3D Canvas */}
       <div className="flex-1 w-full h-full relative cursor-grab active:cursor-grabbing">
-        <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
+        <Canvas
+          frameloop={isInView ? 'always' : 'demand'}
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, powerPreference: 'high-performance' }}
+          camera={{ position: [0, 0, 6], fov: 50 }}
+        >
           <ambientLight intensity={0.7} />
           <pointLight position={[10, 10, 10]} intensity={2} color={accentColor} />
           <pointLight position={[-10, -10, -10]} intensity={1.2} color={secondaryColor} />

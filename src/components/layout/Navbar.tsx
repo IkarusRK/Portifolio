@@ -24,10 +24,10 @@ export const Navbar = () => {
 
   const navLinks = [
     { id: 'home', label: t.nav.home, href: '#home' },
+    { id: 'sites', label: t.nav.sites, href: '#sites' },
+    { id: 'applications', label: t.nav.applications, href: '#applications' },
     { id: 'skills', label: t.nav.skills, href: '#skills' },
     { id: 'experience', label: t.nav.experience, href: '#experience' },
-    { id: 'applications', label: t.nav.applications, href: '#applications' },
-    { id: 'sites', label: t.nav.sites, href: '#sites' },
     { id: 'contact', label: t.nav.contact, href: '#contact' },
   ];
 

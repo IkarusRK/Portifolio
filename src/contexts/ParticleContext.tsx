@@ -4,7 +4,10 @@ import {
   useState,
   useEffect,
   useRef,
+  useMemo,
+  useCallback,
   type ReactNode,
+  type MutableRefObject,
 } from 'react';
 import type { ParticleShape } from '../data/floatingCards';
 
@@ -39,8 +42,8 @@ interface ParticleContextValue {
   triggerBriefAttraction: (durationMs?: number) => void;
   pinHeroShape: boolean;
   setPinHeroShape: (pin: boolean | ((prev: boolean) => boolean)) => void;
-  mouseNdc: { x: number; y: number };
-  scrollVelocity: number;
+  mouseNdcRef: MutableRefObject<{ x: number; y: number }>;
+  scrollVelocityRef: MutableRefObject<number>;
 }
 
 const ParticleContext = createContext<ParticleContextValue | null>(null);
@@ -61,70 +64,71 @@ export const ParticleProvider = ({ children }: { children: ReactNode }) => {
   const [heroShape, setHeroShape] = useState<ParticleShape>('react');
   const [isAttracting, setIsAttracting] = useState(false);
   const [pinHeroShape, setPinHeroShape] = useState(false);
-  const [mouseNdc, setMouseNdc] = useState({ x: 0, y: 0 });
-  const [scrollVelocity, setScrollVelocity] = useState(0);
 
+  const mouseNdcRef = useRef({ x: 0, y: 0 });
+  const scrollVelocityRef = useRef(0);
+  const activeSectionRef = useRef<ActiveSectionId>('home');
   const briefTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const triggerBriefAttraction = (durationMs = 1600) => {
+  const triggerBriefAttraction = useCallback((durationMs = 1600) => {
     setIsAttracting(true);
     if (briefTimerRef.current) clearTimeout(briefTimerRef.current);
     briefTimerRef.current = setTimeout(() => {
       setIsAttracting(false);
     }, durationMs);
-  };
+  }, []);
 
-  const handleSetIsAttracting = (attracting: boolean) => {
+  const handleSetIsAttracting = useCallback((attracting: boolean) => {
     if (!attracting && briefTimerRef.current) {
       clearTimeout(briefTimerRef.current);
       briefTimerRef.current = null;
     }
     setIsAttracting(attracting);
-  };
+  }, []);
 
   const lastScrollYRef = useRef(0);
-  const scrollVelocityRef = useRef(0);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Mouse movement tracker
+    // Update ref directly — zero React re-renders on pointer move
     const handlePointerMove = (e: PointerEvent) => {
-      setMouseNdc({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: -(e.clientY / window.innerHeight) * 2 + 1,
-      });
+      mouseNdcRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseNdcRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    const updateActiveSection = (next: ActiveSectionId) => {
+      if (activeSectionRef.current !== next) {
+        activeSectionRef.current = next;
+        setActiveSection(next);
+      }
     };
 
     // Scroll & section detection tracker
-    let rafId: number;
+    let rafId = 0;
     const handleScroll = () => {
-      cancelAnimationFrame(rafId);
+      const currentScrollY = window.scrollY;
+      scrollVelocityRef.current = currentScrollY - lastScrollYRef.current;
+      lastScrollYRef.current = currentScrollY;
+
+      if (rafId) return;
       rafId = requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY;
-        const delta = currentScrollY - lastScrollYRef.current;
-        lastScrollYRef.current = currentScrollY;
-
-        // Smooth velocity accumulator
-        scrollVelocityRef.current = delta;
-        setScrollVelocity(delta);
-
-        // Section detector based on viewport center
+        rafId = 0;
+        const y = window.scrollY;
         const viewportCenter = window.innerHeight * 0.45;
+
+        if (y < 120) {
+          updateActiveSection('home');
+          return;
+        }
+
+        if (window.innerHeight + y >= document.body.offsetHeight - 120) {
+          updateActiveSection('contact');
+          return;
+        }
+
         let closestSection: ActiveSectionId = 'home';
         let minDistance = Infinity;
-
-        // Special case: very top
-        if (currentScrollY < 120) {
-          setActiveSection('home');
-          return;
-        }
-
-        // Special case: near bottom
-        if (window.innerHeight + currentScrollY >= document.body.offsetHeight - 120) {
-          setActiveSection('contact');
-          return;
-        }
 
         for (const id of SECTION_IDS) {
           const el = document.getElementById(id);
@@ -133,7 +137,6 @@ export const ParticleProvider = ({ children }: { children: ReactNode }) => {
           const elementCenter = rect.top + rect.height / 2;
           const dist = Math.abs(elementCenter - viewportCenter);
 
-          // If the element encompasses the viewport center
           if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
             closestSection = id;
             break;
@@ -145,7 +148,7 @@ export const ParticleProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-        setActiveSection(closestSection);
+        updateActiveSection(closestSection);
       });
     };
 
@@ -166,26 +169,29 @@ export const ParticleProvider = ({ children }: { children: ReactNode }) => {
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('pointerup', handlePointerUp);
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
+  const contextValue = useMemo(
+    () => ({
+      activeSection,
+      setActiveSection,
+      heroShape,
+      setHeroShape,
+      isAttracting,
+      setIsAttracting: handleSetIsAttracting,
+      triggerBriefAttraction,
+      pinHeroShape,
+      setPinHeroShape,
+      mouseNdcRef,
+      scrollVelocityRef,
+    }),
+    [activeSection, heroShape, isAttracting, pinHeroShape, handleSetIsAttracting, triggerBriefAttraction]
+  );
+
   return (
-    <ParticleContext.Provider
-      value={{
-        activeSection,
-        setActiveSection,
-        heroShape,
-        setHeroShape,
-        isAttracting,
-        setIsAttracting: handleSetIsAttracting,
-        triggerBriefAttraction,
-        pinHeroShape,
-        setPinHeroShape,
-        mouseNdc,
-        scrollVelocity,
-      }}
-    >
+    <ParticleContext.Provider value={contextValue}>
       {children}
     </ParticleContext.Provider>
   );

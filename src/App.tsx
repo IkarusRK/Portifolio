@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { PerspectiveProvider } from './contexts/PerspectiveContext';
@@ -9,16 +9,20 @@ import CursorFollower from './components/layout/CursorFollower';
 import ScrollToTop from './components/ui/ScrollToTop';
 import BootScreen from './components/BootScreen';
 import { OnboardingPerspectiveModal } from './components/ui/OnboardingPerspectiveModal';
-import { FiveMConsole } from './components/ui/FiveMConsole';
 import { GlobalParticleField } from './components/three/GlobalParticleField';
 import Hero from './components/sections/Hero';
-import Stats from './components/sections/Stats';
-import Showcase3D from './components/sections/Showcase3D';
 import Sites from './components/sections/Sites';
 import Projects from './components/sections/Projects';
-import Skills from './components/sections/Skills';
-import Experience from './components/sections/Experience';
-import Contact from './components/sections/Contact';
+
+const CodeShowcase = lazy(() => import('./components/sections/CodeShowcase'));
+const Stats = lazy(() => import('./components/sections/Stats'));
+const Showcase3D = lazy(() => import('./components/sections/Showcase3D'));
+const Skills = lazy(() => import('./components/sections/Skills'));
+const Experience = lazy(() => import('./components/sections/Experience'));
+const Contact = lazy(() => import('./components/sections/Contact'));
+const FiveMConsole = lazy(() =>
+  import('./components/ui/FiveMConsole').then((m) => ({ default: m.FiveMConsole }))
+);
 
 const App = () => {
   const [bootComplete, setBootComplete] = useState(() => {
@@ -45,16 +49,21 @@ const App = () => {
             <Navbar />
             <main className="relative z-10">
               <Hero />
-              <Stats />
-              <Showcase3D />
               <Sites />
               <Projects />
-              <Skills />
-              <Experience />
-              <Contact />
+              <Suspense fallback={null}>
+                <CodeShowcase />
+                <Stats />
+                <Showcase3D />
+                <Skills />
+                <Experience />
+                <Contact />
+              </Suspense>
             </main>
             <Footer />
-            <FiveMConsole />
+            <Suspense fallback={null}>
+              <FiveMConsole />
+            </Suspense>
             <CursorFollower />
             <ScrollToTop />
           </ParticleProvider>

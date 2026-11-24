@@ -10,6 +10,12 @@ export interface Project {
   clientDescription?: string;
   /** Frase curta para tooltip: "Feito com X, Y e Z" */
   madeWith?: string;
+  /** Destaques técnicos / entregáveis reais comprovados no projeto */
+  highlights?: string[];
+  /** Destaques voltados a recrutadores / visão de produto */
+  clientHighlights?: string[];
+  /** Métricas rápidas de engenharia do projeto */
+  metrics?: { label: string; value: string }[];
   tags: string[];
   clientTags?: string[];
   link: string;
@@ -17,7 +23,7 @@ export interface Project {
   previewUrl?: string;
   githubUrl?: string;
   creditsUrl?: string;
-  icon?: 'clock' | 'terminal' | 'calculator' | 'lock' | 'users' | 'gamepad' | 'shield' | 'chart' | 'book' | 'code' | 'server' | 'car' | 'sparkles' | 'cube';
+  icon?: 'clock' | 'terminal' | 'calculator' | 'lock' | 'users' | 'gamepad' | 'shield' | 'chart' | 'book' | 'code' | 'server' | 'car' | 'sparkles' | 'cube' | 'scale';
   featured?: boolean;
 }
 

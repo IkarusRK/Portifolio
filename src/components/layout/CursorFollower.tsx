@@ -1,44 +1,65 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useCursorPosition } from '../../hooks/useCursorPosition';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const CursorFollower = () => {
-  const pos = useCursorPosition(0.12);
   const [hover, setHover] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(() =>
+    typeof window !== 'undefined' ? !window.matchMedia('(pointer: coarse)').matches : false
+  );
+
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const smoothX = useSpring(cursorX, { damping: 28, stiffness: 360, mass: 0.5 });
+  const smoothY = useSpring(cursorY, { damping: 28, stiffness: 360, mass: 0.5 });
 
   useEffect(() => {
-    setMounted(typeof window !== 'undefined' && !window.matchMedia('(pointer: coarse)').matches);
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(pointer: coarse)');
+    const onChange = () => setMounted(!mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
-    const onOver = () => setHover(true);
-    const onOut = () => setHover(false);
-    const targets = document.querySelectorAll('a, button, [role="button"]');
-    targets.forEach((el) => {
-      el.addEventListener('mouseenter', onOver);
-      el.addEventListener('mouseleave', onOut);
-    });
-    return () => {
-      targets.forEach((el) => {
-        el.removeEventListener('mouseenter', onOver);
-        el.removeEventListener('mouseleave', onOut);
-      });
+
+    const onMove = (e: PointerEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
-  }, [mounted]);
+
+    const onOver = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (target?.closest('a, button, [role="button"]')) {
+        setHover(true);
+      }
+    };
+
+    const onOut = (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      if (target?.closest('a, button, [role="button"]')) {
+        setHover(false);
+      }
+    };
+
+    window.addEventListener('pointermove', onMove, { passive: true });
+    document.addEventListener('mouseover', onOver, { passive: true });
+    document.addEventListener('mouseout', onOut, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      document.removeEventListener('mouseover', onOver);
+      document.removeEventListener('mouseout', onOut);
+    };
+  }, [mounted, cursorX, cursorY]);
 
   if (!mounted) return null;
 
   return (
     <motion.div
       className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
-      style={{ willChange: 'transform' }}
-      animate={{
-        x: pos.x,
-        y: pos.y,
-        scale: hover ? 1.8 : 1,
-      }}
+      style={{ x: smoothX, y: smoothY, willChange: 'transform' }}
+      animate={{ scale: hover ? 1.8 : 1 }}
       transition={{ type: 'spring', damping: 25, stiffness: 300 }}
     >
       <div
