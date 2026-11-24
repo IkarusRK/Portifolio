@@ -186,9 +186,9 @@
     "semantic_hash": "c1db153801925bde15255270b2c088a0"
   },
   "src/components/ui/ProjectCard.tsx": {
-    "mtime": 1795522837.9612927,
-    "seen": 1795523025.0353203,
-    "ast_hash": "718704a5e371d4a41defd0ef19bd5224",
+    "mtime": 1795525697.7381854,
+    "seen": 1795525898.9720304,
+    "ast_hash": "a7dffe8429e4d450a3a95711a0a10325",
     "semantic_hash": ""
   },
   "src/components/ui/ScrollToTop.tsx": {
@@ -246,9 +246,9 @@
     "semantic_hash": "4d0e622aa9c19370928ef4eb49a6743c"
   },
   "src/data/projects.ts": {
-    "mtime": 1795523396.1050172,
-    "seen": 1795524048.6978061,
-    "ast_hash": "6ecde9b9ca021d8d929bac7db193ce87",
+    "mtime": 1795525790.3924303,
+    "seen": 1795525898.9720917,
+    "ast_hash": "ba5ec432fee2d56d348f92199adb01dc",
     "semantic_hash": ""
   },
   "src/data/skills.ts": {
@@ -300,9 +300,9 @@
     "semantic_hash": "e81f82abf347f2de902139fae0e2d154"
   },
   "src/types/index.ts": {
-    "mtime": 1795522302.798254,
-    "seen": 1795522555.4047198,
-    "ast_hash": "8aa897bd69ec06befa8551db15fcd3ac",
+    "mtime": 1795525694.5049527,
+    "seen": 1795525898.9721453,
+    "ast_hash": "39dca04beade2f4cbc1bc071ab6d413a",
     "semantic_hash": ""
   },
   "tailwind.config.ts": {
@@ -729,6 +729,60 @@
     "mtime": 1789126213.1394386,
     "seen": 1794495377.2235298,
     "ast_hash": "f0402b67b6ce880f65666bb49e841696",
+    "semantic_hash": ""
+  },
+  "public/previews/archeus.png": {
+    "mtime": 1795525561.9893792,
+    "seen": 1795525898.972577,
+    "ast_hash": "9fe4d23e5a938ef2824fa3eb883c9e48",
+    "semantic_hash": ""
+  },
+  "public/previews/aura-rpg.png": {
+    "mtime": 1795525524.3677473,
+    "seen": 1795525898.9725838,
+    "ast_hash": "6e28bbff36b35660ab99857d2ad1ee1a",
+    "semantic_hash": ""
+  },
+  "public/previews/eclipsario.png": {
+    "mtime": 1795525557.3977752,
+    "seen": 1795525898.972589,
+    "ast_hash": "569517f9f94f1be57c30626fb4c35ddb",
+    "semantic_hash": ""
+  },
+  "public/previews/jogo-memoria.png": {
+    "mtime": 1795525570.1578624,
+    "seen": 1795525898.9725943,
+    "ast_hash": "49783b0446ca19be3636e9f4e031daad",
+    "semantic_hash": ""
+  },
+  "public/previews/pje-rua2.jpg": {
+    "mtime": 1795525480.473141,
+    "seen": 1795525898.9725993,
+    "ast_hash": "fbd8420356d314ef2e16bc0ae8ee5bd5",
+    "semantic_hash": ""
+  },
+  "public/previews/policia-rua-norte.png": {
+    "mtime": 1795525565.7013302,
+    "seen": 1795525898.9726045,
+    "ast_hash": "438cae94dda2cff2b9cbf6286d54c3ca",
+    "semantic_hash": ""
+  },
+  "public/previews/registro-arasaka.png": {
+    "mtime": 1795525573.201748,
+    "seen": 1795525898.972609,
+    "ast_hash": "bacd255feb96643f5763e1d58b755024",
+    "semantic_hash": ""
+  },
+  "public/previews/relogio-ikarus.png": {
+    "mtime": 1795525600.605504,
+    "seen": 1795525898.9726174,
+    "ast_hash": "22bd7516b6f518a7005d1a3a18998b1b",
+    "semantic_hash": ""
+  },
+  "public/previews/terminal-rasetsu.png": {
+    "mtime": 1795525528.6238754,
+    "seen": 1795525898.9726226,
+    "ast_hash": "a1ed1090a7a55226b5c9bcf174c94067",
     "semantic_hash": ""
   }
 }

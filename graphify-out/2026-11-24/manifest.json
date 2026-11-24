@@ -246,9 +246,9 @@
     "semantic_hash": "4d0e622aa9c19370928ef4eb49a6743c"
   },
   "src/data/projects.ts": {
-    "mtime": 1795522305.7090948,
-    "seen": 1795522555.4047017,
-    "ast_hash": "88be1d4c7162c7637fd388d257de106a",
+    "mtime": 1795523396.1050172,
+    "seen": 1795524048.6978061,
+    "ast_hash": "6ecde9b9ca021d8d929bac7db193ce87",
     "semantic_hash": ""
   },
   "src/data/skills.ts": {

@@ -1,7 +1,7 @@
 # Graph Report - Portifolio  (2026-11-24)
 
 ## Corpus Check
-- 109 files · ~189,830 words
+- 109 files · ~189,828 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 7 file(s) not represented in the graph (top: .toml 4, .css 2, (none) 1)
 

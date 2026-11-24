@@ -21,6 +21,7 @@ export interface Project {
   link: string;
   status: 'Live' | 'GitHub' | 'FiveM' | 'NUI' | 'Open Source';
   previewUrl?: string;
+  previewImage?: string;
   githubUrl?: string;
   creditsUrl?: string;
   icon?: 'clock' | 'terminal' | 'calculator' | 'lock' | 'users' | 'gamepad' | 'shield' | 'chart' | 'book' | 'code' | 'server' | 'car' | 'sparkles' | 'cube' | 'scale';

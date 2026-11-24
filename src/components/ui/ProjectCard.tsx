@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   FaClock,
   FaTerminal,
@@ -81,31 +81,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const isPt = language === 'pt';
   const [showTooltip, setShowTooltip] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [previewScale, setPreviewScale] = useState(0.28);
-
-  const cardRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const isNearViewport = useInView(cardRef, { margin: '450px' });
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const hasPreview = Boolean(project.previewUrl);
+  const hasImage = Boolean(project.previewImage);
   const cleanHost = formatCleanHost(project.link);
-
-  // Dynamically scale the 1280px virtual desktop iframe to fit the card width
-  useEffect(() => {
-    const el = viewportRef.current;
-    if (!el) return;
-    const updateScale = () => {
-      const width = el.clientWidth;
-      if (width > 0) {
-        setPreviewScale(width / 1280);
-      }
-    };
-    updateScale();
-    const ro = new ResizeObserver(updateScale);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   const displayDescription =
     perspective === 'client' && project.clientDescription
@@ -134,7 +114,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
 
   return (
     <motion.div
-      ref={cardRef}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-30px' }}
@@ -157,20 +136,17 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         onClick={handleCardClick}
         className="flex items-center justify-between gap-2 px-3.5 py-2.5 bg-[#0b0b12]/95 border-b border-white/10 cursor-pointer select-none shrink-0"
       >
-        {/* Window Traffic Lights */}
         <div className="flex items-center gap-1.5 shrink-0">
           <span className="w-2.5 h-2.5 rounded-full bg-red-500/85" />
           <span className="w-2.5 h-2.5 rounded-full bg-amber-400/85" />
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/85" />
         </div>
 
-        {/* URL Bar */}
         <div className="flex-1 min-w-0 max-w-[240px] mx-auto px-2.5 py-1 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center gap-1.5 text-[11px] font-mono text-white/75 truncate">
           <FaGlobe className="w-2.5 h-2.5 text-[var(--accent-from)] shrink-0" />
           <span className="truncate">{cleanHost}</span>
         </div>
 
-        {/* Status / Featured Pill */}
         <div className="flex items-center gap-1.5 shrink-0">
           {project.featured && (
             <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-extrabold uppercase tracking-wider shadow">
@@ -185,16 +161,14 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
       </div>
 
-      {/* Live Website Viewport Preview */}
+      {/* Static High-Res Screenshot Preview (Zero GPU/CPU overhead; live iframe opens in modal) */}
       <div
-        ref={viewportRef}
         onClick={handleCardClick}
         className="relative h-52 sm:h-56 w-full bg-[#09090f] cursor-pointer overflow-hidden group select-none shrink-0 border-b border-[var(--glass-border)]"
       >
-        {/* Styled Fallback / Loading Backdrop */}
         <div
-          className={`absolute inset-0 flex flex-col items-center justify-center p-4 transition-opacity duration-500 ${
-            iframeLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          className={`absolute inset-0 flex flex-col items-center justify-center p-4 transition-opacity duration-300 ${
+            hasImage && imageLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
           }`}
           style={{
             background: project.featured
@@ -209,52 +183,37 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
             <span className="text-xs font-bold text-white/90 tracking-wide">{project.title}</span>
             <span className="text-[10px] font-mono text-white/60 flex items-center gap-1.5">
-              {hasPreview ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-[var(--accent-from)] animate-ping" />
-                  {isPt ? 'Renderizando preview ao vivo...' : 'Rendering live preview...'}
-                </>
-              ) : (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                  {isPt ? 'Sistema em produção • Abrir portal' : 'Live production app • Open portal'}
-                </>
-              )}
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              {hasPreview
+                ? isPt
+                  ? 'Clique para abrir demo ao vivo'
+                  : 'Click to open live demo'
+                : isPt
+                ? 'Sistema em produção • Abrir portal'
+                : 'Live production app • Open portal'}
             </span>
           </div>
         </div>
 
-        {/* Scaled Live Desktop Iframe */}
-        {hasPreview && isNearViewport && !isModalOpen && (
-          <div
-            className="absolute top-0 left-0 origin-top-left pointer-events-none transition-transform duration-500 group-hover:scale-[1.03]"
-            style={{
-              width: '1280px',
-              height: '800px',
-              transform: `scale(${previewScale})`,
-            }}
-          >
-            <iframe
-              src={project.previewUrl}
-              title={`Preview ${project.title}`}
-              loading="lazy"
-              tabIndex={-1}
-              onLoad={() => setIframeLoaded(true)}
-              sandbox="allow-scripts allow-same-origin"
-              className={`w-full h-full border-0 bg-[#09090f] transition-opacity duration-500 ${
-                iframeLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          </div>
+        {hasImage && (
+          <img
+            src={project.previewImage}
+            alt={`Preview ${project.title}`}
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setImageLoaded(true)}
+            className={`w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-[1.03] ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
         )}
 
-        {/* Bottom Gradient Vignette + Live Badge */}
         <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none flex items-end justify-between px-3.5 pb-2.5">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/65 border border-white/15 text-[10px] font-semibold text-white/95 backdrop-blur-md shadow">
             {hasPreview ? (
               <>
                 <FaPlay className="w-2 h-2 text-emerald-400" />
-                {isPt ? 'Preview Real em Execução' : 'Live Running Preview'}
+                {t.projects.interactiveDemoBadge}
               </>
             ) : (
               <>
@@ -277,7 +236,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           )}
         </div>
 
-        {/* Hover Action Overlay */}
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-250 flex items-center justify-center backdrop-blur-[2px] p-4">
           <span
             className="text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-250"
@@ -301,7 +259,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           {displayDescription}
         </p>
 
-        {/* Concrete Engineering Deliverables / Proof Points */}
         {displayHighlights && displayHighlights.length > 0 && (
           <div className="mb-4 p-3 rounded-xl border border-[var(--glass-border)] bg-black/20 space-y-1.5">
             <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-[var(--accent-from)] mb-1">
@@ -322,7 +279,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           </div>
         )}
 
-        {/* Tags */}
         <div className="flex flex-wrap gap-1.5 mb-4 mt-auto">
           {displayTags.map((tag) => (
             <span
@@ -335,7 +291,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           ))}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-2 shrink-0 pt-3 border-t border-[var(--glass-border)]">
           {hasPreview && (
             <button
@@ -389,7 +344,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         </div>
       </div>
 
-      {/* Tooltip on Hover */}
       <AnimatePresence>
         {showTooltip && (
           <motion.div
@@ -422,7 +376,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         )}
       </AnimatePresence>
 
-      {/* Interactive Iframe Preview Modal */}
       {hasPreview && (
         <PreviewModal
           isOpen={isModalOpen}
